@@ -5,6 +5,7 @@ import Marca from "../Marca/Marca.jsx";
 import MenuMovil from "../MenuMovil/MenuMovil.jsx";
 import SelectorIdioma from "../SelectorIdioma/SelectorIdioma.jsx";
 import iconoSearch from "../../assets/search.svg";
+import iconoX from "../../assets/x.svg";
 import { interfaz } from "../../data/interfaz.js";
 import "./Navbar.css";
 export default function Navbar({
@@ -18,6 +19,7 @@ export default function Navbar({
   onCuenta,
 }) {
   const [abierto, setAbierto] = useState(false);
+  const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const boton = useRef(null);
   const id = useId();
   const t = interfaz[idioma];
@@ -27,8 +29,9 @@ export default function Navbar({
     <header
       className="cabecera-home"
       onKeyDown={(evento) => {
-        if (evento.key === "Escape" && abierto) {
+        if (evento.key === "Escape" && (abierto || accesibilidadAbierta)) {
           setAbierto(false);
+          setAccesibilidadAbierta(false);
           boton.current?.focus();
         }
       }}
@@ -40,16 +43,46 @@ export default function Navbar({
         </button>
         <MenuMovil
           abierto={abierto}
-          onAlternar={() => setAbierto(!abierto)}
+          onAlternar={() => {
+            setAbierto(!abierto);
+            setAccesibilidadAbierta(false);
+          }}
           menuId={id}
           botonRef={boton}
           textos={t}
         />
+        {(abierto || accesibilidadAbierta) && (
+          <button
+            type="button"
+            className="menu-movil-overlay"
+            aria-label={idioma === "en" ? "Close menu" : "Cerrar menú"}
+            onClick={() => {
+              setAbierto(false);
+              setAccesibilidadAbierta(false);
+            }}
+          />
+        )}
         <nav
           id={id}
-          className={`menu-home ${abierto ? "abierto" : ""}`}
+          className={`menu-home ${abierto || accesibilidadAbierta ? "abierto" : ""}${
+            accesibilidadAbierta ? " accesibilidad-activa" : ""
+          }`}
           aria-label={t.navegacion}
         >
+          <div className="menu-movil-cabecera">
+            <Marca nombre={nombre} tipo={tipo} />
+            <button
+              type="button"
+              className="menu-movil-cerrar"
+              aria-label={idioma === "en" ? "Close menu" : "Cerrar menú"}
+              onClick={() => {
+                setAbierto(false);
+                setAccesibilidadAbierta(false);
+              }}
+            >
+              <img src={iconoX} alt="" />
+            </button>
+          </div>
           <a
             href="#contenido"
             aria-current="page"
@@ -72,18 +105,34 @@ export default function Navbar({
                 {t.buscar}
               </a>
             )}
-            <Accesibilidad
-              idioma={idioma}
-              textos={textosAccesibilidad}
-              accesibilidad={accesibilidad}
-              cambiarValores={cambiarValores}
-              restablecer={restablecer}
-            />
-            <SelectorIdioma
-              idioma={idioma}
-              onCambiar={onCambiarIdioma}
-              etiqueta={t.idioma}
-            />
+            <div className="accion-movil accion-movil-accesibilidad">
+              <span className="accion-movil-etiqueta">
+                {idioma === "en" ? "Accessibility" : "Accesibilidad"}
+              </span>
+              <Accesibilidad
+                idioma={idioma}
+                textos={textosAccesibilidad}
+                accesibilidad={accesibilidad}
+                cambiarValores={cambiarValores}
+                restablecer={restablecer}
+                onAlternar={(panelAbierto) => {
+                  setAccesibilidadAbierta(panelAbierto);
+                  setAbierto((menuAbierto) =>
+                    panelAbierto ? false : menuAbierto,
+                  );
+                }}
+              />
+            </div>
+            <div className="accion-movil accion-movil-idioma">
+              <span className="accion-movil-etiqueta">
+                {idioma === "en" ? "Language" : "Idioma"}
+              </span>
+              <SelectorIdioma
+                idioma={idioma}
+                onCambiar={onCambiarIdioma}
+                etiqueta={t.idioma}
+              />
+            </div>
             <button
               className="ingresar-home"
               onClick={() => onCuenta("ingresar")}

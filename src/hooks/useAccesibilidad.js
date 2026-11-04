@@ -5,7 +5,7 @@ function valoresDelSistema() {
     tamano: 100,
     tema: "sistema",
     contraste: window.matchMedia("(prefers-contrast: more)").matches,
-    movimiento: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    movimiento: window.matchMedia("(prefers-reduced-motion: normal)").matches,
     subrayar: false,
     espaciado: false,
   };
@@ -34,7 +34,7 @@ export function useAccesibilidad() {
     html.style.setProperty("--escala-texto", String(accesibilidad.tamano / 100));
     html.dataset.tema = temaOscuro ? "oscuro" : "claro";
     html.dataset.contraste = accesibilidad.contraste ? "si" : "no";
-    html.dataset.movimiento = accesibilidad.movimiento ? "reducir" : "normal";
+    html.dataset.movimiento = accesibilidad.movimiento ? "normal" : "reducir";
     html.dataset.subrayar = accesibilidad.subrayar ? "si" : "no";
     html.dataset.espaciado = accesibilidad.espaciado ? "si" : "no";
     localStorage.setItem("accesibilidad", JSON.stringify(accesibilidad));

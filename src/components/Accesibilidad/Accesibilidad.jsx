@@ -17,12 +17,6 @@ export default function Accesibilidad({
 
   const textosAccesibilidad = textos;
 
-  const TAMAÑO_TEXTO = {
-    pequeño: idioma === "en" ? "Small text" : "Texto pequeño",
-    normal: idioma === "en" ? "Normal text" : "Texto normal",
-    grande: idioma === "en" ? "Large text" : "Texto grande",
-  };
-
   // Las claves de la API no son las mismas que las del hook
   const OPCIONES_ACCESIBILIDAD = [
     {
@@ -51,8 +45,9 @@ export default function Accesibilidad({
         aria-label={textosAccesibilidad?.titulo}
         aria-expanded={panelAbierto}
         onClick={() => {
-          setPanelAbierto((anterior) => !anterior);
-          onAlternar?.();
+          const siguiente = !panelAbierto;
+          setPanelAbierto(siguiente);
+          onAlternar?.(siguiente);
         }}
       >
         <img src={iconoAccesibilidad} alt="" />
@@ -67,7 +62,10 @@ export default function Accesibilidad({
               type="button"
               className="accesibilidad-cerrar"
               aria-label={idioma === "en" ? "Close" : "Cerrar"}
-              onClick={() => setPanelAbierto(false)}
+              onClick={() => {
+                setPanelAbierto(false);
+                onAlternar?.(false);
+              }}
             >
               <img src={iconoX} alt="" />
             </button>
@@ -112,7 +110,7 @@ export default function Accesibilidad({
               <div>
                 <p className="accesibilidad-nombre">{datos?.nombre}</p>
 
-                <p className="accesibilidad-descripcion ">
+                <p className="accesibilidad-descripcion detalle-nota">
                   {datos?.descripcion}
                 </p>
               </div>

@@ -187,9 +187,7 @@
 }
 
 .accesibilidad-interruptor.activo {
-  background: var(
-    --texto-principal
-  );
+  background: var(--texto-principal);
 }
 
 .accesibilidad-interruptor.activo::after {
@@ -285,4 +283,49 @@ html[data-espaciado="si"] .accesibilidad-panel a {
   letter-spacing: 0.02em;
   word-spacing: normal;
   line-height: 1.45;
+}
+@media (max-width: 640px) {
+  .accesibilidad-panel {
+    position: fixed;
+    top: calc(68px + env(safe-area-inset-top, 0px));
+    right: auto;
+    left: 50%;
+    width: min(420px, calc(100vw - 16px));
+    max-height: calc(100dvh - 80px - env(safe-area-inset-top, 0px));
+    padding: 18px;
+    border-radius: var(--radio-xl);
+    transform: translateX(-50%);
+  }
+
+  .accesibilidad-opcion {
+    gap: 10px;
+  }
+
+  .accesibilidad-opcion > div {
+    flex: 1 1 auto;
+  }
+
+  .accesibilidad-descripcion {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .accesibilidad-pie {
+    align-items: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .accesibilidad-panel {
+    padding: 14px;
+  }
+
+  .accesibilidad-pie {
+    gap: 6px;
+  }
+
+  .accesibilidad-pie a,
+  .accesibilidad-restablecer {
+    font-size: 11px;
+  }
 }
