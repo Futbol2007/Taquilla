@@ -1,6 +1,8 @@
 import { useState } from "react";
 import iconoAccesibilidad from "../../assets/person.svg";
 import iconoX from "../../assets/x.svg";
+import iconoMenos from "../../assets/minus.svg";
+import iconoMas from "../../assets/plus.svg";
 import "./Accesibilidad.css";
 
 export default function Accesibilidad({
@@ -75,29 +77,42 @@ export default function Accesibilidad({
             {textosAccesibilidad?.tamanoTexto}
           </p>
 
-          <div className="accesibilidad-tamaños">
-            {["pequeño", "normal", "grande"].map((valor) => (
-              <button
-                key={valor}
-                type="button"
-                aria-label={TAMAÑO_TEXTO[valor]}
-                aria-pressed={accesibilidad.tamano === valor}
-                className={`accesibilidad-tamaño accesibilidad-tamaño-${valor}${
-                  accesibilidad.tamano === valor ? " activo" : ""
-                }`}
-                onClick={() => cambiarValores("tamano", valor)}
-              >
-                {textosAccesibilidad?.muestraTamano}
-              </button>
-            ))}
+          <div
+            className="accesibilidad-tamaños"
+            aria-label={textosAccesibilidad?.tamanoTexto}
+          >
+            <button
+              type="button"
+              className="accesibilidad-tamaño accesibilidad-tamaño-extremo"
+              aria-label={idioma === "en" ? "Decrease text size" : "Disminuir tamaño del texto"}
+              onClick={() => cambiarValores("tamano", Math.max(80, accesibilidad.tamano - 10))}
+              disabled={accesibilidad.tamano <= 80}
+            >
+              <img src={iconoMenos} alt="" aria-hidden="true" />
+            </button>
+            <span
+              className="accesibilidad-tamaño-muestra"
+              style={{ fontSize: `${14 * accesibilidad.tamano / 100}px` }}
+              aria-live="polite"
+            >
+              {textosAccesibilidad?.muestraTamano || "A"}
+            </span>
+            <button
+              type="button"
+              className="accesibilidad-tamaño accesibilidad-tamaño-extremo"
+              aria-label={idioma === "en" ? "Increase text size" : "Aumentar tamaño del texto"}
+              onClick={() => cambiarValores("tamano", Math.min(150, accesibilidad.tamano + 10))}
+              disabled={accesibilidad.tamano >= 130}
+            >
+              <img src={iconoMas} alt="" aria-hidden="true" />
+            </button>
           </div>
-
           {OPCIONES_ACCESIBILIDAD.map(({ clave, datos }) => (
             <div key={clave} className="accesibilidad-opcion">
               <div>
                 <p className="accesibilidad-nombre">{datos?.nombre}</p>
 
-                <p className="accesibilidad-descripcion detalle-nota">
+                <p className="accesibilidad-descripcion ">
                   {datos?.descripcion}
                 </p>
               </div>

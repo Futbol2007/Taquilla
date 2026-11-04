@@ -1,206 +1,221 @@
+.accesibilidad {
+  position: relative;
+  font-family: var(--fuente-instrument-sans);
+  color: var(--texto-principal);
+}
+
 .navbar-accesibilidad {
   display: grid;
-  place-items: center;
   width: 40px;
   height: 40px;
+  place-items: center;
+  padding: 0;
   border: 1px solid var(--borde-fuerte);
-  border-radius: 50%;
+  border-radius: var(--radio-completo);
   background: var(--fondo-superficie);
   color: var(--texto-principal);
   cursor: pointer;
 }
 
-.navbar-accesibilidad:hover {
+.navbar-accesibilidad:hover,
+.navbar-accesibilidad[aria-expanded="true"] {
   background: var(--fondo-sutil);
 }
 
-.navbar-accesibilidad[aria-expanded="true"] {
-  background: var(--borde-sutil);
-}
-
-.accesibilidad {
-  position: relative;
+.navbar-accesibilidad img {
+  width: 20px;
+  height: 20px;
 }
 
 .accesibilidad-panel {
   position: absolute;
-  top: 100%;
+  top: calc(100% + var(--espacio-2));
   right: 0;
   z-index: 30;
-  width: min(360px, calc(100vw - 48px));
-  max-height: calc(100vh - 96px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* permite reordenar con "order" */
+  width: min(360px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
   overflow-y: auto;
-  margin-top: var(--espacio-2);
   padding: 20px;
   border: 1px solid var(--borde-sutil);
-  border-radius: var(--radio-lg);
+  border-radius: var(--radio-xl);
   background: var(--fondo-superficie);
   color: var(--texto-principal);
   box-shadow: var(--sombra-flotante);
-  font-family: var(--fuente-instrument-sans);
+  font-size: 14px;
 }
 
-.accesibilidad-panel p,
-.accesibilidad-panel h3 {
+:where(.accesibilidad-panel p, .accesibilidad-panel h3) {
   margin: 0;
 }
 
 .accesibilidad-cabecera {
   display: flex;
+  min-height: 32px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--espacio-4);
+  margin-bottom: 16px;
 }
 
 .accesibilidad-cabecera h3 {
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  line-height: 22px;
+  letter-spacing: -0.005em;
 }
 
 .accesibilidad-cerrar {
   display: grid;
+  width: 28px;
+  height: 28px;
   place-items: center;
-  width: 36px;
-  height: 36px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
-  background: var(--fondo-sutil);
+  border-radius: var(--radio-sm);
+  background: transparent;
   color: var(--texto-principal);
   cursor: pointer;
 }
 
 .accesibilidad-cerrar:hover {
-  background: var(--fondo-presionado);
+  background: var(--fondo-sutil);
 }
 
 .accesibilidad-cerrar img {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .accesibilidad-etiqueta {
-  margin-bottom: var(--espacio-2) !important;
+  margin-bottom: 12px;
   font-size: 14px;
   line-height: 20px;
 }
 
 .accesibilidad-tamaños {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--espacio-1);
-  margin-bottom: var(--espacio-3);
-  padding: var(--espacio-1);
-  border-radius: var(--radio-lg);
-  background: var(--fondo-sutil);
+  grid-template-columns: 32px 1fr 32px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-md);
+  padding: 4px;
+  margin-bottom: 12px;
 }
 
 .accesibilidad-tamaño {
-  height: 40px;
+  display: grid;
+  height: 32px;
+  place-items: center;
   padding: 0;
   border: 0;
   border-radius: var(--radio-md);
-  background: transparent;
+  background: var(--fondo-sutil);
   color: var(--texto-principal);
-  font-family: var(--fuente-instrument-sans);
+  font-family: inherit;
   cursor: pointer;
 }
 
-.accesibilidad-tamaño.activo {
-  background: var(--fondo-superficie);
-  box-shadow: var(--sombra-tarjeta);
+.accesibilidad-tamaño:hover {
+  background: var(--fondo-presionado);
 }
 
-.accesibilidad-tamaño-pequeño {
-  font-size: 12px;
+.accesibilidad-tamaño-extremo {
+  width: 32px;
+  height: 32px;
 }
 
-.accesibilidad-tamaño-normal {
-  font-size: 14px;
-  font-weight: 500;
+.accesibilidad-tamaño-extremo:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-.accesibilidad-tamaño-grande {
-  font-size: 16px;
-  font-weight: 600;
+.accesibilidad-tamaño-muestra {
+  justify-self: center;
+  line-height: 1;
 }
 
 .accesibilidad-opcion {
   display: flex;
+  min-height: 48px;
   align-items: center;
   justify-content: space-between;
-  gap: var(--espacio-4);
-  padding: var(--espacio-3) 0;
-  border-top: 1px solid var(--borde-sutil);
+  gap: 12px;
+  padding: 7px 0;
+}
+
+.accesibilidad-opcion > div {
+  min-width: 0;
 }
 
 .accesibilidad-nombre {
   font-size: 14px;
-  line-height: 20px;
   font-weight: 500;
+  line-height: 19px;
 }
 
 .accesibilidad-descripcion {
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--texto-terciario);
+  margin-top: 2px;
+  color: var(--texto-secundario);
 }
 
 .accesibilidad-interruptor {
   position: relative;
-  flex-shrink: 0;
-  width: 44px;
-  height: 24px;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 22px;
   padding: 0;
   border: 0;
   border-radius: var(--radio-completo);
   background: var(--borde-fuerte);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 150ms ease;
 }
 
 .accesibilidad-interruptor::after {
-  content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 2px;
+  left: 2px;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
+  border-radius: var(--radio-completo);
   background: var(--fondo-superficie);
-  transition: transform 0.15s;
+  content: "";
+  transition: transform 150ms ease;
 }
 
 .accesibilidad-interruptor.activo {
-  background: var(--texto-principal);
+  background: var(
+    --texto-principal
+  );
 }
 
 .accesibilidad-interruptor.activo::after {
-  transform: translateX(20px);
+  transform: translateX(14px);
 }
 
 .accesibilidad-tema {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-2);
-  padding: var(--espacio-3) 0;
-  border-top: 1px solid var(--borde-sutil);
+  gap: 6px;
+  margin-top: 6px;
+  margin-bottom: 16px;
 }
 
 .accesibilidad-tema label {
   font-size: 14px;
-  line-height: 20px;
   font-weight: 500;
-  color: var(--texto-principal);
+  line-height: 19px;
 }
 
 .accesibilidad-tema select {
+  box-sizing: border-box;
   width: 100%;
-  height: 40px;
-  padding: 0 var(--espacio-3);
-  border: 1px solid var(--borde-sutil);
+  height: 36px;
+  padding: 0 var(--espacio-2);
+  border: 1px solid var(--borde-fuerte);
   border-radius: var(--radio-md);
   background: var(--fondo-superficie);
   color: var(--texto-principal);
@@ -208,46 +223,66 @@
   font-size: 14px;
 }
 
+.accesibilidad-nota {
+  order: 1;
+  margin-top: 0;
+  color: var(--texto-terciario);
+  font-size: 11px;
+  line-height: 15px;
+}
+
 .accesibilidad-pie {
+  order: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: var(--espacio-3);
-  border-top: 1px solid var(--borde-sutil);
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .accesibilidad-pie a {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
   color: var(--texto-principal);
-  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .accesibilidad-restablecer {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--texto-secundario);
+  flex-shrink: 0;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--radio-md);
+  background: var(--fondo-superficie);
+  color: var(--texto-principal);
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
 }
 
 .accesibilidad-restablecer:hover {
-  color: var(--texto-principal);
-}
-
-.accesibilidad-nota {
-  margin-top: var(--espacio-3);
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--texto-terciario);
+  background: var(--fondo-sutil);
 }
 
 .accesibilidad-panel button:focus-visible,
 .accesibilidad-panel select:focus-visible,
 .accesibilidad-panel a:focus-visible {
-  outline: 2px solid var(--texto-principal);
+  outline: 2px solid var(--marca-acento);
   outline-offset: 2px;
+}
+
+
+.accesibilidad-tamaño img {
+  width: 14px;
+  height: 14px;
+}
+
+html[data-espaciado="si"] .accesibilidad-panel p,
+html[data-espaciado="si"] .accesibilidad-panel a {
+  letter-spacing: 0.02em;
+  word-spacing: normal;
+  line-height: 1.45;
 }
