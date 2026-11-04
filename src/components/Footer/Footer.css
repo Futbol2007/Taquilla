@@ -90,19 +90,19 @@
   }
 }
 .taquilla .pie-home {
-  --superficie: #141414;
-  --tinta: #fff;
-  --suave: #b3b3b3;
-  --borde: #3c3c3c;
+  --superficie: var(--texto-principal);
+  --tinta: var(--fondo-superficie);
+  --suave: var(--texto-inverso-suave);
+  --borde: var(--borde-inverso);
   color: var(--tinta);
 }
 .taquilla .pie-home .emblema {
-  background: #fff;
-  color: #141414;
+  background: var(--fondo-superficie);
+  color: var(--texto-principal);
 }
 .taquilla .pie-home a:focus-visible,
 .taquilla .pie-home button:focus-visible {
-  outline-color: #fff;
+  outline-color: var(--fondo-superficie);
 }
 
 .columnas-pie {

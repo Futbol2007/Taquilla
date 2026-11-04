@@ -32,6 +32,7 @@ select {
 }
 
 .landing {
+  zoom: var(--escala-texto, 1);
   background: var(--fondo);
   color: var(--tinta);
   min-height: 100dvh;
@@ -145,27 +146,6 @@ select {
   text-decoration: underline;
 }
 
-html[data-texto="pequeño"] .landing {
-  font-size: 80%;
-}
-
-html[data-texto="normal"] .landing {
-  font-size: 100%;
-}
-
-html[data-texto="grande"] .landing {
-  font-size: 120%;
-}
-
-html[data-texto="grande"] .landing p,
-html[data-texto="grande"] .landing a,
-html[data-texto="grande"] .landing button,
-html[data-texto="grande"] .landing label,
-html[data-texto="grande"] .landing input,
-html[data-texto="grande"] .landing select {
-  font-size: 1.1em;
-}
-
 html[data-contraste="si"] {
   --fondo: #ffffff;
   --fondo-pagina: #ffffff;
@@ -205,7 +185,7 @@ html[data-movimiento="reducir"] .landing *::after {
   transition: none !important;
   scroll-behavior: auto !important;
 
-  html[data-tema="oscuro"] {
+  /* html[data-tema="oscuro"] {
     color-scheme: dark;
 
     --fondo: var(--fondo-pagina);
@@ -225,7 +205,7 @@ html[data-movimiento="reducir"] .landing *::after {
     --borde: #52525b;
     --borde-sutil: #3f3f46;
     --borde-fuerte: #71717a;
-  }
+  } */
 
   @media (max-width: 900px) {
     .ancho-home {

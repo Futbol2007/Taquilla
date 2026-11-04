@@ -11,7 +11,7 @@
   margin-bottom: 6px;
 }
 .seccion-eventos .titulo-seccion p {
-  color: #595959;
+  color: var(--texto-secundario);
   font-size: 16px;
 }
 .eventos-grid {
@@ -21,9 +21,9 @@
 }
 .sin-resultados {
   padding: 48px;
-  border: 1px solid #dedede;
-  border-radius: 12px;
-  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  background: var(--fondo-superficie);
   text-align: center;
 }
 .sin-resultados p {

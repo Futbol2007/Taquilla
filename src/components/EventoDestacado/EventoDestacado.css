@@ -1,7 +1,7 @@
 .destacado-taquilla {
   position: relative;
   min-height: 440px;
-  border-radius: 14px;
+  border-radius: var(--radio-xl);
   overflow: hidden;
 }
 .destacado-taquilla > .arte-evento {
@@ -20,10 +20,10 @@
   bottom: 26px;
   left: 20px;
   right: 20px;
-  background: #fff;
-  color: #141414;
+  background: var(--fondo-superficie);
+  color: var(--texto-principal);
   padding: 20px;
-  border-radius: 12px;
+  border-radius: var(--radio-lg);
 }
 .ficha-destacado h2 {
   font-size: 24px;
@@ -32,7 +32,7 @@
   letter-spacing: -0.03em;
 }
 .ficha-destacado > p {
-  color: #595959;
+  color: var(--texto-secundario);
   font-size: 14px;
 }
 .ficha-destacado > div {

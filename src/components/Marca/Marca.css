@@ -29,7 +29,7 @@
   font-family: "Instrument Sans", sans-serif;
 }
 .taquilla .emblema {
-  border-radius: 9px;
+  border-radius: var(--radio-md);
   width: 32px;
   height: 32px;
 }

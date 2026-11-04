@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
-  color: #141414;
+  background: var(--fondo-superficie);
+  color: var(--texto-principal);
   padding: 8px;
-  border-radius: 12px;
+  border-radius: var(--radio-lg);
 }
 .buscador-eventos label {
   display: flex;
@@ -16,11 +16,11 @@
   padding: 4px 10px;
 }
 .buscador-eventos label + label {
-  border-left: 1px solid #e5e5e5;
+  border-left: 1px solid var(--borde-sutil);
 }
 .buscador-eventos label > svg {
   flex-shrink: 0;
-  color: #595959;
+  color: var(--texto-secundario);
 }
 .buscador-eventos label > span {
   display: flex;
@@ -30,7 +30,7 @@
 }
 .buscador-eventos label > span > span {
   font-size: 12px;
-  color: #595959;
+  color: var(--texto-secundario);
 }
 .buscador-eventos input,
 .buscador-eventos select {
@@ -38,12 +38,12 @@
   padding: 2px 0;
   width: 100%;
   min-width: 0;
-  background: #fff;
-  color: #141414;
+  background: var(--fondo-superficie);
+  color: var(--texto-principal);
   font-size: 14px;
 }
 .buscador-eventos input::placeholder {
-  color: #595959;
+  color: var(--texto-secundario);
   opacity: 1;
 }
 .buscador-eventos .boton-home {
@@ -75,7 +75,7 @@
   .buscador-eventos label {
     flex-basis: 100%;
     border: 0 !important;
-    border-bottom: 1px solid #e5e5e5 !important;
+    border-bottom: 1px solid var(--borde-sutil) !important;
     padding: 8px 0;
   }
 }

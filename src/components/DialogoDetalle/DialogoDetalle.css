@@ -3,12 +3,12 @@
   max-height: calc(100dvh - 40px);
   padding: 36px;
   border: 1px solid var(--borde);
-  border-radius: 16px;
+  border-radius: var(--radio-xl);
   background: var(--superficie);
   color: var(--tinta);
 }
 .detalle-home::backdrop {
-  background: rgb(0 0 0 / 65%);
+  background: color-mix(in srgb, var(--fondo-inverso) 65%, transparent);
 }
 .detalle-home h2 {
   padding-right: 28px;
@@ -22,7 +22,7 @@
   display: block;
   width: 100%;
   max-width: 240px;
-  border-radius: 12px;
+  border-radius: var(--radio-lg);
   margin: 0 auto 24px;
 }
 .cerrar-detalle {
@@ -45,10 +45,10 @@ body:has(.detalle-home[open]) {
   }
 }
 .resumen-evento .arte-evento {
-  border-radius: 10px;
+  border-radius: var(--radio-lg);
 }
 .resumen-evento small {
   display: block;
   margin-bottom: 24px;
-  color: #595959;
+  color: var(--texto-secundario);
 }

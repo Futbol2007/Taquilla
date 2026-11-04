@@ -1,8 +1,8 @@
 .tarjeta-evento {
   overflow: hidden;
-  border: 1px solid #dedede;
-  border-radius: 12px;
-  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  background: var(--fondo-superficie);
 }
 .contenido-evento {
   padding: 16px;
@@ -18,7 +18,7 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #595959;
+  color: var(--texto-secundario);
   margin-top: 10px;
 }
 .contenido-evento > p svg {
@@ -35,7 +35,7 @@
 }
 .precio-evento small {
   display: block;
-  color: #595959;
+  color: var(--texto-secundario);
   font-size: 12px;
 }
 .precio-evento strong {
@@ -43,6 +43,6 @@
   font-weight: 500;
 }
 .precio-evento .boton-home {
-  border-color: #8c8c8c;
+  border-color: var(--borde-fuerte);
   padding: 9px 16px;
 }

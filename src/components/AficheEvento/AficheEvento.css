@@ -2,7 +2,7 @@
   position: relative;
   height: 176px;
   overflow: hidden;
-  background: linear-gradient(135deg, #a49086, #554650);
+  background: linear-gradient(135deg, var(--texto-secundario), var(--fondo-inverso-2));
 }
 .arte-evento::before,
 .arte-evento::after {
@@ -15,35 +15,35 @@
   aspect-ratio: 1;
   right: -20%;
   top: -45%;
-  background: rgb(255 255 255 / 12%);
+  background: color-mix(in srgb, var(--texto-inverso) 12%, transparent);
 }
 .arte-evento::after {
   width: 50%;
   aspect-ratio: 1;
   bottom: -60%;
   left: -18%;
-  background: rgb(0 0 0 / 12%);
+  background: color-mix(in srgb, var(--fondo-inverso) 12%, transparent);
 }
 .arte-evento-1 {
-  background: linear-gradient(135deg, #6c8cae, #19191f 90%);
+  background: linear-gradient(135deg, var(--zona-platea), var(--fondo-inverso-2) 90%);
 }
 .arte-evento-2 {
-  background: linear-gradient(135deg, #b6ac81, #b5827c);
+  background: linear-gradient(135deg, var(--marca-acento), var(--estado-alerta));
 }
 .arte-evento-3 {
-  background: linear-gradient(135deg, #51856e, #203438 90%);
+  background: linear-gradient(135deg, var(--zona-general), var(--fondo-inverso-2) 90%);
 }
 .arte-evento-4 {
-  background: linear-gradient(135deg, #a69ac4, #ba8779);
+  background: linear-gradient(135deg, var(--zona-vip), var(--estado-alerta));
 }
 .arte-evento-5 {
-  background: linear-gradient(135deg, #222126, #a29ac8);
+  background: linear-gradient(135deg, var(--fondo-inverso), var(--zona-vip));
 }
 .arte-evento-6 {
-  background: linear-gradient(135deg, #ba829a, #b8b084);
+  background: linear-gradient(135deg, var(--zona-vip), var(--marca-acento));
 }
 .arte-evento-7 {
-  background: linear-gradient(135deg, #21383c, #8cabe0);
+  background: linear-gradient(135deg, var(--fondo-inverso-2), var(--zona-platea));
 }
 @media (max-width: 640px) {
   .tarjeta-evento .arte-evento {

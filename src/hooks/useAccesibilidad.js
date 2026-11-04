@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 function valoresDelSistema() {
   return {
-    tamano: "normal",
+    tamano: 100,
     tema: "sistema",
     contraste: window.matchMedia("(prefers-contrast: more)").matches,
     movimiento: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -31,16 +31,16 @@ export function useAccesibilidad() {
   useEffect(() => {
     const html = document.documentElement;
     html.dataset.texto = accesibilidad.tamano;
-    html.dataset.tema = temaOscuro ? "oscuro" : "claro"; // CAMBIO 2
+    html.style.setProperty("--escala-texto", String(accesibilidad.tamano / 100));
+    html.dataset.tema = temaOscuro ? "oscuro" : "claro";
     html.dataset.contraste = accesibilidad.contraste ? "si" : "no";
     html.dataset.movimiento = accesibilidad.movimiento ? "reducir" : "normal";
     html.dataset.subrayar = accesibilidad.subrayar ? "si" : "no";
     html.dataset.espaciado = accesibilidad.espaciado ? "si" : "no";
     localStorage.setItem("accesibilidad", JSON.stringify(accesibilidad));
-  }, [accesibilidad, temaOscuro]); // CAMBIO 2: temaOscuro también
-
+  }, [accesibilidad, temaOscuro]);
   function cambiarValores(clave, valor) {
-    setAccesibilidad({ ...accesibilidad, [clave]: valor });
+    setAccesibilidad((anterior) => ({ ...anterior, [clave]: valor }));
   }
 
   function restablecer() {

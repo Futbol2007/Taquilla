@@ -90,7 +90,7 @@
     margin-right: 12px;
     padding: 8px 14px;
     border: 0;
-    border-radius: 99px;
+    border-radius: var(--radio-completo);
     background: var(--superficie);
     color: var(--tinta);
     font-size: 12px !important;
@@ -125,20 +125,20 @@
   }
 }
 .taquilla .cabecera-home {
-  background: #fff;
+  background: var(--fondo-superficie);
 }
 .taquilla .ingresar-home {
-  border: 1px solid #8c8c8c;
-  border-radius: 8px;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--radio-md);
   padding: 9px 18px;
 }
 
 .taquilla .buscar-cabecera {
-  background: #f5f5f5;
-  border: 2px solid #dedede;
-  border-radius: 8px;
+  background: var(--fondo-sutil);
+  border: 2px solid var(--borde);
+  border-radius: var(--radio-md);
   padding: 10px 18px;
-  color: #595959;
+  color: var(--texto-secundario);
   font-size: 13px;
 }
 @media (max-width: 1200px) {

@@ -3,11 +3,11 @@
   padding: 3px;
   background: var(--superficie);
   border: 1px solid var(--borde);
-  border-radius: 99px;
+  border-radius: var(--radio-completo);
 }
 .idiomas-home button {
   border: 0;
-  border-radius: 99px;
+  border-radius: var(--radio-completo);
   padding: 7px 12px;
   color: var(--tinta);
   background: transparent;
