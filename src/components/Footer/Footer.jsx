@@ -1,5 +1,4 @@
 import Marca from "../Marca/Marca.jsx";
-import { interfaz } from "../../data/interfaz.js";
 import "./Footer.css";
 export default function Footer({
   nombre,
@@ -8,10 +7,11 @@ export default function Footer({
   destino,
   etiqueta,
   onCuenta,
-  idioma,
   onAbrirCookies,
+  textos,
 }) {
-  const t = interfaz[idioma];
+  // const t = interfaz[idioma];
+  const textosFooter = textos?.footer;
   return (
     <footer className="pie-home">
       <div className="ancho-home">
@@ -21,22 +21,28 @@ export default function Footer({
             <p>{descripcion}</p>
           </div>
           <div>
-            <h3>{t.explora}</h3>
-            <a href="#contenido">{t.inicio}</a>
+            <h3>{textosFooter?.columnas?.explora?.titulo}</h3>
+            <a href="#contenido">
+              {textosFooter?.columnas?.explora?.enlaces?.inicio}
+            </a>
             <a href={destino}>{etiqueta}</a>
           </div>
           <div>
-            <h3>{t.cuenta}</h3>
-            <button onClick={() => onCuenta("ingresar")}>{t.ingresar}</button>
-            <button onClick={() => onCuenta("registro")}>{t.registro}</button>
+            <h3>{textosFooter?.columnas?.cuenta?.titulo}</h3>
+            <button onClick={() => onCuenta("ingresar")}>
+              {textosFooter?.columnas?.cuenta?.enlaces?.ingresar}
+            </button>
+            <button onClick={() => onCuenta("registro")}>
+              {textosFooter?.columnas?.cuenta?.enlaces?.crearCuenta}
+            </button>
           </div>
         </div>
         <div className="pie-creditos">
           <span>
-            © 2026 {nombre} · {t.academico}
+            © 2026 {nombre} · {textosFooter?.legal?.derechos}
           </span>
           <button className="enlace-home" onClick={onAbrirCookies}>
-            {t.cookies}
+            {textos?.cookies?.preferencias?.titulo}
           </button>
         </div>
       </div>

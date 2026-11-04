@@ -6,7 +6,6 @@ import MenuMovil from "../MenuMovil/MenuMovil.jsx";
 import SelectorIdioma from "../SelectorIdioma/SelectorIdioma.jsx";
 import iconoSearch from "../../assets/search.svg";
 import iconoX from "../../assets/x.svg";
-import { interfaz } from "../../data/interfaz.js";
 import "./Navbar.css";
 export default function Navbar({
   textos,
@@ -22,7 +21,7 @@ export default function Navbar({
   const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const boton = useRef(null);
   const id = useId();
-  const t = interfaz[idioma];
+  const textosNavbar = textos?.navbar;
   const textosAccesibilidad = textos?.accesibilidad;
   const { accesibilidad, cambiarValores, restablecer } = useAccesibilidad();
   return (
@@ -39,7 +38,7 @@ export default function Navbar({
       <div className="ancho-home fila-cabecera">
         <Marca nombre={nombre} tipo={tipo} />
         <button className="ingreso-movil" onClick={() => onCuenta("ingresar")}>
-          {t.ingresar}
+          {textosNavbar?.botones?.ingresar}
         </button>
         <MenuMovil
           abierto={abierto}
@@ -49,7 +48,7 @@ export default function Navbar({
           }}
           menuId={id}
           botonRef={boton}
-          textos={t}
+          textos={textosNavbar}
         />
         {(abierto || accesibilidadAbierta) && (
           <button
@@ -67,7 +66,7 @@ export default function Navbar({
           className={`menu-home ${abierto || accesibilidadAbierta ? "abierto" : ""}${
             accesibilidadAbierta ? " accesibilidad-activa" : ""
           }`}
-          aria-label={t.navegacion}
+          aria-label={textosNavbar?.logo?.aria}
         >
           <div className="menu-movil-cabecera">
             <Marca nombre={nombre} tipo={tipo} />
@@ -88,13 +87,12 @@ export default function Navbar({
             aria-current="page"
             onClick={() => setAbierto(false)}
           >
-            {t.inicio}
+            {textosNavbar?.enlaces?.inicio}
           </a>
           <a href={destino} onClick={() => setAbierto(false)}>
             {etiqueta}
           </a>
           <div className="acciones-home">
-            
             {tipo === "taquilla" && (
               <a
                 className="buscar-cabecera"
@@ -102,7 +100,7 @@ export default function Navbar({
                 onClick={() => setAbierto(false)}
               >
                 <img src={iconoSearch} alt="" />
-                {t.buscar}
+                {textosNavbar?.buscador?.placeholder}
               </a>
             )}
             <div className="accion-movil accion-movil-accesibilidad">
@@ -130,20 +128,20 @@ export default function Navbar({
               <SelectorIdioma
                 idioma={idioma}
                 onCambiar={onCambiarIdioma}
-                etiqueta={t.idioma}
+                etiqueta={textosNavbar?.aria?.idioma}
               />
             </div>
             <button
               className="ingresar-home"
               onClick={() => onCuenta("ingresar")}
             >
-              {t.ingresar}
+              {textosNavbar?.botones?.ingresar}
             </button>
             <button
               className="boton-home primario"
               onClick={() => onCuenta("registro")}
             >
-              {t.registro}
+              {textosNavbar?.botones?.crearCuenta}
             </button>
           </div>
         </nav>

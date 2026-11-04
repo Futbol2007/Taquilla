@@ -145,12 +145,28 @@
 }
 
 .taquilla .buscar-cabecera {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  box-sizing: border-box;
   background: var(--fondo-sutil);
-  border: 2px solid var(--borde);
-  border-radius: var(--radio-md);
-  padding: 10px 18px;
+  border: 0;
+  border-radius: var(--radio-completo);
+  padding: 0 18px;
   color: var(--texto-secundario);
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.taquilla .buscar-cabecera img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 @media (max-width: 1200px) {
   .taquilla .buscar-cabecera {

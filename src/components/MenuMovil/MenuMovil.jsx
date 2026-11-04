@@ -11,7 +11,6 @@ export default function MenuMovil({
       type="button"
       ref={botonRef}
       className="boton-menu"
-      aria-label={abierto ? textos.cerrarMenu : textos.abrirMenu}
       aria-expanded={abierto}
       aria-controls={menuId}
       onClick={onAlternar}
