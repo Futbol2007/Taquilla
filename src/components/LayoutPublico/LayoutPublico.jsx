@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { proyecto } from "../../config/proyecto.js";
 import { usePreferencias } from "../../context/PreferenciasContext.jsx";
-import { interfaz } from "../../data/interfaz.js";
 import Navbar from "../Navbar/Navbar.jsx";
 import Footer from "../Footer/Footer.jsx";
 import SaltarContenido from "../SaltarContenido/SaltarContenido.jsx";
@@ -28,7 +27,7 @@ export default function LayoutPublico({
   }
   return (
     <div className={`landing ${proyecto.id}`}>
-      <SaltarContenido texto={interfaz[idioma].saltar} />
+      <SaltarContenido texto={textos?.general?.aria?.saltarAlContenido} />
       <Navbar
         textos={textos}
         nombre={proyecto.nombre}
@@ -56,6 +55,7 @@ export default function LayoutPublico({
         abierto={cookiesAbiertas}
         onAbrir={abrirCookies}
         onCerrar={cerrarCookies}
+        textos={textos}
       />
     </div>
   );

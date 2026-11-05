@@ -6,18 +6,18 @@ export default function BannerCookies({
   onConfigurar,
 }) {
   return (
-    <aside className="banner-cookies" aria-label={textos.banner}>
-      <h2>{textos.banner}</h2>
-      <p>{textos.descripcion}</p>
+    <aside className="banner-cookies" aria-label={textos?.banner?.titulo}>
+      <h2>{textos?.banner?.titulo}</h2>
+      <p>{textos?.banner?.texto}</p>
       <div className="grupo-botones">
         <button className="boton-home primario" onClick={onAceptar}>
-          {textos.aceptar}
+          {textos?.banner?.botones?.aceptar}
         </button>
         <button className="boton-home secundario" onClick={onRechazar}>
-          {textos.rechazar}
+          {textos?.banner?.botones?.rechazar}
         </button>
         <button className="enlace-home" onClick={onConfigurar}>
-          {textos.configurar}
+          {textos?.preferencias?.titulo}
         </button>
       </div>
     </aside>

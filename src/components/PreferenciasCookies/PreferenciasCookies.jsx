@@ -3,20 +3,25 @@ import "./PreferenciasCookies.css";
 export default function PreferenciasCookies({
   abierto,
   textos,
-  permitir,
+  seleccionInicial,
   onGuardar,
   onCerrar,
+  textoError,
   error,
 }) {
   const dialogo = useRef(null);
   const id = useId();
-  const [seleccion, setSeleccion] = useState(permitir);
+  const [seleccion, setSeleccion] = useState(seleccionInicial);
+  const textosPreferencias = textos?.preferencias;
   useEffect(() => {
     if (abierto) {
-      setSeleccion(permitir);
+      setSeleccion(seleccionInicial);
       if (!dialogo.current.open) dialogo.current.showModal();
     } else if (dialogo.current.open) dialogo.current.close();
-  }, [abierto, permitir]);
+  }, [abierto, seleccionInicial]);
+  function cambiarCategoria(categoria, activa) {
+    setSeleccion((actual) => ({ ...actual, [categoria]: activa }));
+  }
   return (
     <dialog
       className="preferencias-dialogo"
@@ -24,36 +29,69 @@ export default function PreferenciasCookies({
       aria-labelledby={id}
       onClose={onCerrar}
     >
-      <h2 id={id}>{textos.cookies}</h2>
-      <p>{textos.descripcion}</p>
-      <section>
-        <h3>{textos.necesarias}</h3>
-        <p>{textos.necesariasTexto}</p>
+      <h2 id={id}>{textosPreferencias?.titulo}</h2>
+      <p>{textosPreferencias?.texto}</p>
+      <section className="categoria-cookie">
+        <h3>{textosPreferencias?.categorias?.necesarias?.nombre}</h3>
+        <p>{textosPreferencias?.categorias?.necesarias?.descripcion}</p>
+        <label className="detalle-cookie">
+          <input type="checkbox" checked disabled />
+          <span>{textosPreferencias?.categorias?.necesarias?.cookies}</span>
+          <span className="siempre-activa">
+            {textosPreferencias?.etiquetas?.siempreActivas}
+          </span>
+        </label>
       </section>
-      <label className="opcion-cookie">
-        <input
-          type="checkbox"
-          checked={seleccion}
-          onChange={(e) => setSeleccion(e.target.checked)}
-        />
-        <span>
-          <strong>{textos.preferencias}</strong>
-          <span>{textos.preferenciasTexto}</span>
-        </span>
-      </label>
-      {error && <p role="alert">{textos.error}</p>}
+      {["preferencias", "analiticas", "marketing"].map((categoria) => {
+        const contenido = textosPreferencias?.categorias?.[categoria];
+        return (
+          <section className="categoria-cookie" key={categoria}>
+            <h3>{contenido?.nombre}</h3>
+            <p>{contenido?.descripcion}</p>
+            <label className="detalle-cookie">
+              <input
+                type="checkbox"
+                checked={Boolean(seleccion?.[categoria])}
+                onChange={(e) => cambiarCategoria(categoria, e.target.checked)}
+              />
+              <span>{contenido?.cookies}</span>
+            </label>
+          </section>
+        );
+      })}
+      {error && <p role="alert">{textoError}</p>}
       <div className="grupo-botones">
         <button
           className="boton-home primario"
           onClick={() => onGuardar(seleccion)}
         >
-          {textos.guardar}
+          {textosPreferencias?.botones?.guardarSeleccion}
         </button>
         <button
           className="boton-home secundario"
-          onClick={() => dialogo.current.close()}
+          onClick={() =>
+            onGuardar({
+              necesarias: true,
+              preferencias: false,
+              analiticas: false,
+              marketing: false,
+            })
+          }
         >
-          {textos.cerrar}
+          {textosPreferencias?.botones?.rechazarOpcionales}
+        </button>
+        <button
+          className="boton-home secundario"
+          onClick={() =>
+            onGuardar({
+              necesarias: true,
+              preferencias: true,
+              analiticas: true,
+              marketing: true,
+            })
+          }
+        >
+          {textosPreferencias?.botones?.aceptarTodas}
         </button>
       </div>
     </dialog>
