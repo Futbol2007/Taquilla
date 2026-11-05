@@ -34,6 +34,7 @@ npm run preview
 
 ## Componentes incluidos
 
+- `Accesibilidad/Accesibilidad.jsx` y `Accesibilidad/Accesibilidad.css`.
 - `AficheEvento/AficheEvento.jsx` y `AficheEvento/AficheEvento.css`.
 - `BannerCookies/BannerCookies.jsx` y `BannerCookies/BannerCookies.css`.
 - `BuscadorEventos/BuscadorEventos.jsx` y `BuscadorEventos/BuscadorEventos.css`.
