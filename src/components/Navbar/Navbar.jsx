@@ -14,7 +14,6 @@ export default function Navbar({
   idioma,
   onCambiarIdioma,
   destino,
-  etiqueta,
   onCuenta,
 }) {
   const [abierto, setAbierto] = useState(false);
@@ -90,7 +89,7 @@ export default function Navbar({
             {textosNavbar?.enlaces?.inicio}
           </a>
           <a href={destino} onClick={() => setAbierto(false)}>
-            {etiqueta}
+            {textosNavbar?.enlaces?.explorar}
           </a>
           <div className="acciones-home">
             {tipo === "taquilla" && (

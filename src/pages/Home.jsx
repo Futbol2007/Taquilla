@@ -44,7 +44,6 @@ export default function Home() {
     <LayoutPublico
       textos={textos}
       destino="#explorar"
-      etiqueta={en ? "Explore" : "Explorar"}
       onCuenta={abrirCuenta}
     >
       <HeroTaquilla

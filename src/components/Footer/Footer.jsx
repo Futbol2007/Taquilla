@@ -4,7 +4,6 @@ export default function Footer({
   nombre,
   tipo,
   destino,
-  etiqueta,
   onCuenta,
   onAbrirCookies,
   textos,

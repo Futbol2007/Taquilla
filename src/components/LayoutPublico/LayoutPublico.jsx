@@ -9,7 +9,6 @@ import "./LayoutPublico.css";
 export default function LayoutPublico({
   textos,
   destino,
-  etiqueta,
   onCuenta,
   children,
 }) {
@@ -34,7 +33,6 @@ export default function LayoutPublico({
         idioma={idioma}
         onCambiarIdioma={cambiarIdioma}
         destino={destino}
-        etiqueta={etiqueta}
         onCuenta={onCuenta}
       />
       <main id="contenido" tabIndex={-1}>
@@ -43,8 +41,6 @@ export default function LayoutPublico({
       <Footer
         nombre={proyecto.nombre}
         tipo={proyecto.id}
-        destino={destino}
-        etiqueta={etiqueta}
         onCuenta={onCuenta}
         onAbrirCookies={abrirCookies}
         textos={textos}
