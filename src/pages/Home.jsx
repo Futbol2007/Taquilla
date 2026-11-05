@@ -43,13 +43,8 @@ export default function Home() {
   return (
     <LayoutPublico
       textos={textos}
-      destino="#eventos"
+      destino="#explorar"
       etiqueta={en ? "Explore" : "Explorar"}
-      descripcion={
-        en
-          ? "Concerts, theatre, sports and festivals in one place."
-          : "Conciertos, teatro, deportes y festivales en un solo lugar."
-      }
       onCuenta={abrirCuenta}
     >
       <HeroTaquilla

@@ -10,7 +10,6 @@ export default function LayoutPublico({
   textos,
   destino,
   etiqueta,
-  descripcion,
   onCuenta,
   children,
 }) {
@@ -44,7 +43,6 @@ export default function LayoutPublico({
       <Footer
         nombre={proyecto.nombre}
         tipo={proyecto.id}
-        descripcion={descripcion}
         destino={destino}
         etiqueta={etiqueta}
         onCuenta={onCuenta}
