@@ -8,15 +8,15 @@ export default function BuscadorEventos({
   filtrosAplicados = null,
 }) {
   const [consulta, setConsulta] = useState("");
-  const [ciudad, setCiudad] = useState("Manizales");
+  const [ciudad, setCiudad] = useState("");
   const [fecha, setFecha] = useState("");
+  const ciudades = [...new Set(eventos.map((evento) => evento.ciudad).filter(Boolean))];
+  const fechas = [
+    ...new Set(eventos.map((evento) => evento.fecha?.slice(0, 10)).filter(Boolean)),
+  ];
   useEffect(() => {
     setConsulta(filtrosAplicados?.consulta ?? "");
-    setCiudad(
-      filtrosAplicados === null
-        ? "Manizales"
-        : (filtrosAplicados?.ciudad ?? ""),
-    );
+    setCiudad(filtrosAplicados?.ciudad ?? "");
     setFecha(filtrosAplicados?.fecha ?? "");
   }, [filtrosAplicados]);
   function buscar(evento) {
@@ -49,11 +49,9 @@ export default function BuscadorEventos({
           <span>{en ? "Where" : "Dónde"}</span>
           <select value={ciudad} onChange={(e) => setCiudad(e.target.value)}>
             <option value="">{en ? "All cities" : "Todas las ciudades"}</option>
-            {["Manizales", "Pereira", "Bogotá", "Medellín", "Armenia"].map(
-              (valor) => (
-                <option key={valor}>{valor}</option>
-              ),
-            )}
+            {ciudades.map((valor) => (
+              <option key={valor}>{valor}</option>
+            ))}
           </select>
         </span>
       </label>
@@ -63,9 +61,9 @@ export default function BuscadorEventos({
           <span>{en ? "When" : "Cuándo"}</span>
           <select value={fecha} onChange={(e) => setFecha(e.target.value)}>
             <option value="">{en ? "Any date" : "Cualquier fecha"}</option>
-            {eventos.map((evento) => (
-              <option key={evento.fecha} value={evento.fecha}>
-                {new Date(`${evento.fecha}T12:00:00`).toLocaleDateString(
+            {fechas.map((valor) => (
+              <option key={valor} value={valor}>
+                {new Date(`${valor}T12:00:00`).toLocaleDateString(
                   en ? "en" : "es-CO",
                   {
                     day: "numeric",

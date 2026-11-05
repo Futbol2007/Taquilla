@@ -8,20 +8,29 @@ import DialogoDetalle from "../components/DialogoDetalle/DialogoDetalle.jsx";
 import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useDetalle } from "../hooks/useDetalle.js";
 import { useEventos } from "../hooks/useEventos.js";
-import { eventos, categorias, categoriasEn, dinero } from "../data/catalogo.js";
 import { useTextos } from "../hooks/useTextos.js";
+import { dinero } from "../utils/dinero.js";
+
+const EVENTOS_INICIALES = 4;
 
 export default function Home() {
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const en = idioma === "en";
   const { detalle, setDetalle, abrirCuenta } = useDetalle(idioma);
-  const { filtros, resultados, buscar, setFiltros, filtrarCategoria } =
-    useEventos(eventos);
-  const cantidades = categorias.map(
-    (categoria) =>
-      eventos.filter((evento) => evento.categoria === categoria).length,
-  );
+  const {
+    eventos,
+    categorias,
+    numeroEventos,
+    filtros,
+    resultados,
+    cargando,
+    error,
+    buscar,
+    setFiltros,
+    filtrarCategoria,
+  } = useEventos(idioma, EVENTOS_INICIALES);
+
   function abrirEvento(evento) {
     setDetalle({
       titulo: evento.nombre,
@@ -30,25 +39,18 @@ export default function Home() {
         <div className="resumen-evento">
           <AficheEvento variante={evento.arte} />
           <p>{dinero(evento.precio)} COP</p>
-          <small>
-            {en
-              ? "Sample event. Tickets are not for sale."
-              : "Evento de ejemplo. No hay venta de entradas."}
-          </small>
+          {evento.descripcion && <small>{evento.descripcion}</small>}
         </div>
       ),
       cerrar: en ? "Close" : "Cerrar",
     });
   }
+
   return (
-    <LayoutPublico
-      textos={textos}
-      destino="#explorar"
-      onCuenta={abrirCuenta}
-    >
+    <LayoutPublico textos={textos} destino="#explorar" onCuenta={abrirCuenta}>
       <HeroTaquilla
         en={en}
-        destacado={eventos[1]}
+        destacado={eventos.find((evento) => evento.destacado) || eventos[0]}
         abrirEvento={abrirEvento}
         setFiltros={setFiltros}
         filtrarCategoria={filtrarCategoria}
@@ -61,51 +63,65 @@ export default function Home() {
         />
       </HeroTaquilla>
       <div className="ancho-home">
-        <CategoriasEventos
-          categorias={categorias}
-          categoriasEn={categoriasEn}
-          cantidades={cantidades}
-          filtros={filtros}
-          en={en}
-          filtrarCategoria={filtrarCategoria}
-        />
-        <SeccionEventos
-          id="eventos"
-          titulo={
-            filtros
-              ? en
-                ? "Search results"
-                : "Resultados de búsqueda"
-              : en
-                ? "Featured events"
-                : "Eventos destacados"
-          }
-          descripcion={
-            filtros
-              ? `${resultados.length} ${en ? "results" : "resultados"}`
-              : en
-                ? "Explore our event selection"
-                : "Explora nuestra selección de eventos"
-          }
-          eventos={filtros ? resultados : eventos.slice(0, 4)}
-          en={en}
-          onAbrir={abrirEvento}
-          onVerTodos={() => buscar({})}
-        />
-        {!filtros && (
-          <SeccionEventos
-            id="eventos-ciudad"
-            titulo={en ? "Events in Manizales" : "Eventos en Manizales"}
-            descripcion={
-              en
-                ? "Discover events in your city"
-                : "Descubre los eventos de tu ciudad"
-            }
-            eventos={eventos.filter((evento) => evento.ciudad === "Manizales")}
-            en={en}
-            onAbrir={abrirEvento}
-            onVerTodos={() => buscar({ ciudad: "Manizales" })}
-          />
+        {cargando && (
+          <p role="status">{en ? "Loading events…" : "Cargando eventos…"}</p>
+        )}
+        {error && !cargando && (
+          <p role="alert">
+            {en
+              ? "We couldn't load the events. Please try again later."
+              : "No pudimos cargar los eventos. Intenta de nuevo más tarde."}
+          </p>
+        )}
+        {!cargando && !error && (
+          <>
+            <CategoriasEventos
+              categorias={categorias}
+              filtros={filtros}
+              en={en}
+              filtrarCategoria={filtrarCategoria}
+            />
+            <SeccionEventos
+              id="eventos"
+              titulo={
+                filtros
+                  ? en
+                    ? "Search results"
+                    : "Resultados de búsqueda"
+                  : en
+                    ? "Featured events"
+                    : "Eventos destacados"
+              }
+              descripcion={
+                filtros
+                  ? `${resultados.length} ${en ? "results" : "resultados"}`
+                  : en
+                    ? "Explore our event selection"
+                    : "Explora nuestra selección de eventos"
+              }
+              eventos={filtros ? resultados : eventos.slice(0, numeroEventos)}
+              en={en}
+              onAbrir={abrirEvento}
+              onVerTodos={() => buscar({})}
+            />
+            {!filtros && (
+              <SeccionEventos
+                id="eventos-ciudad"
+                titulo={en ? "Events in Manizales" : "Eventos en Manizales"}
+                descripcion={
+                  en
+                    ? "Discover events in your city"
+                    : "Descubre los eventos de tu ciudad"
+                }
+                eventos={eventos
+                  .filter((evento) => evento.ciudad === "Manizales")
+                  .slice(0, numeroEventos)}
+                en={en}
+                onAbrir={abrirEvento}
+                onVerTodos={() => buscar({ ciudad: "Manizales" })}
+              />
+            )}
+          </>
         )}
       </div>
       <DialogoDetalle detalle={detalle} onCerrar={() => setDetalle(null)} />
