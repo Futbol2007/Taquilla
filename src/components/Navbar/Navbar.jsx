@@ -108,6 +108,7 @@ export default function Navbar({
                 {idioma === "en" ? "Accessibility" : "Accesibilidad"}
               </span>
               <Accesibilidad
+                abierto={accesibilidadAbierta}
                 idioma={idioma}
                 textos={textosAccesibilidad}
                 accesibilidad={accesibilidad}

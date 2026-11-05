@@ -1,4 +1,3 @@
-import { useState } from "react";
 import iconoAccesibilidad from "../../assets/person.svg";
 import iconoX from "../../assets/x.svg";
 import iconoMenos from "../../assets/minus.svg";
@@ -6,6 +5,7 @@ import iconoMas from "../../assets/plus.svg";
 import "./Accesibilidad.css";
 
 export default function Accesibilidad({
+  abierto: panelAbierto,
   idioma,
   textos,
   accesibilidad,
@@ -13,8 +13,6 @@ export default function Accesibilidad({
   restablecer,
   onAlternar,
 }) {
-  const [panelAbierto, setPanelAbierto] = useState(false);
-
   const textosAccesibilidad = textos;
 
   // Las claves de la API no son las mismas que las del hook
@@ -46,7 +44,6 @@ export default function Accesibilidad({
         aria-expanded={panelAbierto}
         onClick={() => {
           const siguiente = !panelAbierto;
-          setPanelAbierto(siguiente);
           onAlternar?.(siguiente);
         }}
       >
@@ -63,7 +60,6 @@ export default function Accesibilidad({
               className="accesibilidad-cerrar"
               aria-label={idioma === "en" ? "Close" : "Cerrar"}
               onClick={() => {
-                setPanelAbierto(false);
                 onAlternar?.(false);
               }}
             >
