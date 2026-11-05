@@ -9,6 +9,19 @@ import { proyecto } from "../config/proyecto.js";
 const PreferenciasContext = createContext(null);
 
 export function PreferenciasProvider({ children }) {
+  const [preferenciasCookies, setPreferenciasCookies] = useState(() => {
+    try {
+      const valor = leerCookie("categorias-cookies");
+      if (valor) return { necesarias: true, ...JSON.parse(valor) };
+    } catch {}
+    const aceptado = leerCookie("consentimiento") === "aceptado";
+    return {
+      necesarias: true,
+      preferencias: aceptado,
+      analiticas: aceptado,
+      marketing: aceptado,
+    };
+  });
   const [consentimiento, setConsentimiento] = useState(() => {
     const valor = leerCookie("consentimiento");
     return ["aceptado", "rechazado"].includes(valor) ? valor : null;
@@ -26,7 +39,7 @@ export function PreferenciasProvider({ children }) {
   function cambiarIdioma(valor) {
     setIdioma(valor);
     try {
-      if (consentimiento === "aceptado") guardarCookie("idioma", valor);
+      if (preferenciasCookies.preferencias) guardarCookie("idioma", valor);
       setError(false);
     } catch {
       setError(true);
@@ -34,11 +47,24 @@ export function PreferenciasProvider({ children }) {
   }
   function guardarConsentimiento(permitir) {
     try {
-      const valor = permitir ? "aceptado" : "rechazado";
+      const categorias =
+        typeof permitir === "boolean"
+          ? {
+              necesarias: true,
+              preferencias: permitir,
+              analiticas: permitir,
+              marketing: permitir,
+            }
+          : { necesarias: true, ...permitir };
+      const aceptaOpcionales =
+        categorias.preferencias || categorias.analiticas || categorias.marketing;
+      const valor = aceptaOpcionales ? "aceptado" : "rechazado";
       guardarCookie("consentimiento", valor);
-      if (permitir) guardarCookie("idioma", idioma);
+      guardarCookie("categorias-cookies", JSON.stringify(categorias));
+      if (categorias.preferencias) guardarCookie("idioma", idioma);
       else borrarCookie("idioma");
       setConsentimiento(valor);
+      setPreferenciasCookies(categorias);
       setError(false);
       return true;
     } catch {
@@ -52,6 +78,7 @@ export function PreferenciasProvider({ children }) {
         idioma,
         cambiarIdioma,
         consentimiento,
+        preferenciasCookies,
         guardarConsentimiento,
         error,
       }}

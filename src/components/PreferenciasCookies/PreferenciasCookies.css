@@ -2,7 +2,7 @@
   width: min(560px, calc(100% - 32px));
   max-height: calc(100dvh - 32px);
   overflow: auto;
-  padding: 28px;
+  padding: 24px;
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   color: var(--tinta);
@@ -12,32 +12,69 @@
   background: color-mix(in srgb, var(--fondo-inverso) 65%, transparent);
 }
 .preferencias-dialogo p {
-  margin-block: 12px 20px;
+  margin: 8px 0 12px;
+  line-height: 1.45;
 }
 .preferencias-dialogo h2 {
   font-size: 26px;
 }
 .preferencias-dialogo h3 {
-  font-size: 18px;
+  margin: 0;
+  font-size: 16px;
 }
-.opcion-cookie {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-block: 24px;
-  padding: 16px;
+.categoria-cookie {
+  display: grid;
+  gap: 2px;
+  margin-top: 12px;
+  padding: 14px 16px;
   border: 1px solid var(--borde);
   border-radius: var(--radio-md);
-  cursor: pointer;
+  background: var(--fondo-sutil);
 }
-.opcion-cookie input {
-  width: 24px;
-  height: 24px;
+.categoria-cookie p {
+  margin: 3px 0 8px;
+}
+.detalle-cookie {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.detalle-cookie input {
+  width: 18px;
+  height: 18px;
   accent-color: var(--acento);
   flex-shrink: 0;
 }
-.opcion-cookie span span {
-  display: block;
+.siempre-activa {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: var(--texto-secundario);
+  font-size: 12px;
+}
+.grupo-botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+@media (max-width: 520px) {
+  .preferencias-dialogo {
+    padding: 18px;
+  }
+  .siempre-activa {
+    max-width: 110px;
+    text-align: right;
+    white-space: normal;
+  }
+  .grupo-botones > button {
+    flex: 1 1 100%;
+  }
 }
 body:has(.preferencias-dialogo[open]) {
   overflow: hidden;
