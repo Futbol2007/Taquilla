@@ -3,29 +3,29 @@ import "./Footer.css";
 export default function Footer({
   nombre,
   tipo,
-  descripcion,
   destino,
   etiqueta,
   onCuenta,
   onAbrirCookies,
   textos,
 }) {
-  // const t = interfaz[idioma];
   const textosFooter = textos?.footer;
   return (
     <footer className="pie-home">
       <div className="ancho-home">
         <div className="columnas-pie">
-          <div>
+          <div className="detalle-nota">
             <Marca nombre={nombre} tipo={tipo} />
-            <p>{descripcion}</p>
+            <p>{textosFooter?.lema}</p>
           </div>
           <div>
             <h3>{textosFooter?.columnas?.explora?.titulo}</h3>
             <a href="#contenido">
               {textosFooter?.columnas?.explora?.enlaces?.inicio}
             </a>
-            <a href={destino}>{etiqueta}</a>
+            <a href={destino}>
+              {textosFooter?.columnas?.explora?.enlaces?.explorar}
+            </a>
           </div>
           <div>
             <h3>{textosFooter?.columnas?.cuenta?.titulo}</h3>
@@ -35,6 +35,15 @@ export default function Footer({
             <button onClick={() => onCuenta("registro")}>
               {textosFooter?.columnas?.cuenta?.enlaces?.crearCuenta}
             </button>
+          </div>
+          <div>
+            <h3>{textosFooter?.columnas?.legal?.titulo}</h3>
+            <a href="#contenido">
+              {textosFooter?.columnas?.legal?.enlaces?.terminos}
+            </a>
+            <a href={destino}>
+              {textosFooter?.columnas?.legal?.enlaces?.accesibilidad}
+            </a>
           </div>
         </div>
         <div className="pie-creditos">
