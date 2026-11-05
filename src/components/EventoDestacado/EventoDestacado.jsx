@@ -1,7 +1,9 @@
 import AficheEvento from "../AficheEvento/AficheEvento.jsx";
-import { dinero } from "../../data/catalogo.js";
+import { dinero } from "../../utils/dinero.js";
 import "./EventoDestacado.css";
 export default function EventoDestacado({ evento, en, onAbrir }) {
+  if (!evento) return null;
+
   return (
     <div className="destacado-taquilla">
       <AficheEvento variante={evento.arte} />
