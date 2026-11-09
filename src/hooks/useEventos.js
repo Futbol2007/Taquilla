@@ -10,6 +10,26 @@ function normalizar(valor = "") {
     .toLocaleLowerCase();
 }
 
+function obtenerRangoFinDeSemana(hoy = new Date()) {
+  const dia = hoy.getDay(); // 0 domingo ... 6 sábado
+  const diasHastaViernes = dia === 0 ? 5 : dia === 6 ? -1 : 5 - dia;
+  const viernes = new Date(hoy);
+  viernes.setDate(hoy.getDate() + diasHastaViernes);
+  viernes.setHours(0, 0, 0, 0);
+  const lunes = new Date(viernes);
+  lunes.setDate(viernes.getDate() + 3);
+
+  return { desde: hoy > viernes ? hoy : viernes, hasta: lunes };
+}
+
+function fechaEventoEnRango(evento, desde, hasta) {
+  if (!evento.fecha) return false;
+  const fecha = /^\d{4}-\d{2}-\d{2}$/.test(evento.fecha)
+    ? new Date(`${evento.fecha}T00:00:00`)
+    : new Date(evento.fecha);
+  return !Number.isNaN(fecha.getTime()) && fecha >= desde && fecha < hasta;
+}
+
 function adaptarEvento(evento, idioma) {
   const categoria = evento.categoria?.toLocaleLowerCase();
   const numeroId = Number(evento.id.split("_")[1]);
@@ -101,6 +121,8 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     return () => controlador.abort();
   }, [idioma]);
 
+  const rangoFinDeSemana = obtenerRangoFinDeSemana();
+
   const resultados = useMemo(
     () =>
       eventos.filter((evento) => {
@@ -115,44 +137,36 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
         const coincideCategoria =
           !filtros?.categoria ||
           normalizar(evento.categoria) === normalizar(filtros.categoria);
+        const coincideDestacado =
+          filtros?.destacado === undefined ||
+          Boolean(evento.destacado) === filtros.destacado;
+        const coincideFinDeSemana =
+          !filtros?.finDeSemana ||
+          fechaEventoEnRango(
+            evento,
+            rangoFinDeSemana.desde,
+            rangoFinDeSemana.hasta,
+          );
         return (
           coincideConsulta &&
           coincideCiudad &&
           coincideFecha &&
-          coincideCategoria
+          coincideCategoria &&
+          coincideDestacado &&
+          coincideFinDeSemana
         );
       }),
-    [eventos, filtros],
+    [eventos, filtros, rangoFinDeSemana.desde, rangoFinDeSemana.hasta],
   );
 
-  const hoy = new Date();
-  const dia = hoy.getDay(); // 0 domingo ... 6 sábado
-
-  // lun–jue: el viernes que viene · vie–sáb: el viernes de esta semana
-  // domingo: el fin de semana ya se acaba, se pasa al siguiente
-  const diasHastaViernes = dia === 0 ? 5 : dia === 6 ? -1 : 5 - dia;
-
-  const viernes = new Date(hoy);
-  viernes.setDate(hoy.getDate() + diasHastaViernes);
-  viernes.setHours(0, 0, 0, 0);
-
-  const lunes = new Date(viernes);
-  lunes.setDate(viernes.getDate() + 3);
-
-  const desde = hoy > viernes ? hoy : viernes;
-
   const eventosFinDeSemana = eventos
-    .filter((evento) => {
-      if (!evento.fecha) return false;
-      const fechaEvento = /^\d{4}-\d{2}-\d{2}$/.test(evento.fecha)
-        ? new Date(`${evento.fecha}T00:00:00`)
-        : new Date(evento.fecha);
-      return (
-        !Number.isNaN(fechaEvento.getTime()) &&
-        fechaEvento >= desde &&
-        fechaEvento < lunes
-      );
-    })
+    .filter((evento) =>
+      fechaEventoEnRango(
+        evento,
+        rangoFinDeSemana.desde,
+        rangoFinDeSemana.hasta,
+      ),
+    )
     .slice(0, limiteEventos);
 
   function buscar(valores) {

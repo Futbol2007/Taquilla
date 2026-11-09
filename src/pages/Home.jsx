@@ -19,7 +19,7 @@ export default function Home() {
   const { textos } = useTextos(idioma);
   const en = idioma === "en";
   const [ciudadSeleccionada, setCiudadSeleccionada] = useState("Manizales");
-  const { detalle, setDetalle, abrirCuenta } = useDetalle(idioma);
+  const { detalle, setDetalle, abrirCuenta } = useDetalle(textos, idioma);
   const {
     eventos,
     eventosFinDeSemana,
@@ -157,9 +157,9 @@ export default function Home() {
               eventos={eventosPrincipales}
               en={en}
               onAbrir={abrirEvento}
-              onVerTodos={verTodos}
+              onVerTodos={() => buscar({ destacado: true })}
             />
-            {(!filtros || filtros.ciudad) && (
+            {!filtros && (
               <SeccionEventos
                 textos={textos}
                 id="eventos-proximamente"
@@ -183,11 +183,11 @@ export default function Home() {
                 id="eventos-fin-de-semana"
                 className="seccion-eventos--movil"
                 presentacion="lista"
+                tarjetasClicables
                 titulo={textosInicio?.filtrosMovil?.finDeSemana}
                 eventos={eventosFinDeSemana}
-                en={en}
                 onAbrir={abrirEvento}
-                onVerTodos={verTodos}
+                onVerTodos={() => buscar({ finDeSemana: true })}
               />
             )}
           </>

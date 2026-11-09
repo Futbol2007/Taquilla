@@ -89,7 +89,7 @@ export default function Accesibilidad({
               style={{ fontSize: `${14 * accesibilidad.tamano / 100}px` }}
               aria-live="polite"
             >
-              {textosAccesibilidad?.muestraTamano || "A"}
+              {textosAccesibilidad?.muestraTamano}
             </span>
             <button
               type="button"

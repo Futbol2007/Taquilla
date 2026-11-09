@@ -4,6 +4,13 @@
   border-radius: var(--radio-lg);
   background: var(--fondo-superficie);
 }
+.tarjeta-evento--clicable {
+  cursor: pointer;
+}
+.tarjeta-evento--clicable:focus-visible {
+  outline: 2px solid var(--borde-fuerte);
+  outline-offset: 3px;
+}
 .contenido-evento {
   padding: 16px;
 }
