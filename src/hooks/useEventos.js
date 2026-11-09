@@ -89,11 +89,7 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     Promise.all([cargarTodasLasPaginas(idioma), cargarCategorias(idioma)])
       .then(([datosEventos, datosCategorias]) => {
         setCategorias(datosCategorias);
-        setEventos(
-          datosEventos.map((evento) =>
-            adaptarEvento(evento, idioma),
-          ),
-        );
+        setEventos(datosEventos.map((evento) => adaptarEvento(evento, idioma)));
       })
       .catch((fallo) => {
         if (fallo.name !== "AbortError") setError(fallo);
@@ -129,6 +125,36 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     [eventos, filtros],
   );
 
+  const hoy = new Date();
+  const dia = hoy.getDay(); // 0 domingo ... 6 sábado
+
+  // lun–jue: el viernes que viene · vie–sáb: el viernes de esta semana
+  // domingo: el fin de semana ya se acaba, se pasa al siguiente
+  const diasHastaViernes = dia === 0 ? 5 : dia === 6 ? -1 : 5 - dia;
+
+  const viernes = new Date(hoy);
+  viernes.setDate(hoy.getDate() + diasHastaViernes);
+  viernes.setHours(0, 0, 0, 0);
+
+  const lunes = new Date(viernes);
+  lunes.setDate(viernes.getDate() + 3);
+
+  const desde = hoy > viernes ? hoy : viernes;
+
+  const eventosFinDeSemana = eventos
+    .filter((evento) => {
+      if (!evento.fecha) return false;
+      const fechaEvento = /^\d{4}-\d{2}-\d{2}$/.test(evento.fecha)
+        ? new Date(`${evento.fecha}T00:00:00`)
+        : new Date(evento.fecha);
+      return (
+        !Number.isNaN(fechaEvento.getTime()) &&
+        fechaEvento >= desde &&
+        fechaEvento < lunes
+      );
+    })
+    .slice(0, limiteEventos);
+
   function buscar(valores) {
     setFiltros(valores);
     document.getElementById("eventos")?.scrollIntoView({ block: "start" });
@@ -136,6 +162,7 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
 
   return {
     eventos,
+    eventosFinDeSemana,
     categorias,
     numeroEventos: limiteEventos,
     filtros,
@@ -144,6 +171,6 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     error,
     buscar,
     setFiltros,
-    filtrarCategoria: (categoria) => buscar({ categoria }),
+    filtrarCategoria: (categoria) => buscar(categoria ? { categoria } : null),
   };
 }

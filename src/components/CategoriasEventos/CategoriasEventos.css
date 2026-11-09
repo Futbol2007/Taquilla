@@ -4,6 +4,7 @@
   gap: 16px;
   padding: 48px 0 56px;
 }
+
 .categorias-eventos button {
   display: flex;
   align-items: center;
@@ -14,48 +15,95 @@
   background: var(--fondo-superficie);
   color: var(--texto-principal);
   text-align: left;
+  cursor: pointer;
 }
+
 .categorias-eventos button[aria-pressed="true"],
 .categorias-eventos button:hover {
   border-color: var(--texto-principal);
   background: var(--fondo-sutil);
 }
+
 .icono-categoria {
   display: grid;
   place-items: center;
-  background: var(--fondo-sutil);
+  flex-shrink: 0;
   width: 44px;
   height: 44px;
   border-radius: var(--radio-md);
-  flex-shrink: 0;
+  background: var(--fondo-sutil);
 }
+
 .categorias-eventos small {
   display: block;
-  font-size: 12px;
   color: var(--texto-secundario);
+  font-size: 12px;
 }
+
+.categoria-todos {
+  display: none !important;
+}
+
+.categorias-eventos button:focus-visible {
+  outline: 2px solid var(--borde-fuerte);
+  outline-offset: 2px;
+}
+
 @media (max-width: 1100px) {
   .categorias-eventos {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
 @media (max-width: 640px) {
   .categorias-eventos {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding-block: 28px;
-  }
-}
-@media (max-width: 640px) {
-  .categorias-eventos button {
-    padding: 10px;
+    display: flex;
+    align-items: center;
     gap: 8px;
-    font-size: 14px;
+    overflow-x: auto;
+    padding: 14px 0 18px;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
   }
-}
-@media (max-width: 640px) {
-  .icono-categoria {
-    width: 36px;
-    height: 36px;
+
+  .categorias-eventos::-webkit-scrollbar {
+    display: none;
+  }
+
+  .categorias-eventos button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 15px;
+    border: 1px solid var(--borde-sutil);
+    border-radius: var(--radio-completo);
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .categorias-eventos button[aria-pressed="true"] {
+    border-color: var(--texto-principal);
+    background: var(--texto-principal);
+    color: var(--fondo-superficie);
+  }
+
+  .categorias-eventos button:hover:not([aria-pressed="true"]) {
+    border-color: var(--borde-fuerte);
+    background: var(--fondo-sutil);
+  }
+
+  .categorias-eventos .categoria-todos {
+    display: inline-flex !important;
+  }
+
+  .categorias-eventos .icono-categoria,
+  .categorias-eventos small {
+    display: none;
   }
 }

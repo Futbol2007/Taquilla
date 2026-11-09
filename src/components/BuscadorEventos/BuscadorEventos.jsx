@@ -7,12 +7,14 @@ export default function BuscadorEventos({
   en,
   eventos,
   onBuscar,
+  ciudad,
+  onCambiarCiudad,
   filtrosAplicados = null,
 }) {
   const [consulta, setConsulta] = useState("");
-  const [ciudad, setCiudad] = useState("");
   const [fecha, setFecha] = useState("");
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
+  const [ciudadElegidaManualmente, setCiudadElegidaManualmente] = useState(false);
   const ciudades = [
     ...new Set(eventos.map((evento) => evento.ciudad).filter(Boolean)),
   ];
@@ -23,12 +25,15 @@ export default function BuscadorEventos({
   ];
   useEffect(() => {
     setConsulta(filtrosAplicados?.consulta ?? "");
-    setCiudad(filtrosAplicados?.ciudad ?? "");
     setFecha(filtrosAplicados?.fecha ?? "");
   }, [filtrosAplicados]);
   function buscar(evento) {
     evento.preventDefault();
-    onBuscar({ consulta, ciudad, fecha });
+    onBuscar({
+      consulta,
+      fecha,
+      ...(ciudadElegidaManualmente ? { ciudad } : {}),
+    });
     setFiltrosAbiertos(false);
   }
   const textosBuscador = textos?.paginas?.inicio?.hero?.buscador;
@@ -67,7 +72,13 @@ export default function BuscadorEventos({
         <IconoEvento tipo="lugar" />
         <span>
           <span>{textosBuscador?.etiquetas?.donde}</span>
-          <select value={ciudad} onChange={(e) => setCiudad(e.target.value)}>
+          <select
+            value={ciudad}
+            onChange={(e) => {
+              onCambiarCiudad(e.target.value);
+              setCiudadElegidaManualmente(true);
+            }}
+          >
             <option value="">{en ? "All cities" : "Todas las ciudades"}</option>
             {ciudades.map((valor) => (
               <option key={valor}>{valor}</option>
