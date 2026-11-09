@@ -6,10 +6,11 @@ import Footer from "../Footer/Footer.jsx";
 import SaltarContenido from "../SaltarContenido/SaltarContenido.jsx";
 import GestorCookies from "../GestorCookies/GestorCookies.jsx";
 import "./LayoutPublico.css";
+
 export default function LayoutPublico({
   textos,
-  destino,
   onCuenta,
+  onBuscarEventos,
   children,
 }) {
   const { idioma, cambiarIdioma } = usePreferencias();
@@ -39,8 +40,8 @@ export default function LayoutPublico({
         tipo={proyecto.id}
         idioma={idioma}
         onCambiarIdioma={cambiarIdioma}
-        destino={destino}
         onCuenta={onCuenta}
+        onBuscarEventos={onBuscarEventos}
         accesibilidadAbierta={accesibilidadAbierta}
         onAlternarAccesibilidad={setAccesibilidadAbierta}
       />

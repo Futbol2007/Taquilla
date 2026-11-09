@@ -47,7 +47,11 @@ export default function Home() {
   }
 
   return (
-    <LayoutPublico textos={textos} destino="#explorar" onCuenta={abrirCuenta}>
+    <LayoutPublico
+      textos={textos}
+      onCuenta={abrirCuenta}
+      onBuscarEventos={buscar}
+    >
       <HeroTaquilla
         en={en}
         destacado={eventos.find((evento) => evento.destacado) || eventos[0]}
