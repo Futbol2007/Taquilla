@@ -38,20 +38,20 @@ export default function BuscadorEventos({
   }
   const textosBuscador = textos?.paginas?.inicio?.hero?.buscador;
   const resumenCiudad =
-    ciudad || textosBuscador?.placeholders?.donde || (en ? "All cities" : "Todas las ciudades");
+    ciudad || textosBuscador?.placeholders?.donde;
   const resumenFecha = fecha
     ? new Date(`${fecha}T12:00:00`).toLocaleDateString(en ? "en" : "es-CO", {
         day: "numeric",
         month: "short",
       })
-    : textosBuscador?.placeholders?.cuando || (en ? "Any date" : "Cualquier fecha");
+    : textosBuscador?.placeholders?.cuando;
   return (
     <form
       id="buscador-eventos"
       className={`buscador-eventos${filtrosAbiertos ? " filtros-abiertos" : ""}`}
       role="search"
       onSubmit={buscar}
-      aria-label={en ? "Find events" : "Buscar eventos"}
+      aria-label={textosBuscador?.botones?.buscar}
     >
       <label>
         <IconoEvento tipo="buscar" />

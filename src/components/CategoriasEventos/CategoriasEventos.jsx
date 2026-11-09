@@ -1,12 +1,15 @@
 import IconoEvento from "../IconoEvento/IconoEvento.jsx";
 import "./CategoriasEventos.css";
+
 export default function CategoriasEventos({
   textos,
-  categorias,
+  categorias = [],
   filtros,
   en,
   filtrarCategoria,
 }) {
+  const textosCategorias = textos?.paginas?.inicio;
+
   return (
     <nav
       className="categorias-eventos"
@@ -18,26 +21,33 @@ export default function CategoriasEventos({
         aria-pressed={!filtros?.categoria}
         onClick={() => filtrarCategoria(null)}
       >
-        {textos?.paginas?.inicio?.filtrosMovil?.todos}
+        {textosCategorias?.filtrosMovil?.todos}
       </button>
-      {categorias.map((categoria) => (
-        <button
-          key={categoria.id}
-          type="button"
-          aria-pressed={filtros?.categoria === categoria.id}
-          onClick={() => filtrarCategoria(categoria.id)}
-        >
-          <span className="icono-categoria">
-            <IconoEvento tipo={categoria.nombre} />
-          </span>
-          <span>
-            {categoria.nombre}
-            <small>
-              {categoria.eventos} {en ? "events" : "eventos"}
-            </small>
-          </span>
-        </button>
-      ))}
+
+      {categorias.map((categoria) => {
+        const cantidad = Number(categoria.eventos ?? 0);
+        const texto =
+          cantidad === 1
+            ? textosCategorias?.categorias?.eventos?.uno
+            : textosCategorias?.categorias?.eventos?.otro;
+
+        return (
+          <button
+            key={categoria.id}
+            type="button"
+            aria-pressed={filtros?.categoria === categoria.id}
+            onClick={() => filtrarCategoria(categoria.id)}
+          >
+            <span className="icono-categoria">
+              <IconoEvento tipo={categoria.nombre} />
+            </span>
+            <span>
+              {categoria.nombre}
+              <small>{texto?.replaceAll("{cantidad}", String(cantidad))}</small>
+            </span>
+          </button>
+        );
+      })}
     </nav>
   );
 }

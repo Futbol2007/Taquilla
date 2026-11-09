@@ -7,11 +7,11 @@ export default function SeccionEventos({
   titulo,
   descripcion,
   eventos,
-  en,
   onAbrir,
   onVerTodos,
   presentacion = "cuadricula",
   className = "",
+  tarjetasClicables = false,
 }) {
   const textosEventos = textos?.paginas;
   return (
@@ -33,10 +33,11 @@ export default function SeccionEventos({
       <div className="eventos-grid">
         {eventos.map((evento) => (
           <TarjetaEvento
+            textos={textosEventos}
             key={evento.nombre}
             evento={evento}
-            en={en}
             onAbrir={onAbrir}
+            clicable={tarjetasClicables}
           />
         ))}
       </div>
