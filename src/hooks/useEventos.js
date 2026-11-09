@@ -185,6 +185,7 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     error,
     buscar,
     setFiltros,
-    filtrarCategoria: (categoria) => buscar(categoria ? { categoria } : null),
+    filtrarCategoria: (categoria) =>
+      buscar(categoria ? { categoria } : { todos: true }),
   };
 }
