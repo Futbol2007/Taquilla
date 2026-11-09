@@ -157,7 +157,7 @@ export default function Home() {
               eventos={eventosPrincipales}
               en={en}
               onAbrir={abrirEvento}
-              onVerTodos={() => buscar({ destacado: true })}
+              onVerTodos={() => buscar(filtros || { destacado: true })}
             />
             {!filtros && (
               <SeccionEventos
