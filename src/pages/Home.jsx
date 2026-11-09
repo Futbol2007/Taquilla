@@ -53,6 +53,7 @@ export default function Home() {
       onBuscarEventos={buscar}
     >
       <HeroTaquilla
+        textos={textos}
         en={en}
         destacado={eventos.find((evento) => evento.destacado) || eventos[0]}
         abrirEvento={abrirEvento}
@@ -60,6 +61,7 @@ export default function Home() {
         filtrarCategoria={filtrarCategoria}
       >
         <BuscadorEventos
+          textos={textos}
           en={en}
           eventos={eventos}
           onBuscar={buscar}
@@ -68,7 +70,7 @@ export default function Home() {
       </HeroTaquilla>
       <div className="ancho-home">
         {cargando && (
-          <p role="status">{en ? "Loading events…" : "Cargando eventos…"}</p>
+          <p role="status">{textos?.estados?.cargando?.titulo}</p>
         )}
         {error && !cargando && (
           <p role="alert">
