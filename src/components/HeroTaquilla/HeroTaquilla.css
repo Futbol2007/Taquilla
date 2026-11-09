@@ -80,3 +80,28 @@
     gap: 12px;
   }
 }
+
+@media (max-width: 640px) {
+  .hero-taquilla {
+    padding: 12px 0 28px;
+  }
+
+  .interior-taquilla {
+    display: block;
+  }
+
+  .hero-taquilla .interior-taquilla > div:first-child > .etiqueta-evento,
+  .hero-taquilla .interior-taquilla > div:first-child > p,
+  .hero-taquilla .populares,
+  .hero-taquilla .destacado-taquilla {
+    display: none;
+  }
+
+  .hero-taquilla h1 {
+    max-width: 370px;
+    margin: 0 0 18px;
+    font-size: clamp(36px, 9.5vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+}

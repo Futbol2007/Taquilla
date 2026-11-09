@@ -1,6 +1,7 @@
 import EventoDestacado from "../EventoDestacado/EventoDestacado.jsx";
 import "./HeroTaquilla.css";
 export default function HeroTaquilla({
+  textos,
   en,
   children,
   destacado,
@@ -8,28 +9,23 @@ export default function HeroTaquilla({
   setFiltros,
   filtrarCategoria,
 }) {
+  const textosHero = textos?.paginas?.inicio?.hero;
   return (
     <section className="hero-taquilla">
       <div className="ancho-home interior-taquilla">
         <div>
           <span className="etiqueta-evento">
-            {en
-              ? "November – December 2026 season"
-              : "Temporada nov – dic 2026"}
+            {textosHero?.etiquetas?.temporada}
           </span>
           <h1>
-            {en
-              ? "Your next night starts here"
-              : "Tu próxima noche empieza aquí"}
+            {textosHero?.titulo}
           </h1>
           <p>
-            {en
-              ? "Concerts, theatre, sports and festivals. Search by category, date or city and discover all the details of each event."
-              : "Conciertos, teatro, deportes y festivales. Busca por categoría, fecha o ciudad y consulta todos los detalles de cada evento."}
+            {textosHero?.subtitulo}
           </p>
           {children}
           <div className="populares">
-            <span>{en ? "Popular:" : "Populares:"}</span>
+            <span>{textosHero?.buscador?.populares}</span>
             {["Salsa", "Stand-up", "Fútbol", "Festivales de fin de año"].map(
               (valor, i) => (
                 <button
@@ -51,7 +47,7 @@ export default function HeroTaquilla({
             )}
           </div>
         </div>
-        <EventoDestacado evento={destacado} en={en} onAbrir={abrirEvento} />
+        <EventoDestacado textos={textosHero} evento={destacado} en={en} onAbrir={abrirEvento} />
       </div>
     </section>
   );

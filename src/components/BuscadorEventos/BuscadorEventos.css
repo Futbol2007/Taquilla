@@ -91,3 +91,115 @@
     min-height: 44px;
   }
 }
+
+.resumen-filtros-movil,
+.boton-filtros-movil {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .buscador-eventos {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 8px;
+    min-height: 64px;
+    padding: 8px 10px 8px 16px;
+    border-radius: var(--radio-lg);
+  }
+
+  .buscador-eventos > label:first-child {
+    display: flex;
+    grid-column: 1;
+    flex-basis: auto;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 0;
+    border: 0 !important;
+  }
+
+  .buscador-eventos > label:first-child > svg {
+    width: 20px;
+    height: 20px;
+    color: var(--texto-principal);
+  }
+
+  .buscador-eventos > label:first-child > span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .buscador-eventos > label:first-child > span > span:first-child {
+    display: none;
+  }
+
+  .buscador-eventos > label:first-child input {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .resumen-filtros-movil {
+    display: block;
+    overflow: hidden;
+    color: var(--texto-secundario);
+    font-size: 13px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .buscador-eventos > label:not(:first-child),
+  .buscador-eventos > .boton-home {
+    display: none;
+  }
+
+  .buscador-eventos > .boton-filtros-movil {
+    display: grid;
+    grid-column: 2;
+    grid-row: 1;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radio-completo);
+    background: var(--fondo-sutil);
+    color: var(--texto-principal);
+    cursor: pointer;
+  }
+
+  .boton-filtros-movil img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .boton-filtros-movil:focus-visible {
+    outline: 2px solid var(--borde-fuerte);
+    outline-offset: 2px;
+  }
+
+  .buscador-eventos.filtros-abiertos > label:not(:first-child) {
+    display: flex;
+    grid-column: 1 / -1;
+    flex-basis: auto;
+    padding: 10px 0;
+    border: 0 !important;
+    border-top: 1px solid var(--borde-sutil) !important;
+  }
+
+  .buscador-eventos.filtros-abiertos > .boton-home {
+    display: block;
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .buscador-eventos.filtros-abiertos .resumen-filtros-movil {
+    display: none;
+  }
+}
