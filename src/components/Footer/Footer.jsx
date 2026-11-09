@@ -3,9 +3,9 @@ import "./Footer.css";
 export default function Footer({
   nombre,
   tipo,
-  destino,
   onCuenta,
   onAbrirCookies,
+  onAbrirAccesibilidad,
   textos,
 }) {
   const textosFooter = textos?.footer;
@@ -22,7 +22,7 @@ export default function Footer({
             <a href="#contenido">
               {textosFooter?.columnas?.explora?.enlaces?.inicio}
             </a>
-            <a href={destino}>
+            <a href="#eventos">
               {textosFooter?.columnas?.explora?.enlaces?.explorar}
             </a>
           </div>
@@ -40,9 +40,9 @@ export default function Footer({
             <a href="#contenido">
               {textosFooter?.columnas?.legal?.enlaces?.terminos}
             </a>
-            <a href={destino}>
+            <button type="button" onClick={onAbrirAccesibilidad}>
               {textosFooter?.columnas?.legal?.enlaces?.accesibilidad}
-            </a>
+            </button>
           </div>
         </div>
         <div className="pie-creditos">

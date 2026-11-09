@@ -14,6 +14,7 @@ export default function LayoutPublico({
 }) {
   const { idioma, cambiarIdioma } = usePreferencias();
   const [cookiesAbiertas, setCookiesAbiertas] = useState(false);
+  const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const disparador = useRef(null);
   function abrirCookies() {
     disparador.current = document.activeElement;
@@ -22,6 +23,12 @@ export default function LayoutPublico({
   function cerrarCookies() {
     setCookiesAbiertas(false);
     disparador.current?.focus();
+  }
+  function abrirAccesibilidad() {
+    setAccesibilidadAbierta(true);
+    document
+      .querySelector(".cabecera-home")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   return (
     <div className={`landing ${proyecto.id}`}>
@@ -34,6 +41,8 @@ export default function LayoutPublico({
         onCambiarIdioma={cambiarIdioma}
         destino={destino}
         onCuenta={onCuenta}
+        accesibilidadAbierta={accesibilidadAbierta}
+        onAlternarAccesibilidad={setAccesibilidadAbierta}
       />
       <main id="contenido" tabIndex={-1}>
         {children}
@@ -43,6 +52,7 @@ export default function LayoutPublico({
         tipo={proyecto.id}
         onCuenta={onCuenta}
         onAbrirCookies={abrirCookies}
+        onAbrirAccesibilidad={abrirAccesibilidad}
         textos={textos}
       />
       <GestorCookies

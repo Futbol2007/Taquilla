@@ -15,9 +15,10 @@ export default function Navbar({
   onCambiarIdioma,
   destino,
   onCuenta,
+  accesibilidadAbierta,
+  onAlternarAccesibilidad,
 }) {
   const [abierto, setAbierto] = useState(false);
-  const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const boton = useRef(null);
   const id = useId();
   const textosNavbar = textos?.navbar;
@@ -29,7 +30,7 @@ export default function Navbar({
       onKeyDown={(evento) => {
         if (evento.key === "Escape" && (abierto || accesibilidadAbierta)) {
           setAbierto(false);
-          setAccesibilidadAbierta(false);
+          onAlternarAccesibilidad(false);
           boton.current?.focus();
         }
       }}
@@ -42,8 +43,8 @@ export default function Navbar({
         <MenuMovil
           abierto={abierto}
           onAlternar={() => {
-            setAbierto(!abierto);
-            setAccesibilidadAbierta(false);
+            setAbierto((menuAbierto) => !menuAbierto);
+            onAlternarAccesibilidad(false);
           }}
           menuId={id}
           botonRef={boton}
@@ -56,7 +57,7 @@ export default function Navbar({
             aria-label={idioma === "en" ? "Close menu" : "Cerrar menú"}
             onClick={() => {
               setAbierto(false);
-              setAccesibilidadAbierta(false);
+              onAlternarAccesibilidad(false);
             }}
           />
         )}
@@ -75,7 +76,7 @@ export default function Navbar({
               aria-label={idioma === "en" ? "Close menu" : "Cerrar menú"}
               onClick={() => {
                 setAbierto(false);
-                setAccesibilidadAbierta(false);
+                onAlternarAccesibilidad(false);
               }}
             >
               <img src={iconoX} alt="" />
@@ -114,7 +115,7 @@ export default function Navbar({
                 cambiarValores={cambiarValores}
                 restablecer={restablecer}
                 onAlternar={(panelAbierto) => {
-                  setAccesibilidadAbierta(panelAbierto);
+                  onAlternarAccesibilidad(panelAbierto);
                   setAbierto((menuAbierto) =>
                     panelAbierto ? false : menuAbierto,
                   );
