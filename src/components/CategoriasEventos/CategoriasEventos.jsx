@@ -18,7 +18,7 @@ export default function CategoriasEventos({
       <button
         className="categoria-todos"
         type="button"
-        aria-pressed={!filtros?.categoria}
+        aria-pressed={filtros?.todos === true}
         onClick={() => filtrarCategoria(null)}
       >
         {textosCategorias?.filtrosMovil?.todos}
