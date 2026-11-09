@@ -47,7 +47,7 @@ export default function Footer({
         </div>
         <div className="pie-creditos">
           <span>
-            © 2026 {nombre} · {textosFooter?.legal?.derechos}
+            {textosFooter?.legal?.derechos.replaceAll("{anio}", 2026)}
           </span>
           <button className="enlace-home" onClick={onAbrirCookies}>
             {textos?.cookies?.preferencias?.titulo}
