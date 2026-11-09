@@ -3,13 +3,6 @@ import { consultar } from "../services/api.js";
 
 const EVENTOS_POR_PAGINA = 20;
 
-function localizar(valor, idioma) {
-  if (valor && typeof valor === "object") {
-    return valor[idioma] ?? valor.es ?? valor.en ?? "";
-  }
-  return valor ?? "";
-}
-
 function normalizar(valor = "") {
   return String(valor)
     .normalize("NFD")
@@ -17,53 +10,53 @@ function normalizar(valor = "") {
     .toLocaleLowerCase();
 }
 
-function adaptarEvento(evento, idioma, categoriasPorId) {
-  const categoria = localizar(evento.categoria, idioma).toLocaleLowerCase();
-  const categoriaApi = categoriasPorId.get(categoria);
+function adaptarEvento(evento, idioma) {
+  const categoria = evento.categoria?.toLocaleLowerCase();
+  const numeroId = Number(evento.id.split("_")[1]);
+  const varianteCss = Number.isInteger(evento.arte)
+    ? evento.arte
+    : Number.isFinite(numeroId)
+      ? numeroId % 8
+      : 0;
   const fecha = evento.fecha;
-  const fechaLegible = fecha
-    ? new Intl.DateTimeFormat(idioma === "en" ? "en-US" : "es-CO", {
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-      }).format(new Date(fecha))
+  const fechaLegible = evento.fecha
+    ? new Date(evento.fecha).toLocaleDateString(
+        idioma === "en" ? "en-US" : "es-CO",
+        {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+        },
+      )
     : "";
 
   return {
     ...evento,
-    nombre:
-      localizar(evento.titulo, idioma) ||
-      localizar(evento.nombre, idioma) ||
-      evento.slug,
+    nombre: evento.titulo || evento.nombre || evento.slug,
     categoria,
-    etiqueta: localizar(categoriaApi?.nombre, idioma) || categoria,
+    etiqueta: categoria?.nombre || categoria,
     fecha,
     horario: fechaLegible,
-    lugar: localizar(evento.recinto?.nombre, idioma),
-    ciudad: localizar(evento.recinto?.ciudad, idioma),
+    lugar: evento.recinto?.nombre,
+    ciudad: evento.recinto?.ciudad,
     precio: evento.precioDesde ?? evento.precio ?? 0,
-    arte: evento.afiche ?? evento.arte ?? 0,
+    arte: varianteCss,
+    // arte: evento.afiche ?? evento.arte ?? 0,
   };
 }
 
-async function cargarTodasLasPaginas(idioma, signal) {
-  const parametros = new URLSearchParams({
-    idioma,
-    pagina: "1",
-    porPagina: String(EVENTOS_POR_PAGINA),
-  });
-  const primeraPagina = await consultar(`/eventos?${parametros}`, { signal });
+async function cargarTodasLasPaginas(idioma) {
+  const primeraPagina = await consultar(
+    `/eventos?idioma=${idioma}&pagina=1&porPagina=${EVENTOS_POR_PAGINA}`,
+  );
   const paginas = Math.max(1, Number(primeraPagina.paginacion?.paginas) || 1);
 
   const otrasPaginas = await Promise.all(
     Array.from({ length: paginas - 1 }, (_, indice) => {
       const pagina = indice + 2;
-      const query = new URLSearchParams({
-        idioma,
-        pagina: String(pagina),
-        porPagina: String(EVENTOS_POR_PAGINA),
-      });
-      return consultar(`/eventos?${query}`, { signal });
+      return consultar(
+        `/eventos?idioma=${idioma}&pagina=${pagina}&porPagina=${EVENTOS_POR_PAGINA}`,
+      );
     }),
   );
 
@@ -72,9 +65,9 @@ async function cargarTodasLasPaginas(idioma, signal) {
   );
 }
 
-async function cargarCategorias(idioma, signal) {
+async function cargarCategorias(idioma) {
   const parametros = new URLSearchParams({ idioma });
-  const respuesta = await consultar(`/categorias?${parametros}`, { signal });
+  const respuesta = await consultar(`/categorias?${parametros}`);
   return Array.isArray(respuesta.datos) ? respuesta.datos : [];
 }
 
@@ -93,18 +86,12 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     setCargando(true);
     setError(null);
 
-    Promise.all([
-      cargarTodasLasPaginas(idioma, controlador.signal),
-      cargarCategorias(idioma, controlador.signal),
-    ])
+    Promise.all([cargarTodasLasPaginas(idioma), cargarCategorias(idioma)])
       .then(([datosEventos, datosCategorias]) => {
-        const categoriasPorId = new Map(
-          datosCategorias.map((categoria) => [categoria.id, categoria]),
-        );
         setCategorias(datosCategorias);
         setEventos(
           datosEventos.map((evento) =>
-            adaptarEvento(evento, idioma, categoriasPorId),
+            adaptarEvento(evento, idioma),
           ),
         );
       })
