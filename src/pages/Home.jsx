@@ -1,3 +1,4 @@
+import { useState } from "react";
 import LayoutPublico from "../components/LayoutPublico/LayoutPublico.jsx";
 import HeroTaquilla from "../components/HeroTaquilla/HeroTaquilla.jsx";
 import BuscadorEventos from "../components/BuscadorEventos/BuscadorEventos.jsx";
@@ -17,9 +18,11 @@ export default function Home() {
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const en = idioma === "en";
+  const [ciudadSeleccionada, setCiudadSeleccionada] = useState("Manizales");
   const { detalle, setDetalle, abrirCuenta } = useDetalle(idioma);
   const {
     eventos,
+    eventosFinDeSemana,
     categorias,
     numeroEventos,
     filtros,
@@ -30,6 +33,62 @@ export default function Home() {
     setFiltros,
     filtrarCategoria,
   } = useEventos(idioma, EVENTOS_INICIALES);
+
+  const textosInicio = textos?.paginas?.inicio;
+  const verTodos = () => buscar({});
+
+  const textosResultados = textos?.paginas?.explorar?.resultadosCorto;
+  const textoResultados =
+    resultados.length === 1 ? textosResultados?.uno : textosResultados?.otro;
+
+  const tituloEventos = filtros ? (
+    en ? (
+      "Search results"
+    ) : (
+      "Resultados de búsqueda"
+    )
+  ) : (
+    <>
+      <span className="titulo-destacados-escritorio">
+        {textosInicio?.destacados?.titulo}
+      </span>
+      <span className="titulo-destacados-movil">
+        {textosInicio?.filtrosMovil?.destacados}
+      </span>
+    </>
+  );
+
+  const descripcionEventos = filtros ? (
+    textoResultados?.replaceAll("{cantidad}", resultados.length)
+  ) : (
+    <span className="descripcion-destacados-escritorio">
+      {textosInicio?.destacados?.subtitulo}
+    </span>
+  );
+
+  const eventosPrincipales = filtros
+    ? resultados
+    : eventos.filter((evento) => evento.destacado).slice(0, numeroEventos);
+
+  const ciudadTexto =
+    ciudadSeleccionada || (en ? "all cities" : "todas las ciudades");
+
+  const eventosProximamente = eventos
+    .filter(
+      (evento) =>
+        evento.ciudad?.toLowerCase() === ciudadSeleccionada?.toLowerCase(),
+    )
+    .slice(0, numeroEventos);
+
+  const textosProximamente = textosInicio?.proximos;
+  const tituloProximamente = textosProximamente?.titulo.replaceAll(
+    "{ciudad}",
+    ciudadTexto,
+  );
+  const descripcionProximamente = textosProximamente?.subtitulo?.replaceAll(
+    "{ciudad}",
+    ciudadTexto,
+  );
 
   function abrirEvento(evento) {
     setDetalle({
@@ -42,7 +101,7 @@ export default function Home() {
           {evento.descripcion && <small>{evento.descripcion}</small>}
         </div>
       ),
-      cerrar: en ? "Close" : "Cerrar",
+      cerrar: textos?.general?.acciones?.cerrar ?? (en ? "Close" : "Cerrar"),
     });
   }
 
@@ -65,13 +124,14 @@ export default function Home() {
           en={en}
           eventos={eventos}
           onBuscar={buscar}
+          ciudad={ciudadSeleccionada}
+          onCambiarCiudad={setCiudadSeleccionada}
           filtrosAplicados={filtros}
         />
       </HeroTaquilla>
+
       <div className="ancho-home">
-        {cargando && (
-          <p role="status">{textos?.estados?.cargando?.titulo}</p>
-        )}
+        {cargando && <p role="status">{textos?.estados?.cargando?.titulo}</p>}
         {error && !cargando && (
           <p role="alert">
             {en
@@ -82,54 +142,58 @@ export default function Home() {
         {!cargando && !error && (
           <>
             <CategoriasEventos
+              textos={textos}
               categorias={categorias}
               filtros={filtros}
               en={en}
               filtrarCategoria={filtrarCategoria}
             />
             <SeccionEventos
+              textos={textos}
               id="eventos"
-              titulo={
-                filtros
-                  ? en
-                    ? "Search results"
-                    : "Resultados de búsqueda"
-                  : en
-                    ? "Featured events"
-                    : "Eventos destacados"
-              }
-              descripcion={
-                filtros
-                  ? `${resultados.length} ${en ? "results" : "resultados"}`
-                  : en
-                    ? "Explore our event selection"
-                    : "Explora nuestra selección de eventos"
-              }
-              eventos={filtros ? resultados : eventos.slice(0, numeroEventos)}
+              presentacion="carrusel"
+              titulo={tituloEventos}
+              descripcion={descripcionEventos}
+              eventos={eventosPrincipales}
               en={en}
               onAbrir={abrirEvento}
-              onVerTodos={() => buscar({})}
+              onVerTodos={verTodos}
             />
-            {!filtros && (
+            {(!filtros || filtros.ciudad) && (
               <SeccionEventos
-                id="eventos-ciudad"
-                titulo={en ? "Events in Manizales" : "Eventos en Manizales"}
-                descripcion={
-                  en
-                    ? "Discover events in your city"
-                    : "Descubre los eventos de tu ciudad"
-                }
-                eventos={eventos
-                  .filter((evento) => evento.ciudad === "Manizales")
-                  .slice(0, numeroEventos)}
+                textos={textos}
+                id="eventos-proximamente"
+                className="seccion-eventos--escritorio"
+                presentacion="lista"
+                titulo={tituloProximamente}
+                descripcion={descripcionProximamente}
+                eventos={eventosProximamente}
                 en={en}
                 onAbrir={abrirEvento}
-                onVerTodos={() => buscar({ ciudad: "Manizales" })}
+                onVerTodos={() =>
+                  buscar(
+                    ciudadSeleccionada ? { ciudad: ciudadSeleccionada } : {},
+                  )
+                }
+              />
+            )}
+            {!filtros && (
+              <SeccionEventos
+                textos={textos}
+                id="eventos-fin-de-semana"
+                className="seccion-eventos--movil"
+                presentacion="lista"
+                titulo={textosInicio?.filtrosMovil?.finDeSemana}
+                eventos={eventosFinDeSemana}
+                en={en}
+                onAbrir={abrirEvento}
+                onVerTodos={verTodos}
               />
             )}
           </>
         )}
       </div>
+
       <DialogoDetalle detalle={detalle} onCerrar={() => setDetalle(null)} />
     </LayoutPublico>
   );
