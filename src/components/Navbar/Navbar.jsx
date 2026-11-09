@@ -30,6 +30,15 @@ export default function Navbar({
     onBuscarEventos?.({ consulta });
     setAbierto(false);
   }
+  function enfocarBuscadorMovil() {
+    setAbierto(false);
+    onAlternarAccesibilidad(false);
+    const campoBusqueda = document.querySelector(
+      '#buscador-eventos input[type="search"]',
+    );
+    campoBusqueda?.scrollIntoView({ behavior: "smooth", block: "center" });
+    campoBusqueda?.focus({ preventScroll: true });
+  }
   return (
     <header
       className="cabecera-home"
@@ -43,6 +52,16 @@ export default function Navbar({
     >
       <div className="ancho-home fila-cabecera">
         <Marca nombre={nombre} tipo={tipo} />
+        {tipo === "taquilla" && (
+          <button
+            type="button"
+            className="buscar-movil"
+            aria-label={textosNavbar?.buscador?.aria}
+            onClick={enfocarBuscadorMovil}
+          >
+            <img src={iconoSearch} alt="" />
+          </button>
+        )}
         <button className="ingreso-movil" onClick={() => onCuenta("ingresar")}>
           {textosNavbar?.botones?.ingresar}
         </button>
