@@ -148,8 +148,10 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  width: min(250px, 26vw);
   height: 44px;
   box-sizing: border-box;
+  margin: 0;
   background: var(--fondo-sutil);
   border: 0;
   border-radius: var(--radio-completo);
@@ -160,6 +162,38 @@
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+}
+
+.taquilla .buscar-cabecera:focus-within {
+  outline: 2px solid var(--borde-fuerte);
+  outline-offset: 2px;
+}
+
+.taquilla .buscar-cabecera-boton {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.taquilla .buscar-cabecera input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--texto-principal);
+  font: inherit;
+}
+
+.taquilla .buscar-cabecera input::placeholder {
+  color: var(--texto-secundario);
+  opacity: 1;
 }
 
 .taquilla .buscar-cabecera img {

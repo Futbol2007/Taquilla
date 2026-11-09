@@ -13,17 +13,23 @@ export default function Navbar({
   tipo,
   idioma,
   onCambiarIdioma,
-  destino,
   onCuenta,
+  onBuscarEventos,
   accesibilidadAbierta,
   onAlternarAccesibilidad,
 }) {
   const [abierto, setAbierto] = useState(false);
+  const [consulta, setConsulta] = useState("");
   const boton = useRef(null);
   const id = useId();
   const textosNavbar = textos?.navbar;
   const textosAccesibilidad = textos?.accesibilidad;
   const { accesibilidad, cambiarValores, restablecer } = useAccesibilidad();
+  function enviarBusqueda(evento) {
+    evento.preventDefault();
+    onBuscarEventos?.({ consulta });
+    setAbierto(false);
+  }
   return (
     <header
       className="cabecera-home"
@@ -89,19 +95,35 @@ export default function Navbar({
           >
             {textosNavbar?.enlaces?.inicio}
           </a>
-          <a href={destino} onClick={() => setAbierto(false)}>
+          <a href="#explorar" onClick={() => setAbierto(false)}>
             {textosNavbar?.enlaces?.explorar}
           </a>
           <div className="acciones-home">
             {tipo === "taquilla" && (
-              <a
+              <form
                 className="buscar-cabecera"
-                href="#buscador-eventos"
-                onClick={() => setAbierto(false)}
+                role="search"
+                onSubmit={enviarBusqueda}
               >
-                <img src={iconoSearch} alt="" />
-                {textosNavbar?.buscador?.placeholder}
-              </a>
+                <button
+                  type="submit"
+                  className="buscar-cabecera-boton"
+                  aria-label={
+                    textosNavbar?.buscador?.aria
+                  }
+                >
+                  <img src={iconoSearch} alt="" />
+                </button>
+                <input
+                  type="search"
+                  value={consulta}
+                  onChange={(evento) => setConsulta(evento.target.value)}
+                  placeholder={textosNavbar?.buscador?.placeholder}
+                  aria-label={
+                    textosNavbar?.buscador?.aria
+                  }
+                />
+              </form>
             )}
             <div className="accion-movil accion-movil-accesibilidad">
               <span className="accion-movil-etiqueta">
