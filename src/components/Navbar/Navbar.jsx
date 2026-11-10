@@ -108,13 +108,13 @@ export default function Navbar({
             </button>
           </div>
           <a
-            href="#contenido"
+            href="/"
             aria-current="page"
             onClick={() => setAbierto(false)}
           >
             {textosNavbar?.enlaces?.inicio}
           </a>
-          <a href="#explorar" onClick={() => setAbierto(false)}>
+          <a href="/explorar" onClick={() => setAbierto(false)}>
             {textosNavbar?.enlaces?.explorar}
           </a>
           <div className="acciones-home">

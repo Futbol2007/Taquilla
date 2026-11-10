@@ -1,0 +1,29 @@
+.migas-pan {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  color: var(--texto-secundario);
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.migas-pan a {
+  color: var(--texto-secundario);
+  text-decoration: none;
+}
+
+.migas-pan a:hover {
+  color: var(--texto-principal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.migas-pan [aria-current="page"] {
+  color: var(--texto-principal);
+  font-weight: 500;
+}
+
+.migas-pan-separador {
+  color: var(--texto-terciario);
+}

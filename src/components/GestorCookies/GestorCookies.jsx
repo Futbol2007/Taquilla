@@ -5,7 +5,6 @@ import PreferenciasCookies from "../PreferenciasCookies/PreferenciasCookies.jsx"
 import "./GestorCookies.css";
 export default function GestorCookies({ abierto, onAbrir, onCerrar, textos }) {
   const {
-    idioma,
     consentimiento,
     preferenciasCookies,
     guardarConsentimiento,

@@ -19,10 +19,10 @@ export default function Footer({
           </div>
           <div>
             <h3>{textosFooter?.columnas?.explora?.titulo}</h3>
-            <a href="#contenido">
+            <a href="/">
               {textosFooter?.columnas?.explora?.enlaces?.inicio}
             </a>
-            <a href="#eventos">
+            <a href="/explorar">
               {textosFooter?.columnas?.explora?.enlaces?.explorar}
             </a>
           </div>
