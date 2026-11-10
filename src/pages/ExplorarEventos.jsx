@@ -18,12 +18,126 @@ import iconoFiltros from "../assets/sliders.svg";
 import "./ExplorarEventos.css";
 
 const EVENTOS_POR_PAGINA = 9;
+const PARAMETROS_EXPLORAR = [
+  "categoria",
+  "categorias",
+  "ciudad",
+  "q",
+  "fecha",
+  "finDeSemana",
+  "mes",
+  "fechaDesde",
+  "fechaHasta",
+  "precioDesde",
+  "precioHasta",
+  "hoy",
+  "orden",
+  "pagina",
+];
+
+function leerFiltrosUrl() {
+  const parametros = new URLSearchParams(window.location.search);
+  const categorias = [
+    ...parametros.getAll("categoria"),
+    ...parametros.getAll("categorias").flatMap((valor) => valor.split(",")),
+  ]
+    .map((valor) => valor.trim())
+    .filter(Boolean);
+  const numero = (clave) => {
+    const valor = parametros.get(clave);
+    if (valor === null || valor.trim() === "") return undefined;
+    const resultado = Number(valor);
+    return Number.isFinite(resultado) ? resultado : undefined;
+  };
+
+  return {
+    filtros: {
+      ...(categorias.length > 0 ? { categorias } : {}),
+      ...(parametros.get("ciudad") ? { ciudad: parametros.get("ciudad") } : {}),
+      ...(parametros.get("q") ? { consulta: parametros.get("q") } : {}),
+      ...(parametros.get("fecha") ? { fecha: parametros.get("fecha") } : {}),
+      ...(parametros.get("finDeSemana") === "true" ||
+      parametros.get("finDeSemana") === "1"
+        ? { finDeSemana: true }
+        : {}),
+      ...(parametros.get("mes") ? { mes: parametros.get("mes") } : {}),
+      ...(parametros.get("fechaDesde")
+        ? { fechaDesde: parametros.get("fechaDesde") }
+        : {}),
+      ...(parametros.get("fechaHasta")
+        ? { fechaHasta: parametros.get("fechaHasta") }
+        : {}),
+      ...(numero("precioDesde") !== undefined
+        ? { precioDesde: numero("precioDesde") }
+        : {}),
+      ...(numero("precioHasta") !== undefined
+        ? { precioHasta: numero("precioHasta") }
+        : {}),
+      ...(parametros.get("hoy") === "true" || parametros.get("hoy") === "1"
+        ? { soloHoy: true }
+        : {}),
+    },
+    orden: ["fecha", "precio", "popularidad"].includes(parametros.get("orden"))
+      ? parametros.get("orden")
+      : "fecha",
+    pagina: Math.max(1, Number.parseInt(parametros.get("pagina"), 10) || 1),
+  };
+}
+
+function actualizarUrlExplorar(filtros, orden, pagina, categoriasDisponibles) {
+  const url = new URL(window.location.href);
+  PARAMETROS_EXPLORAR.forEach((parametro) =>
+    url.searchParams.delete(parametro),
+  );
+
+  const categorias = Array.isArray(filtros.categorias)
+    ? filtros.categorias
+    : filtros.categoria
+      ? [filtros.categoria]
+      : [];
+  categorias.forEach((categoriaId) => {
+    const categoria = categoriasDisponibles.find(
+      (opcion) => String(opcion.id) === String(categoriaId),
+    );
+    const nombre = categoria?.nombre ?? categoriaId;
+    const slug = normalizar(nombre).trim().replace(/\s+/g, "-");
+    url.searchParams.append("categoria", slug);
+  });
+
+  const valores = {
+    ciudad: filtros.ciudad,
+    q: filtros.consulta?.trim(),
+    fecha: filtros.fecha,
+    finDeSemana: filtros.finDeSemana ? "true" : undefined,
+    mes: filtros.mes,
+    fechaDesde: filtros.fechaDesde,
+    fechaHasta: filtros.fechaHasta,
+    precioDesde: filtros.precioDesde,
+    precioHasta: filtros.precioHasta,
+    hoy: filtros.soloHoy ? "true" : undefined,
+    orden: orden !== "fecha" ? orden : undefined,
+    pagina: pagina > 1 ? pagina : undefined,
+  };
+
+  Object.entries(valores).forEach(([clave, valor]) => {
+    if (valor !== undefined && valor !== null && valor !== "") {
+      url.searchParams.set(clave, String(valor));
+    }
+  });
+
+  window.history.replaceState(
+    window.history.state,
+    "",
+    `${url.pathname}${url.search}${url.hash}`,
+  );
+}
 
 function normalizar(valor = "") {
   return String(valor)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase();
+    .toLocaleLowerCase()
+    .replace(/-/g, " ");
 }
 
 function fechaLocal(valor) {
@@ -75,9 +189,10 @@ export default function ExplorarEventos() {
   const { textos } = useTextos(idioma);
   const { detalle, setDetalle, abrirCuenta } = useDetalle(textos, idioma);
   const { eventos, categorias, cargando, error } = useEventos(idioma, 0);
-  const [filtros, setFiltros] = useState({});
-  const [orden, setOrden] = useState("fecha");
-  const [paginaActual, setPaginaActual] = useState(1);
+  const [estadoInicialUrl] = useState(leerFiltrosUrl);
+  const [filtros, setFiltros] = useState(estadoInicialUrl.filtros);
+  const [orden, setOrden] = useState(estadoInicialUrl.orden);
+  const [paginaActual, setPaginaActual] = useState(estadoInicialUrl.pagina);
   const [panelFiltrosMovilAbierto, setPanelFiltrosMovilAbierto] =
     useState(false);
   const explorar = textos?.paginas?.explorar;
@@ -180,6 +295,41 @@ export default function ExplorarEventos() {
     Math.ceil(resultados.length / EVENTOS_POR_PAGINA),
   );
   const paginaSegura = Math.min(paginaActual, totalPaginas);
+
+  useEffect(() => {
+    if (cargando || categorias.length === 0) return;
+
+    setFiltros((actuales) => {
+      const seleccionadas = Array.isArray(actuales.categorias)
+        ? actuales.categorias
+        : actuales.categoria
+          ? [actuales.categoria]
+          : [];
+      if (seleccionadas.length === 0) return actuales;
+
+      const idsNormalizados = seleccionadas.map((seleccionada) => {
+        const opcion = categorias.find(
+          (categoria) =>
+            String(categoria.id) === String(seleccionada) ||
+            normalizar(categoria.nombre) === normalizar(seleccionada),
+        );
+        return opcion?.id ?? seleccionada;
+      });
+      const yaNormalizadas = idsNormalizados.every(
+        (id, indice) => String(id) === String(seleccionadas[indice]),
+      );
+
+      return yaNormalizadas
+        ? actuales
+        : { ...actuales, categorias: idsNormalizados, categoria: undefined };
+    });
+  }, [cargando, categorias]);
+
+  useEffect(() => {
+    if (cargando || error) return;
+    actualizarUrlExplorar(filtros, orden, paginaSegura, categorias);
+  }, [cargando, error, filtros, orden, paginaSegura, categorias]);
+
   const eventosVisibles = resultados.slice(
     (paginaSegura - 1) * EVENTOS_POR_PAGINA,
     paginaSegura * EVENTOS_POR_PAGINA,
