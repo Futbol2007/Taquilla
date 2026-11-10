@@ -34,7 +34,7 @@ export default function Navbar({
     setAbierto(false);
     onAlternarAccesibilidad(false);
     const campoBusqueda = document.querySelector(
-      '#buscador-eventos input[type="search"]',
+      '.pagina-explorar-buscador-movil input[type="search"], #buscador-eventos input[type="search"]',
     );
     campoBusqueda?.scrollIntoView({ behavior: "smooth", block: "center" });
     campoBusqueda?.focus({ preventScroll: true });

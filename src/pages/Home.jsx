@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LayoutPublico from "../components/LayoutPublico/LayoutPublico.jsx";
 import HeroTaquilla from "../components/HeroTaquilla/HeroTaquilla.jsx";
 import BuscadorEventos from "../components/BuscadorEventos/BuscadorEventos.jsx";
@@ -17,6 +17,12 @@ const EVENTOS_INICIALES = 4;
 export default function Home() {
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
+  const tituloSeo = textos?.paginas?.inicio?.seo?.titulo;
+
+  useEffect(() => {
+    if (tituloSeo) document.title = tituloSeo;
+  }, [tituloSeo]);
+
   const en = idioma === "en";
   const [ciudadSeleccionada, setCiudadSeleccionada] = useState("Manizales");
   const { detalle, setDetalle, abrirCuenta } = useDetalle(textos, idioma);

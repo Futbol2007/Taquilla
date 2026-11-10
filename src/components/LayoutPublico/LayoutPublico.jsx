@@ -11,6 +11,7 @@ export default function LayoutPublico({
   textos,
   onCuenta,
   onBuscarEventos,
+  className = "",
   children,
 }) {
   const { idioma, cambiarIdioma } = usePreferencias();
@@ -32,7 +33,7 @@ export default function LayoutPublico({
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   return (
-    <div className={`landing ${proyecto.id}`}>
+    <div className={`landing ${proyecto.id} ${className}`.trim()}>
       <SaltarContenido texto={textos?.general?.aria?.saltarAlContenido} />
       <Navbar
         textos={textos}
