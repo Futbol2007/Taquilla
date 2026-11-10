@@ -37,7 +37,7 @@ export default function Footer({
           </div>
           <div>
             <h3>{textosFooter?.columnas?.legal?.titulo}</h3>
-            <a href="#contenido">
+            <a href="/">
               {textosFooter?.columnas?.legal?.enlaces?.terminos}
             </a>
             <button type="button" onClick={onAbrirAccesibilidad}>
