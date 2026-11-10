@@ -1,5 +1,5 @@
 export const proyecto = {
   id: "taquilla",
   nombre: "taquilla",
-  api: "https://yanethm-taquilla-api.fly.dev/api/v1",
+  api: "https://yanethm-taquilla-sustentacion.fly.dev/api/v1",
 };

@@ -96,6 +96,16 @@ export default function Home() {
     ciudadTexto,
   );
 
+  const descripcionSustentacion = en ? "theater in Manizales" : "Teatro en manizales";
+
+  const eventosSustentacion = eventos
+    .filter(
+      (evento) =>
+        evento.ciudad?.toLowerCase() === "manizales" &&
+        evento.categoria?.toLowerCase() === "teatro",
+    )
+    .slice(0, 3);
+
   function abrirEvento(evento) {
     setDetalle({
       titulo: evento.nombre,
@@ -179,6 +189,28 @@ export default function Home() {
                 onVerTodos={() =>
                   buscar(
                     ciudadSeleccionada ? { ciudad: ciudadSeleccionada } : {},
+                  )
+                }
+              />
+            )}
+            {!filtros && (
+              <SeccionEventos
+                textos={textos}
+                id="eventos-teatro"
+                className="seccion-eventos--escritorio"
+                presentacion="lista"
+                titulo={tituloProximamente}
+                descripcion={descripcionSustentacion}
+                eventos={eventosSustentacion}
+                en={en}
+                onAbrir={abrirEvento}
+                onVerTodos={() =>
+                  buscar(
+                    ciudadSeleccionada
+                      ? { ciudad: "manizales" }
+                      : {} && filtros
+                        ? { categoria: "teatro" }
+                        : {},
                   )
                 }
               />
