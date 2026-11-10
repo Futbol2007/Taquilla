@@ -20,7 +20,7 @@
 .columnas-pie h3 {
   margin: 2px 0 12px;
   color: var(--suave);
-  font: 400 12px var(--fuente-instrument-sans, "DM Sans"), sans-serif;
+  font: 400 12px var(--fuente-instrument-sans);
 }
 
 .columnas-pie > div > a:not(.marca-home),

@@ -1,7 +1,6 @@
 .seccion-eventos {
   margin-bottom: 48px;
 }
-/* Escritorio: solo "Próximamente", sin "fin de semana" */
 .seccion-eventos--movil {
   display: none;
 }

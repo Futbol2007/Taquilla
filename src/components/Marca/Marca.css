@@ -3,7 +3,7 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  font-family: "Syne", sans-serif;
+  font-family: var(--fuente-instrument-sans);
   font-size: 22px;
   font-weight: 700;
 }
@@ -26,7 +26,7 @@
   }
 }
 .taquilla .marca-home {
-  font-family: "Instrument Sans", sans-serif;
+  font-family: var(--fuente-instrument-sans);
 }
 .taquilla .emblema {
   border-radius: var(--radio-md);
