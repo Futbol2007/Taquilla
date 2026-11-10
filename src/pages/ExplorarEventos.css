@@ -1,0 +1,170 @@
+.pagina-explorar {
+  padding-block: var(--espacio-6) var(--espacio-12);
+}
+
+.pagina-explorar-cabecera {
+  margin-bottom: var(--espacio-6);
+  scroll-margin-top: var(--espacio-3);
+}
+
+.pagina-explorar-cabecera .migas-pan {
+  margin-bottom: var(--espacio-2);
+}
+
+.pagina-explorar-cabecera h1 {
+  margin-top: var(--espacio-1);
+  color: var(--texto-principal);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.pagina-explorar-resumen {
+  margin-top: var(--espacio-1);
+  color: var(--texto-secundario);
+  font-size: 16px;
+}
+
+.pagina-explorar-cuerpo {
+  display: grid;
+  grid-template-columns: minmax(240px, 272px) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--espacio-3);
+}
+
+.pagina-explorar-filtros,
+.pagina-explorar-resultados {
+  min-width: 0;
+}
+
+.pagina-explorar-controles {
+  display: flex;
+  min-height: 40px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-2);
+}
+
+.pagina-explorar-controles > .ordenar-eventos:first-child,
+.pagina-explorar-controles > .ordenar-eventos:last-child {
+  margin-left: auto;
+}
+
+.pagina-explorar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: var(--espacio-2);
+}
+
+.pagina-explorar-grid > .tarjeta-evento {
+  min-width: 0;
+}
+
+.pagina-explorar-grid > .tarjeta-evento > .arte-evento {
+  height: 166px;
+}
+
+.pagina-explorar-grid .contenido-evento {
+  padding: var(--espacio-2);
+}
+
+.pagina-explorar-grid .contenido-evento h3 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.pagina-explorar-vacio {
+  display: grid;
+  justify-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-8) var(--espacio-3);
+  color: var(--texto-principal);
+  background: var(--fondo-superficie);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-lg);
+  text-align: center;
+}
+
+.pagina-explorar-vacio h2 {
+  font-size: 20px;
+}
+
+.pagina-explorar-vacio p {
+  max-width: 48ch;
+  color: var(--texto-secundario);
+}
+
+.pagina-explorar-error {
+  padding: var(--espacio-3);
+  color: var(--texto-principal);
+  background: var(--fondo-superficie);
+  border: 1px solid var(--estado-error);
+  border-radius: var(--radio-lg);
+}
+
+.pagina-explorar-error h2 {
+  margin-bottom: var(--espacio-1);
+  font-size: 18px;
+}
+
+.pagina-explorar-error p {
+  color: var(--texto-secundario);
+}
+
+.pagina-explorar-resultados > .paginacion-eventos {
+  margin-top: var(--espacio-4);
+}
+
+@media (max-width: 1100px) {
+  .pagina-explorar-cuerpo {
+    grid-template-columns: minmax(220px, 250px) minmax(0, 1fr);
+    gap: var(--espacio-2);
+  }
+
+  .pagina-explorar-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .pagina-explorar {
+    padding-block: var(--espacio-3) var(--espacio-8);
+  }
+
+  .pagina-explorar-cabecera {
+    margin-bottom: var(--espacio-2);
+  }
+
+  .pagina-explorar-cabecera h1 {
+    font-size: 28px;
+  }
+
+  .pagina-explorar-resumen {
+    font-size: 14px;
+  }
+
+  .pagina-explorar-cuerpo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pagina-explorar-controles {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagina-explorar-controles > .ordenar-eventos {
+    margin-left: 0;
+  }
+
+  .pagina-explorar-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--espacio-2);
+  }
+
+  .pagina-explorar-grid > .tarjeta-evento > .arte-evento {
+    height: 190px;
+  }
+}
