@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección que muestre Vite. Cada proyecto sirve su home en `/`.
+Abre la dirección que muestre Vite. El home está en `/` y Explorar eventos en `/explorar`.
 
 ```sh
 npm run build
@@ -21,11 +21,10 @@ npm run preview
 ## Organización
 
 - `src/pages/Home.jsx`: composición del home y acciones de demostración.
+- `src/pages/ExplorarEventos.jsx`: interfaz de búsqueda y exploración del catálogo.
 - `src/components/`: cada carpeta incluye el componente `.jsx` y su `.css`.
 - `src/styles/tokens.css`: colores de marca, fuentes, espaciado y radio.
 - `src/styles/base.css`: reset, contenedores y elementos comunes.
-- `src/data/catalogo.js`: catálogo local de ejemplo.
-- `src/data/interfaz.js`: traducciones ES/EN de navegación y preferencias.
 - `src/context/PreferenciasContext.jsx`: estado compartido de idioma y consentimiento.
 - `src/services/cookies.js`: lectura, guardado y eliminación de cookies.
 - `src/services/api.js`: cliente GET para la API real del proyecto.
@@ -66,15 +65,23 @@ Los estilos están separados por responsabilidad, pero usan las clases y los tok
 
 ## Datos y API
 
-**El home usa datos locales y funciona sin backend.** El cliente HTTP y el hook están incluidos para la práctica de integración, pero no sustituyen automáticamente el catálogo ni los textos locales. No se anuncia una integración remota que todavía no está conectada.
+El home y Explorar eventos obtienen eventos y categorías de la API mediante `useEventos`. Los textos de la interfaz se cargan por idioma con `useTextos`. Si la API no responde, la interfaz muestra sus estados de carga o error.
 
 API configurada: `https://yanethm-taquilla-api.fly.dev/api/v1`.
 
-Endpoints del home: `GET /eventos/destacados`, `GET /categorias`, `GET /ciudades`, `GET /eventos`, `GET /idiomas` y `GET /textos?idioma=es`.
+`useEventos` consulta `GET /eventos` en páginas y `GET /categorias?idioma=...`. `useTextos` consulta `GET /textos?idioma=es` o `GET /textos?idioma=en`.
 
-Las listas llegan en `datos`, las listas paginadas incluyen `paginacion` y los textos llegan en `textos`. Consulta el [contrato](https://yanethm-taquilla-api.fly.dev/docs/contrato) antes de adaptar campos. El formulario de fecha de Taquilla es una demostración local: el contrato no documenta filtro remoto por fecha.
+Las listas llegan en `datos`, las listas paginadas incluyen `paginacion` y los textos llegan en `textos`. Consulta el [contrato](https://yanethm-taquilla-api.fly.dev/docs/contrato) antes de adaptar campos. Los filtros de Explorar se aplican en el cliente sobre los eventos cargados.
 
-Para integrar, usa `useRecurso` en el contenedor, adapta la respuesta al objeto que esperan las tarjetas y pasa ese resultado por props. Maneja carga y error antes de renderizar. Los componentes de presentación no necesitan conocer la URL de la API.
+`useRecurso` también está disponible como hook genérico para otras consultas. Los componentes de presentación reciben los datos por props y no necesitan conocer la URL de la API.
+
+## Explorar eventos y parámetros de URL
+
+La página `/explorar` mantiene en la URL el estado de búsqueda. `ExplorarEventos.jsx` lee sus parámetros al abrir la página y restaura los filtros, el orden y la página. Al cambiar esos controles, actualiza la dirección sin recargar. Así se puede recargar o compartir un enlace y conservar los resultados.
+
+Ejemplo: `/explorar?categoria=teatro&ciudad=Manizales&q=salsa&orden=precio&pagina=2`.
+
+Se admiten `categoria` (puede aparecer más de una vez), `ciudad`, `q`, `fecha`, `finDeSemana`, `mes`, `fechaDesde`, `fechaHasta`, `precioDesde`, `precioHasta`, `hoy`, `orden` y `pagina`. Los valores predeterminados —orden por fecha y página 1— se omiten. Los demás parámetros de la URL se conservan.
 
 ## Cookies e idioma
 
@@ -90,4 +97,4 @@ Enlace de salto al contenido, menú con `aria-expanded`, Escape y retorno de foc
 
 ## Alcance
 
-Solo el home. Los botones de cuenta abren un aviso; las tarjetas abren detalles locales de demostración. No hay registro, reproducción, compra ni vistas adicionales. Las fuentes de Google Fonts requieren conexión; el CSS incluye fuentes de respaldo.
+Incluye el home y la vista Explorar eventos. Los botones de cuenta abren un aviso y las tarjetas muestran detalles locales de demostración; no hay registro ni compra. Las fuentes de Google Fonts requieren conexión; el CSS incluye fuentes de respaldo.
