@@ -13,6 +13,8 @@ import { useDetalle } from "../hooks/useDetalle.js";
 import { useEventos } from "../hooks/useEventos.js";
 import { useTextos } from "../hooks/useTextos.js";
 import { dinero } from "../utils/dinero.js";
+import IconoEvento from "../components/IconoEvento/IconoEvento.jsx";
+import iconoFiltros from "../assets/sliders.svg";
 import "./ExplorarEventos.css";
 
 const EVENTOS_POR_PAGINA = 9;
@@ -76,9 +78,31 @@ export default function ExplorarEventos() {
   const [filtros, setFiltros] = useState({});
   const [orden, setOrden] = useState("fecha");
   const [paginaActual, setPaginaActual] = useState(1);
+  const [panelFiltrosMovilAbierto, setPanelFiltrosMovilAbierto] =
+    useState(false);
   const explorar = textos?.paginas?.explorar;
   const migas = textos?.componentes?.migas;
   const tituloPagina = explorar?.seo?.titulo?.split(" · ")[0];
+
+  useEffect(() => {
+    if (explorar?.seo?.titulo) document.title = explorar.seo.titulo;
+  }, [explorar?.seo?.titulo]);
+
+  useEffect(() => {
+    if (!panelFiltrosMovilAbierto) return undefined;
+
+    const overflowAnterior = document.body.style.overflow;
+    const cerrarConEscape = (evento) => {
+      if (evento.key === "Escape") setPanelFiltrosMovilAbierto(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", cerrarConEscape);
+    return () => {
+      document.body.style.overflow = overflowAnterior;
+      window.removeEventListener("keydown", cerrarConEscape);
+    };
+  }, [panelFiltrosMovilAbierto]);
 
   const resultados = useMemo(() => {
     const categoriasElegidas = Array.isArray(filtros.categorias)
@@ -165,6 +189,11 @@ export default function ExplorarEventos() {
     resultados.length === 1
       ? plantillasResultados?.uno
       : plantillasResultados?.otro;
+  const plantillasResultadosCortos = explorar?.resultadosCorto;
+  const textoResultadosCorto =
+    resultados.length === 1
+      ? plantillasResultadosCortos?.uno
+      : plantillasResultadosCortos?.otro;
 
   function actualizarFiltros(nuevosFiltros) {
     setFiltros(nuevosFiltros);
@@ -204,8 +233,11 @@ export default function ExplorarEventos() {
       onBuscarEventos={(busqueda) =>
         actualizarFiltros({ ...filtros, ...busqueda })
       }
+      className="landing-explorar"
     >
-      <div className="pagina-explorar ancho-home">
+      <div
+        className={`pagina-explorar ancho-home${panelFiltrosMovilAbierto ? " filtros-movil-abiertos" : ""}`}
+      >
         <header className="pagina-explorar-cabecera">
           <MigasPan
             textos={migas}
@@ -213,6 +245,37 @@ export default function ExplorarEventos() {
             etiqueta={explorar?.seo?.titulo}
           />
           <h1>{tituloPagina}</h1>
+          <form
+            className="pagina-explorar-buscador-movil"
+            role="search"
+            onSubmit={(evento) => evento.preventDefault()}
+          >
+            <label htmlFor="buscar-en-explorar">
+              <IconoEvento tipo="buscar" />
+              <input
+                id="buscar-en-explorar"
+                type="search"
+                value={filtros.consulta ?? ""}
+                placeholder={
+                  textos?.paginas?.inicio?.hero?.buscador?.placeholders?.movil
+                }
+                onChange={(evento) =>
+                  actualizarFiltros({
+                    ...filtros,
+                    consulta: evento.target.value,
+                  })
+                }
+              />
+            </label>
+            <button
+              type="button"
+              aria-label={explorar?.filtros?.titulo}
+              aria-expanded={panelFiltrosMovilAbierto}
+              onClick={() => setPanelFiltrosMovilAbierto((abierto) => !abierto)}
+            >
+              <img src={iconoFiltros} alt="" aria-hidden="true" />
+            </button>
+          </form>
           <p className="pagina-explorar-resumen" role="status">
             {textoResultados?.replaceAll(
               "{cantidad}",
@@ -240,6 +303,14 @@ export default function ExplorarEventos() {
                 cantidadResultados={resultados.length}
                 onCambiarFiltros={actualizarFiltros}
                 onLimpiar={limpiarFiltros}
+                onCerrar={() => setPanelFiltrosMovilAbierto(false)}
+                modalMovilAbierto={panelFiltrosMovilAbierto}
+                onVerResultados={() => {
+                  setPanelFiltrosMovilAbierto(false);
+                  document
+                    .querySelector("#eventos")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
               />
             </aside>
 
@@ -252,14 +323,22 @@ export default function ExplorarEventos() {
                   onCambiarFiltros={actualizarFiltros}
                   onLimpiar={limpiarFiltros}
                 />
-                <OrdenarEventos
-                  textos={textos}
-                  orden={orden}
-                  onCambiarOrden={(valor) => {
-                    setOrden(valor);
-                    setPaginaActual(1);
-                  }}
-                />
+                <div className="pagina-explorar-barra-resultados-movil">
+                  <p>
+                    {textoResultadosCorto?.replaceAll(
+                      "{cantidad}",
+                      String(resultados.length),
+                    )}
+                  </p>
+                  <OrdenarEventos
+                    textos={textos}
+                    orden={orden}
+                    onCambiarOrden={(valor) => {
+                      setOrden(valor);
+                      setPaginaActual(1);
+                    }}
+                  />
+                </div>
               </div>
 
               {eventosVisibles.length > 0 ? (

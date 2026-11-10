@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { dinero } from "../../utils/dinero.js";
+import iconoCerrar from "../../assets/x.svg";
 import "./PanelFiltrosEventos.css";
 
 export default function PanelFiltrosEventos({
@@ -11,6 +12,8 @@ export default function PanelFiltrosEventos({
   onCambiarFiltros,
   onLimpiar,
   onVerResultados,
+  onCerrar,
+  modalMovilAbierto = false,
 }) {
   const id = useId();
   const [fechasAbiertas, setFechasAbiertas] = useState(false);
@@ -29,8 +32,7 @@ export default function PanelFiltrosEventos({
   const precioMinimo = precios.length ? Math.min(...precios) : 0;
   const precioMaximo = precios.length ? Math.max(...precios) : 100000;
   const limitePrecioMaximo = Math.max(
-    100000,
-    Math.ceil(precioMaximo / 100000) * 100000,
+    100000
   );
   const precioDesde = Number(filtros.precioDesde ?? precioMinimo);
   const precioHasta = Number(filtros.precioHasta ?? precioMaximo);
@@ -78,33 +80,55 @@ export default function PanelFiltrosEventos({
   }
 
   return (
-    <section className="panel-filtros-eventos" aria-labelledby={`${id}-titulo`}>
+    <section
+      className="panel-filtros-eventos"
+      aria-labelledby={`${id}-titulo`}
+      role={modalMovilAbierto ? "dialog" : undefined}
+      aria-modal={modalMovilAbierto ? "true" : undefined}
+    >
       <div className="panel-filtros-eventos-cabecera">
         <h2 id={`${id}-titulo`}>{textosFiltros?.titulo}</h2>
         <button type="button" className="panel-filtros-limpiar" onClick={limpiarFiltros}>
           {textosFiltros?.botones?.limpiar}
         </button>
+        {onCerrar && (
+          <button
+            type="button"
+            className="panel-filtros-cerrar"
+            aria-label={textos?.general?.acciones?.cerrar}
+            onClick={onCerrar}
+          >
+            <img src={iconoCerrar} alt="" aria-hidden="true" />
+          </button>
+        )}
       </div>
 
       <fieldset className="panel-filtros-grupo">
         <legend>{textosFiltros?.categoria}</legend>
-        {categorias.map((categoria) => {
-          const inputId = `${id}-categoria-${categoria.id}`;
-          return (
-            <label className="panel-filtros-categoria" htmlFor={inputId} key={categoria.id}>
-              <input
-                id={inputId}
-                type="checkbox"
-                checked={filtroCategorias.includes(categoria.id)}
-                onChange={(evento) =>
-                  cambiarCategoria(categoria.id, evento.target.checked)
-                }
-              />
-              <span>{categoria.nombre}</span>
-              <small>{categoria.eventos ?? 0}</small>
-            </label>
-          );
-        })}
+        <div className="panel-filtros-categorias">
+          {categorias.map((categoria) => {
+            const inputId = `${id}-categoria-${categoria.id}`;
+            const seleccionada = filtroCategorias.includes(categoria.id);
+            return (
+              <label
+                className={`panel-filtros-categoria${seleccionada ? " seleccionada" : ""}`}
+                htmlFor={inputId}
+                key={categoria.id}
+              >
+                <input
+                  id={inputId}
+                  type="checkbox"
+                  checked={seleccionada}
+                  onChange={(evento) =>
+                    cambiarCategoria(categoria.id, evento.target.checked)
+                  }
+                />
+                <span>{categoria.nombre}</span>
+                <small>{categoria.eventos ?? 0}</small>
+              </label>
+            );
+          })}
+        </div>
       </fieldset>
 
       <fieldset className="panel-filtros-grupo">
@@ -223,16 +247,18 @@ export default function PanelFiltrosEventos({
       </fieldset>
 
       {onVerResultados && (
-        <button
-          type="button"
-          className="boton-home primario panel-filtros-ver-resultados"
-          onClick={onVerResultados}
-        >
-          {textosFiltros?.botones?.verResultados?.replaceAll(
-            "{cantidad}",
-            String(cantidadResultados),
-          )}
-        </button>
+        <div className="panel-filtros-pie">
+          <button
+            type="button"
+            className="boton-home primario panel-filtros-ver-resultados"
+            onClick={onVerResultados}
+          >
+            {textosFiltros?.botones?.verResultados?.replaceAll(
+              "{cantidad}",
+              String(cantidadResultados),
+            )}
+          </button>
+        </div>
       )}
     </section>
   );

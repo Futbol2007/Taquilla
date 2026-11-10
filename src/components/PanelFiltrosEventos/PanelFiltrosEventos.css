@@ -28,6 +28,10 @@
   border-bottom: 1px solid var(--borde-sutil);
 }
 
+.panel-filtros-cerrar {
+  display: none;
+}
+
 .panel-filtros-eventos-cabecera h2 {
   margin: 0;
   font-size: 20px;
@@ -75,6 +79,12 @@
   color: var(--texto-principal);
   cursor: pointer;
   font-size: 14px;
+}
+
+.panel-filtros-categorias {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
 }
 
 .panel-filtros-categoria input {
@@ -235,7 +245,11 @@
 }
 
 .panel-filtros-ver-resultados {
-  width: 100%;
+  display: none;
+}
+
+.panel-filtros-pie {
+  display: none;
 }
 
 .panel-filtros-eventos :focus-visible {
@@ -245,16 +259,151 @@
 
 @media (max-width: 767px) {
   .panel-filtros-eventos {
+    position: relative;
+    container-type: normal;
+    display: flex;
+    min-height: 100dvh;
+    flex-direction: column;
     gap: var(--espacio-2);
-    padding: var(--espacio-2);
-    border-radius: var(--radio-md);
+    padding: max(12px, env(safe-area-inset-top)) 20px
+      calc(92px + env(safe-area-inset-bottom));
+    background: var(--fondo-superficie);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .panel-filtros-eventos-cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 36px;
+    min-height: 48px;
+    align-items: center;
+    margin-bottom: 2px;
+    padding: 0 0 var(--espacio-1);
+    background: var(--fondo-superficie);
+    border-bottom: 1px solid var(--borde-sutil);
+  }
+
+  .panel-filtros-eventos-cabecera h2 {
+    font-size: 16px;
+  }
+
+  .panel-filtros-limpiar {
+    justify-self: end;
+    margin-right: var(--espacio-1);
+    font-size: 13px;
+    text-decoration: none;
+  }
+
+  .panel-filtros-cerrar {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    background: var(--fondo-sutil);
+    border: 0;
+    border-radius: var(--radio-completo);
+  }
+
+  .panel-filtros-cerrar img {
+    width: 16px;
+    height: 16px;
   }
 
   .panel-filtros-grupo {
     padding-bottom: var(--espacio-2);
   }
 
+  .panel-filtros-categorias {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--espacio-1);
+  }
+
+  .panel-filtros-grupo legend {
+    margin-bottom: var(--espacio-1);
+    font-size: 14px;
+  }
+
+  .panel-filtros-categoria {
+    display: flex;
+    min-width: 0;
+    min-height: 34px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 4px;
+    background: var(--fondo-superficie);
+    border: 1px solid var(--borde-sutil);
+    border-radius: var(--radio-completo);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .panel-filtros-categoria input,
+  .panel-filtros-categoria small {
+    display: none;
+  }
+
+  .panel-filtros-categoria.seleccionada {
+    color: var(--texto-inverso);
+    background: var(--fondo-inverso);
+    border-color: var(--fondo-inverso);
+  }
+
+  .panel-filtros-fechas-rapidas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--espacio-1);
+  }
+
+  .panel-filtros-fechas-rapidas button {
+    min-width: 0;
+    min-height: 36px;
+    padding-inline: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .panel-filtros-elegir-fechas {
+    grid-column: 1 / -1;
+    justify-self: start;
+    min-width: 0;
+    padding-inline: var(--espacio-2) !important;
+  }
+
   .panel-filtros-rango-fechas {
     grid-template-columns: 1fr;
+  }
+
+  .panel-filtros-eventos .panel-filtros-ver-resultados {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 var(--espacio-2);
+    color: var(--texto-inverso);
+    background: var(--fondo-inverso);
+    border: 0;
+    border-radius: var(--radio-md);
+  }
+
+  .panel-filtros-pie {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    display: block;
+    padding: var(--espacio-2) 20px calc(var(--espacio-2) + env(safe-area-inset-bottom));
+    background: var(--fondo-superficie);
+    border-top: 1px solid var(--borde-sutil);
+  }
+
+  .panel-filtros-eventos .panel-filtros-ver-resultados {
+    font-size: 14px;
   }
 }
