@@ -407,3 +407,40 @@
     font-size: 14px;
   }
 }
+
+@media (max-width: 360px) {
+  .panel-filtros-eventos {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .panel-filtros-categoria {
+    padding-inline: 2px;
+    font-size: 10px;
+  }
+
+  .panel-filtros-fechas-rapidas {
+    grid-template-columns: minmax(72px, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .panel-filtros-fechas-rapidas button {
+    padding-inline: 8px;
+    font-size: 10px;
+  }
+
+  .panel-filtros-fechas-rapidas button:nth-child(2) {
+    white-space: nowrap;
+  }
+
+  .panel-filtros-elegir-fechas {
+    grid-column: auto;
+    justify-self: stretch;
+  }
+}
+
+@media (min-width: 361px) and (max-width: 400px) {
+  .panel-filtros-fechas-rapidas button {
+    padding-inline: 2px;
+    font-size: 10px;
+  }
+}

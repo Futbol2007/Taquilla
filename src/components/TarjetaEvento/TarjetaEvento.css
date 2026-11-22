@@ -12,6 +12,7 @@
   outline-offset: 3px;
 }
 .contenido-evento {
+  min-width: 0;
   padding: 16px;
 }
 .contenido-evento h3 {
@@ -22,11 +23,13 @@
 }
 .contenido-evento > p {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 8px;
   font-size: 14px;
   color: var(--texto-secundario);
   margin-top: 10px;
+  overflow-wrap: anywhere;
 }
 .contenido-evento > p svg {
   flex-shrink: 0;
@@ -35,10 +38,15 @@
 }
 .precio-evento {
   display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 8px;
   margin-top: 24px;
+}
+.precio-evento > div {
+  min-width: 0;
 }
 .precio-evento small {
   display: block;
@@ -50,6 +58,8 @@
   font-weight: 500;
 }
 .precio-evento .boton-home {
+  max-width: 100%;
+  white-space: normal;
   border-color: var(--borde-fuerte);
   padding: 9px 16px;
 }

@@ -3,6 +3,7 @@
 }
 
 .pagina-explorar {
+  min-width: 0;
   padding-block: var(--espacio-6) var(--espacio-12);
 }
 
@@ -299,6 +300,7 @@
   .pagina-explorar-barra-resultados-movil .ordenar-eventos select {
     flex: 0 1 auto;
     width: auto;
+    max-width: 65%;
     min-height: 36px;
     padding: 0 18px 0 0;
     font-size: 14px;
