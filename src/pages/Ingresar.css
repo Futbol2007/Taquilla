@@ -164,6 +164,11 @@
   color: var(--texto-principal);
 }
 
+.campo-clave-acceso input::-ms-reveal,
+.campo-clave-acceso input::-ms-clear {
+  display: none;
+}
+
 .boton-mostrar-clave {
   display: grid;
   width: 32px;

@@ -5,6 +5,7 @@ import { useSesion } from "../context/SesionContext.jsx";
 import { proyecto } from "../config/proyecto.js";
 import { useTextos } from "../hooks/useTextos.js";
 import iconoOjo from "../assets/eye.svg";
+import iconoOjoTachado from "../assets/eye-off.svg";
 import iconoCheck from "../assets/check.svg";
 import iconoAlerta from "../assets/alert.svg";
 import "./Ingresar.css";
@@ -256,7 +257,7 @@ export default function Ingresar() {
                     aria-label={mostrarClave ? formulario?.botones?.ocultarClave : formulario?.botones?.mostrarClave}
                     onClick={() => setMostrarClave((visible) => !visible)}
                   >
-                    <img src={iconoOjo} alt="" aria-hidden="true" />
+                    <img src={mostrarClave ? iconoOjoTachado : iconoOjo} alt="" aria-hidden="true" />
                   </button>
                 </div>
                 {errorClave && <small id="error-clave-acceso" role="alert">{errorClave}</small>}
