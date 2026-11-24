@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-const API = "https://yanethm-taquilla-api.fly.dev/api/v1/textos";
+import { consultar } from "../services/api.js";
 
 function validarTextos(datos) {
   const textos = datos?.textos;
@@ -54,12 +54,10 @@ export function useTextos(idioma) {
     setTextos(null);
     async function cargarTextosNavbar() {
       try {
-        const respuesta = await fetch(`${API}?idioma=${idioma}`, {
-          signal: controlador.signal,
-        });
-        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-        // Si si respondio bien
-        const datos = await respuesta.json();
+        const datos = await consultar(
+          `/textos?idioma=${encodeURIComponent(idioma)}`,
+          { signal: controlador.signal },
+        );
         const nuevosTextos = validarTextos(datos);
         if (vigente) setTextos(nuevosTextos);
       } catch (error) {
