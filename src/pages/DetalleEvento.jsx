@@ -84,7 +84,7 @@ export default function DetalleEvento({ slug }) {
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const { abrirCuenta } = useDetalle(textos, idioma);
-  const { eventos, cargando, error } = useEventos(idioma, 0);
+  const { eventos, error } = useEventos("es", 0);
   const eventoLista = eventos.find(
     (item) => item.slug === slug || String(item.id) === slug,
   );
@@ -115,7 +115,7 @@ export default function DetalleEvento({ slug }) {
         nombre: primerTexto(eventoDatos.titulo, eventoDatos.nombre, eventoDatos.slug),
       }
     : null;
-  const cargandoVista = cargando || cargandoDetalleApi;
+  const cargandoVista = cargandoDetalleApi && !eventoLista;
   const paginas = textos?.paginas;
   const detalle = paginas?.detalleEvento;
   const info = detalle?.info;

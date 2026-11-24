@@ -51,7 +51,6 @@ export function useTextos(idioma) {
     let vigente = true;
     setCargando(true);
     setError(false);
-    setTextos(null);
     async function cargarTextosNavbar() {
       try {
         const datos = await consultar(
