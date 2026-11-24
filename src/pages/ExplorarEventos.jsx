@@ -6,15 +6,13 @@ import FiltrosActivos from "../components/FiltrosActivos/FiltrosActivos.jsx";
 import OrdenarEventos from "../components/OrdenarEventos/OrdenarEventos.jsx";
 import Paginacion from "../components/Paginacion/Paginacion.jsx";
 import TarjetaEvento from "../components/TarjetaEvento/TarjetaEvento.jsx";
-import AficheEvento from "../components/AficheEvento/AficheEvento.jsx";
 import DialogoDetalle from "../components/DialogoDetalle/DialogoDetalle.jsx";
 import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useDetalle } from "../hooks/useDetalle.js";
 import { useEventos } from "../hooks/useEventos.js";
 import { useTextos } from "../hooks/useTextos.js";
-import { dinero } from "../utils/dinero.js";
-import IconoEvento from "../components/IconoEvento/IconoEvento.jsx";
 import iconoFiltros from "../assets/sliders.svg";
+import iconoBuscar from "../assets/search.svg";
 import "./ExplorarEventos.css";
 
 const EVENTOS_POR_PAGINA = 9;
@@ -351,18 +349,8 @@ export default function ExplorarEventos() {
   }
 
   function abrirEvento(evento) {
-    setDetalle({
-      titulo: evento.nombre,
-      descripcion: `${evento.horario} · ${evento.lugar}, ${evento.ciudad}`,
-      contenido: (
-        <div className="resumen-evento">
-          <AficheEvento variante={evento.arte} />
-          <p>{dinero(evento.precio)} COP</p>
-          {evento.descripcion && <small>{evento.descripcion}</small>}
-        </div>
-      ),
-      cerrar: textos?.general?.acciones?.cerrar,
-    });
+    const identificador = evento.slug ?? evento.id;
+    if (identificador) window.location.href = `/eventos/${encodeURIComponent(identificador)}`;
   }
 
   function limpiarFiltros() {
@@ -401,7 +389,7 @@ export default function ExplorarEventos() {
             onSubmit={(evento) => evento.preventDefault()}
           >
             <label htmlFor="buscar-en-explorar">
-              <IconoEvento tipo="buscar" />
+              <img src={iconoBuscar} alt="" aria-hidden="true" />
               <input
                 id="buscar-en-explorar"
                 type="search"

@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección que muestre Vite. El home está en `/` y Explorar eventos en `/explorar`.
+Abre la dirección que muestre Vite. El home está en `/`, Explorar eventos en `/explorar` y cada evento en `/eventos/:slug`.
 
 ```sh
 npm run build
@@ -22,6 +22,7 @@ npm run preview
 
 - `src/pages/Home.jsx`: composición del home y acciones de demostración.
 - `src/pages/ExplorarEventos.jsx`: interfaz de búsqueda y exploración del catálogo.
+- `src/pages/DetalleEvento.jsx`: ficha individual, ubicación y recomendaciones de eventos.
 - `src/components/`: cada carpeta incluye el componente `.jsx` y su `.css`.
 - `src/styles/tokens.css`: colores de marca, fuentes, espaciado y radio.
 - `src/styles/base.css`: reset, contenedores y elementos comunes.
@@ -71,7 +72,7 @@ API configurada: `https://yanethm-taquilla-api.fly.dev/api/v1`.
 
 `useEventos` consulta `GET /eventos` en páginas y `GET /categorias?idioma=...`. `useTextos` consulta `GET /textos?idioma=es` o `GET /textos?idioma=en`.
 
-Las listas llegan en `datos`, las listas paginadas incluyen `paginacion` y los textos llegan en `textos`. Consulta el [contrato](https://yanethm-taquilla-api.fly.dev/docs/contrato) antes de adaptar campos. Los filtros de Explorar se aplican en el cliente sobre los eventos cargados.
+Las listas llegan en `datos`, las listas paginadas incluyen `paginacion` y los textos llegan en `textos`. Consulta el [contrato](https://yanethm-taquilla-api.fly.dev/docs/contrato) antes de adaptar campos. Los filtros de Explorar y la ficha del evento trabajan con los eventos cargados desde la API.
 
 `useRecurso` también está disponible como hook genérico para otras consultas. Los componentes de presentación reciben los datos por props y no necesitan conocer la URL de la API.
 
@@ -82,6 +83,8 @@ La página `/explorar` mantiene en la URL el estado de búsqueda. `ExplorarEvent
 Ejemplo: `/explorar?categoria=teatro&ciudad=Manizales&q=salsa&orden=precio&pagina=2`.
 
 Se admiten `categoria` (puede aparecer más de una vez), `ciudad`, `q`, `fecha`, `finDeSemana`, `mes`, `fechaDesde`, `fechaHasta`, `precioDesde`, `precioHasta`, `hoy`, `orden` y `pagina`. Los valores predeterminados —orden por fecha y página 1— se omiten. Los demás parámetros de la URL se conservan.
+
+Las tarjetas de eventos abren `/eventos/:slug`. La ruta busca el evento en el catálogo cargado y muestra su información disponible, un enlace a la ubicación en Maps y recomendaciones de la misma categoría.
 
 ## Cookies e idioma
 
@@ -97,4 +100,4 @@ Enlace de salto al contenido, menú con `aria-expanded`, Escape y retorno de foc
 
 ## Alcance
 
-Incluye el home y la vista Explorar eventos. Los botones de cuenta abren un aviso y las tarjetas muestran detalles locales de demostración; no hay registro ni compra. Las fuentes de Google Fonts requieren conexión; el CSS incluye fuentes de respaldo.
+Incluye el home, Explorar eventos y las fichas individuales. Los botones de cuenta abren un aviso; no hay registro ni compra. Las fuentes de Google Fonts requieren conexión; el CSS incluye fuentes de respaldo.
