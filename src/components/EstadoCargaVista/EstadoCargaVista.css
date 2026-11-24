@@ -1,0 +1,346 @@
+.estado-carga-vista {
+  min-width: 0;
+}
+
+.esqueleto-bloque {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    var(--fondo-sutil) 25%,
+    var(--borde-sutil) 45%,
+    var(--fondo-sutil) 65%
+  );
+  background-size: 220% 100%;
+  animation: estado-carga-brillo 1.4s ease-in-out infinite;
+}
+
+.esqueleto-explorar {
+  display: grid;
+  grid-template-columns: minmax(210px, 272px) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--espacio-4);
+}
+
+.esqueleto-explorar-principal {
+  min-width: 0;
+}
+
+.esqueleto-explorar-controles {
+  display: grid;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-2);
+}
+
+.esqueleto-filtros-activos,
+.esqueleto-resumen-orden {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--espacio-1);
+}
+
+.esqueleto-filtro-activo {
+  width: 96px;
+  height: 30px;
+  flex: 0 0 auto;
+  border-radius: var(--radio-completo);
+}
+
+.esqueleto-resumen {
+  width: 90px;
+  height: 16px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-orden {
+  width: 150px;
+  height: 34px;
+  margin-left: auto;
+  border-radius: var(--radio-md);
+}
+
+.esqueleto-filtros {
+  display: grid;
+  gap: var(--espacio-2);
+  padding: var(--espacio-3);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-lg);
+  background: var(--fondo);
+}
+
+.esqueleto-filtro-titulo {
+  width: 45%;
+  height: 24px;
+  margin-bottom: var(--espacio-1);
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-filtro-linea {
+  width: 88%;
+  height: 16px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-filtro-control {
+  width: 100%;
+  height: 36px;
+  margin-top: var(--espacio-1);
+  border-radius: var(--radio-md);
+}
+
+.esqueleto-resultados {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--espacio-2);
+}
+
+.esqueleto-evento {
+  display: grid;
+  gap: var(--espacio-1);
+  overflow: hidden;
+  padding-bottom: var(--espacio-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-lg);
+  background: var(--fondo);
+}
+
+.esqueleto-evento > .esqueleto-bloque:not(.esqueleto-afiche) {
+  margin-inline: var(--espacio-2);
+}
+
+.esqueleto-afiche {
+  width: 100%;
+  aspect-ratio: 1.35 / 1;
+  margin-bottom: var(--espacio-1);
+}
+
+.esqueleto-etiqueta {
+  width: 54px;
+  height: 17px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-titulo {
+  width: 84%;
+  height: 22px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-evento-linea {
+  width: 90%;
+  height: 15px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-evento-linea-corta {
+  width: 60%;
+}
+
+.esqueleto-evento-precio {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+  margin: var(--espacio-2) var(--espacio-2) 0;
+}
+
+.esqueleto-evento-valor {
+  width: 72px;
+  height: 28px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-evento-boton {
+  width: 100px;
+  height: 40px;
+  border-radius: var(--radio-md);
+}
+
+.esqueleto-detalle {
+  display: grid;
+  gap: var(--espacio-1);
+  min-width: 0;
+}
+
+.esqueleto-detalle-afiche {
+  width: 100%;
+  aspect-ratio: 3.55 / 1;
+  border-radius: var(--radio-lg);
+}
+
+.esqueleto-detalle-etiqueta {
+  width: 74px;
+  height: 20px;
+  margin-top: var(--espacio-3);
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-detalle-titulo {
+  width: min(68%, 440px);
+  height: 42px;
+  border-radius: var(--radio-md);
+}
+
+.esqueleto-detalle-artista {
+  width: 44%;
+  height: 20px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-detalle-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2);
+  margin-block: var(--espacio-2) var(--espacio-3);
+}
+
+.esqueleto-detalle-dato {
+  width: 190px;
+  height: 46px;
+  border-radius: var(--radio-md);
+}
+
+.esqueleto-detalle-seccion {
+  width: 180px;
+  height: 25px;
+  margin-block: var(--espacio-2);
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-detalle-linea {
+  width: 100%;
+  height: 16px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-detalle-linea-corta {
+  width: 66%;
+}
+
+@keyframes estado-carga-brillo {
+  to { background-position-x: -220%; }
+}
+
+@media (max-width: 900px) {
+  .esqueleto-resultados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .esqueleto-explorar {
+    display: block;
+  }
+
+  .esqueleto-filtros {
+    display: none;
+  }
+
+  .esqueleto-resultados {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .esqueleto-evento {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--espacio-1);
+    padding-bottom: var(--espacio-2);
+  }
+
+  .esqueleto-evento > .esqueleto-afiche {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    margin-bottom: var(--espacio-1);
+    border-radius: var(--radio-lg) var(--radio-lg) 0 0;
+  }
+
+  .esqueleto-evento > .esqueleto-bloque:not(.esqueleto-afiche) {
+    margin-inline: 0;
+  }
+
+  .esqueleto-evento-precio {
+    margin-inline: var(--espacio-2);
+  }
+
+  .esqueleto-evento > .esqueleto-evento-linea,
+  .esqueleto-evento > .esqueleto-etiqueta,
+  .esqueleto-evento > .esqueleto-titulo {
+    margin-inline: var(--espacio-2);
+  }
+
+  .esqueleto-explorar-controles {
+    gap: 0;
+  }
+
+  .esqueleto-filtros-activos {
+    overflow: hidden;
+    flex-wrap: nowrap;
+    margin-bottom: var(--espacio-1);
+  }
+
+  .esqueleto-filtro-activo {
+    width: 80px;
+    height: 28px;
+  }
+
+  .esqueleto-resumen-orden {
+    justify-content: space-between;
+    min-height: 42px;
+  }
+
+  .esqueleto-resumen {
+    width: 82px;
+  }
+
+  .esqueleto-orden {
+    width: 132px;
+    height: 28px;
+    margin-left: 0;
+  }
+
+  .esqueleto-detalle {
+    gap: var(--espacio-1);
+  }
+
+  .esqueleto-detalle > .esqueleto-bloque:not(.esqueleto-detalle-afiche) {
+    margin-inline: var(--espacio-3);
+  }
+
+  .esqueleto-detalle-afiche {
+    margin-inline: 0 !important;
+    border-radius: var(--radio-lg) var(--radio-lg) 0 0;
+  }
+
+  .esqueleto-detalle-afiche {
+    aspect-ratio: 1.4 / 1;
+  }
+
+  .esqueleto-detalle-titulo {
+    width: 88%;
+    height: 32px;
+  }
+
+  .esqueleto-detalle-artista {
+    width: 74%;
+  }
+
+  .esqueleto-detalle-datos {
+    display: grid;
+    gap: var(--espacio-2);
+    margin-inline: var(--espacio-3);
+  }
+
+  .esqueleto-detalle-dato {
+    width: 100%;
+  }
+
+  .esqueleto-detalle-dato:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esqueleto-bloque {
+    animation: none;
+  }
+}

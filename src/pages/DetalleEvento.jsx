@@ -3,6 +3,7 @@ import LayoutPublico from "../components/LayoutPublico/LayoutPublico.jsx";
 import MigasPan from "../components/MigasPan/MigasPan.jsx";
 import AficheEvento from "../components/AficheEvento/AficheEvento.jsx";
 import TarjetaEvento from "../components/TarjetaEvento/TarjetaEvento.jsx";
+import EstadoCargaVista from "../components/EstadoCargaVista/EstadoCargaVista.jsx";
 import iconoFecha from "../assets/calendar.svg";
 import iconoHora from "../assets/clock.svg";
 import iconoLugar from "../assets/pin.svg";
@@ -64,6 +65,7 @@ function textoLista(valor) {
 
 export default function DetalleEvento({ slug }) {
   const [descripcionExpandida, setDescripcionExpandida] = useState(false);
+  const [seccionActiva, setSeccionActiva] = useState("descripcion");
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const { abrirCuenta } = useDetalle(textos, idioma);
@@ -72,28 +74,36 @@ export default function DetalleEvento({ slug }) {
     (item) => item.slug === slug || String(item.id) === slug,
   );
   const paginas = textos?.paginas;
-  const detalle = paginas?.detalleEvento ?? {};
-  const info = detalle?.info ?? {};
-  const pestanas = detalle?.pestanas ?? {};
+  const detalle = paginas?.detalleEvento;
+  const info = detalle?.info;
+  const pestanas = detalle?.pestanas;
   const migas = textos?.componentes?.migas;
 
   useEffect(() => {
     if (!evento) return;
     const tituloSeo = primerTexto(detalle?.seo?.titulo);
+    const descripcionSeo = primerTexto(detalle?.seo?.descripcion);
     if (tituloSeo) document.title = tituloSeo.replaceAll("{titulo}", evento.nombre);
-  }, [evento, detalle?.seo?.titulo]);
+    if (descripcionSeo) {
+      let metaDescripcion = document.querySelector('meta[name="description"]');
+      if (!metaDescripcion) {
+        metaDescripcion = document.createElement("meta");
+        metaDescripcion.name = "description";
+        document.head.append(metaDescripcion);
+      }
+      metaDescripcion.content = descripcionSeo;
+    }
+  }, [evento, detalle?.seo?.titulo, detalle?.seo?.descripcion]);
 
   const recomendaciones = useMemo(() => {
     if (!evento) return [];
-    const recintoActual = String(
-      evento.recinto?.nombre ?? evento.lugar ?? "",
-    ).toLocaleLowerCase();
-    if (!recintoActual) return [];
+    const categoriaActual = String(evento.categoria ?? "").toLocaleLowerCase();
+    if (!categoriaActual) return [];
     return eventos
       .filter(
         (item) =>
           item.slug !== evento.slug &&
-          String(item.recinto?.nombre ?? item.lugar ?? "").toLocaleLowerCase() === recintoActual,
+          String(item.categoria ?? "").toLocaleLowerCase() === categoriaActual,
       )
       .slice(0, 4);
   }, [eventos, evento]);
@@ -132,11 +142,34 @@ export default function DetalleEvento({ slug }) {
   const politicas = textoLista(
     evento?.politicas ?? evento?.politicasIngreso ?? evento?.condicionesIngreso,
   );
+  const hayUbicacion = Boolean(lugarNombre || direccion || ciudad);
   const direccionMaps = [lugarNombre, direccion, ciudad].filter(Boolean).join(", ");
   const textoMapa = detalle?.mapa?.titulo;
-  const tituloRecinto = lugarNombre
-    ? detalle?.mismoRecinto?.titulo?.replaceAll("{recinto}", lugarNombre)
-    : "";
+  const tituloRelacionados = detalle?.relacionados?.titulo;
+
+  function renderUbicacion(id, clase = "") {
+    return (
+      <section
+        className={`detalle-evento-seccion detalle-evento-ubicacion ${clase}`.trim()}
+        id={id}
+      >
+        <h2>{pestanas.comoLlegar}</h2>
+        <a
+          className="detalle-evento-mapa"
+          href={direccionMaps ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccionMaps)}` : undefined}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${textoMapa}: ${direccionMaps}`}
+        >
+          <img src={iconoLugar} alt="" aria-hidden="true" />
+          <span>{textoMapa}</span>
+        </a>
+        <p className="detalle-evento-direccion">
+          {[lugarNombre, direccion, ciudad].filter(Boolean).join(" · ")}
+        </p>
+      </section>
+    );
+  }
 
   async function compartirEvento() {
     const url = window.location.href;
@@ -152,11 +185,37 @@ export default function DetalleEvento({ slug }) {
     else window.location.href = "/explorar";
   }
 
+  function manejarTecladoPestanas(eventoTeclado) {
+    const teclas = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!teclas.includes(eventoTeclado.key)) return;
+
+    const pestanasDisponibles = Array.from(
+      eventoTeclado.currentTarget.querySelectorAll('[role="tab"]'),
+    );
+    const indiceActual = pestanasDisponibles.indexOf(document.activeElement);
+    if (indiceActual < 0) return;
+
+    eventoTeclado.preventDefault();
+    const indiceSiguiente = eventoTeclado.key === "Home"
+      ? 0
+      : eventoTeclado.key === "End"
+        ? pestanasDisponibles.length - 1
+        : (indiceActual + (eventoTeclado.key === "ArrowRight" ? 1 : -1) + pestanasDisponibles.length) % pestanasDisponibles.length;
+    const pestanaSiguiente = pestanasDisponibles[indiceSiguiente];
+    pestanaSiguiente.focus();
+    pestanaSiguiente.click();
+  }
+
   return (
     <LayoutPublico textos={textos} onCuenta={abrirCuenta} className="landing-detalle-evento">
       <div className="detalle-evento ancho-home">
-        {cargando && <p role="status">{textos?.estados?.cargando?.titulo}</p>}
-        {error && !cargando && textos?.estados?.error?.texto && (
+        {cargando && (
+          <EstadoCargaVista
+            variante="detalle"
+            texto={textos?.estados?.cargando?.titulo}
+          />
+        )}
+          {error && !cargando && textos?.estados?.error?.texto && (
           <p role="alert">{textos.estados.error.texto}</p>
         )}
         {!cargando && !error && !evento && (
@@ -219,7 +278,8 @@ export default function DetalleEvento({ slug }) {
                     <span className="detalle-evento-icono"><img src={iconoLugar} alt="" aria-hidden="true" /></span>
                     <span>
                       <small>{info.lugar}</small>
-                      <strong>{lugarNombre}</strong>
+                      <strong className="detalle-evento-lugar-escritorio">{[lugarNombre, ciudad].filter(Boolean).join(", ")}</strong>
+                      <strong className="detalle-evento-lugar-movil">{lugarNombre}</strong>
                       {(direccion || ciudad) && <span className="detalle-evento-direccion-movil">{[direccion, ciudad].filter(Boolean).join(", ")}</span>}
                     </span>
                   </div>
@@ -227,13 +287,40 @@ export default function DetalleEvento({ slug }) {
               </div>
             </header>
 
-            <nav className="detalle-evento-tabs">
-              <a href="#descripcion-evento">{pestanas.descripcion}</a>
-              <a href="#ubicacion-evento">{pestanas.comoLlegar}</a>
-              <a href="#politicas-evento">{pestanas.politicas}</a>
+            <nav className="detalle-evento-tabs" role="tablist" onKeyDown={manejarTecladoPestanas}>
+              <button
+                id="pestana-descripcion-evento"
+                type="button"
+                role="tab"
+                aria-selected={seccionActiva === "descripcion"}
+                aria-controls="descripcion-evento"
+                onClick={() => setSeccionActiva("descripcion")}
+              >
+                {pestanas.descripcion}
+              </button>
+              <button
+                id="pestana-ubicacion-evento"
+                type="button"
+                role="tab"
+                aria-selected={seccionActiva === "ubicacion"}
+                aria-controls="ubicacion-evento"
+                onClick={() => setSeccionActiva("ubicacion")}
+              >
+                {pestanas.comoLlegar}
+              </button>
+              <button
+                id="pestana-politicas-evento"
+                type="button"
+                role="tab"
+                aria-selected={seccionActiva === "politicas"}
+                aria-controls="politicas-evento"
+                onClick={() => setSeccionActiva("politicas")}
+              >
+                {pestanas.politicas}
+              </button>
             </nav>
 
-            <section className="detalle-evento-seccion" id="descripcion-evento">
+            {seccionActiva === "descripcion" && <section className="detalle-evento-seccion" id="descripcion-evento" role="tabpanel" aria-labelledby="pestana-descripcion-evento">
               <h2>{detalle?.descripcion?.titulo}</h2>
               {descripcion && <p className={descripcionExpandida ? "detalle-evento-descripcion expandida" : "detalle-evento-descripcion"}>{descripcion}</p>}
               {evento.descripcionAdicional && <p>{evento.descripcionAdicional}</p>}
@@ -242,40 +329,29 @@ export default function DetalleEvento({ slug }) {
                   {detalle.descripcion.botones.leerMas}
                 </button>
               )}
-            </section>
+            </section>}
 
-            <section className="detalle-evento-seccion detalle-evento-ubicacion" id="ubicacion-evento">
-              <h2>{pestanas.comoLlegar}</h2>
-              <a
-                className="detalle-evento-mapa"
-                href={direccionMaps ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccionMaps)}` : undefined}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={direccionMaps ? `${textoMapa}: ${direccionMaps}` : textoMapa}
-              >
-                <img src={iconoLugar} alt="" aria-hidden="true" />
-                <span>{textoMapa}</span>
-              </a>
-              {(lugarNombre || direccion || ciudad) && (
-                <p className="detalle-evento-direccion">
-                  {[lugarNombre, direccion, ciudad].filter(Boolean).join(" · ")}
-                </p>
-              )}
-            </section>
+            {seccionActiva === "descripcion" && hayUbicacion && renderUbicacion(undefined, "detalle-evento-ubicacion--descripcion")}
 
-            <section className="detalle-evento-seccion" id="politicas-evento">
-              <h2>{pestanas.politicas}</h2>
-              {Array.isArray(politicas) ? (
-                <ul>{politicas.map((politica, indice) => <li key={`${indice}-${politica}`}>{politica}</li>)}</ul>
-              ) : (
-                politicas && <p>{politicas}</p>
-              )}
-            </section>
+            {hayUbicacion && seccionActiva === "ubicacion" && (
+              <div role="tabpanel" aria-labelledby="pestana-ubicacion-evento">
+                {renderUbicacion("ubicacion-evento")}
+              </div>
+            )}
 
-            {tituloRecinto && (
+            {seccionActiva === "politicas" && (
+              <section className="detalle-evento-seccion" id="politicas-evento" role="tabpanel" aria-labelledby="pestana-politicas-evento">
+                <h2>{pestanas.politicas}</h2>
+                {Array.isArray(politicas) && politicas.length > 0 ? (
+                  <ul>{politicas.map((politica, indice) => <li key={`${indice}-${politica}`}>{politica}</li>)}</ul>
+                ) : typeof politicas === "string" && politicas ? <p>{politicas}</p> : null}
+              </section>
+            )}
+
+            {seccionActiva === "descripcion" && tituloRelacionados && recomendaciones.length > 0 && (
               <section className="detalle-evento-recomendaciones" aria-labelledby="titulo-recomendaciones">
-                <h2 id="titulo-recomendaciones">{tituloRecinto}</h2>
-                {recomendaciones.length > 0 ? <div className="detalle-evento-recomendaciones-grid">
+                <h2 id="titulo-recomendaciones">{tituloRelacionados}</h2>
+                <div className="detalle-evento-recomendaciones-grid">
                   {recomendaciones.map((recomendado) => (
                     <TarjetaEvento
                       key={recomendado.slug ?? recomendado.id}
@@ -284,7 +360,7 @@ export default function DetalleEvento({ slug }) {
                       onAbrir={() => { window.location.href = `/eventos/${encodeURIComponent(recomendado.slug ?? recomendado.id)}`; }}
                     />
                   ))}
-                </div> : <p>{detalle?.mismoRecinto?.vacio}</p>}
+                </div>
               </section>
             )}
           </>

@@ -106,7 +106,8 @@
 }
 
 .detalle-evento-hora-movil,
-.detalle-evento-direccion-movil {
+.detalle-evento-direccion-movil,
+.detalle-evento-lugar-movil {
   display: none;
 }
 
@@ -137,21 +138,26 @@
   display: none;
 }
 
-.detalle-evento-tabs a {
+.detalle-evento-tabs button {
   position: relative;
   display: inline-flex;
   min-height: 44px;
   flex: 0 0 auto;
   align-items: center;
+  padding: 0;
+  border: 0;
   color: var(--texto-secundario);
+  background: transparent;
+  font-family: inherit;
   font-size: 14px;
+  cursor: pointer;
 }
 
-.detalle-evento-tabs a:first-child {
+.detalle-evento-tabs button[aria-selected="true"] {
   color: var(--texto-principal);
 }
 
-.detalle-evento-tabs a:first-child::after {
+.detalle-evento-tabs button[aria-selected="true"]::after {
   position: absolute;
   right: 0;
   bottom: -1px;
@@ -281,15 +287,15 @@
   }
 
   .landing-detalle-evento main {
-    min-height: 100vh;
-    padding-block: var(--espacio-3);
+    padding-top: var(--espacio-3);
+    padding-bottom: 0;
     background: var(--fondo-sutil);
   }
 
   .detalle-evento {
     width: min(calc(100% - 24px), 430px);
     overflow: hidden;
-    padding: 0 0 var(--espacio-6);
+    padding: 0;
     border-radius: var(--radio-lg);
     background: var(--fondo);
   }
@@ -374,6 +380,14 @@
     line-height: 1.35;
   }
 
+  .detalle-evento-lugar-movil {
+    display: block;
+  }
+
+  .detalle-evento-lugar-escritorio {
+    display: none;
+  }
+
   .detalle-evento-dato strong {
     font-size: 12px;
   }
@@ -382,7 +396,13 @@
     display: none;
   }
 
-  .detalle-evento-tabs a {
+  .detalle-evento-ubicacion,
+  #politicas-evento,
+  .detalle-evento-recomendaciones {
+    display: none;
+  }
+
+  .detalle-evento-tabs button {
     min-height: 42px;
     font-size: 13px;
   }

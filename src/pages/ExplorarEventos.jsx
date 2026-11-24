@@ -6,6 +6,7 @@ import FiltrosActivos from "../components/FiltrosActivos/FiltrosActivos.jsx";
 import OrdenarEventos from "../components/OrdenarEventos/OrdenarEventos.jsx";
 import Paginacion from "../components/Paginacion/Paginacion.jsx";
 import TarjetaEvento from "../components/TarjetaEvento/TarjetaEvento.jsx";
+import EstadoCargaVista from "../components/EstadoCargaVista/EstadoCargaVista.jsx";
 import DialogoDetalle from "../components/DialogoDetalle/DialogoDetalle.jsx";
 import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useDetalle } from "../hooks/useDetalle.js";
@@ -414,15 +415,22 @@ export default function ExplorarEventos() {
               <img src={iconoFiltros} alt="" aria-hidden="true" />
             </button>
           </form>
-          <p className="pagina-explorar-resumen" role="status">
-            {textoResultados?.replaceAll(
-              "{cantidad}",
-              String(resultados.length),
-            )}
-          </p>
+          {!cargando && (
+            <p className="pagina-explorar-resumen" role="status">
+              {textoResultados?.replaceAll(
+                "{cantidad}",
+                String(resultados.length),
+              )}
+            </p>
+          )}
         </header>
 
-        {cargando && <p role="status">{textos?.estados?.cargando?.titulo}</p>}
+        {cargando && (
+          <EstadoCargaVista
+            variante="explorar"
+            texto={textos?.estados?.cargando?.titulo}
+          />
+        )}
         {error && !cargando && (
           <div className="pagina-explorar-error" role="alert">
             <h2>{textos?.estados?.error?.titulo}</h2>
