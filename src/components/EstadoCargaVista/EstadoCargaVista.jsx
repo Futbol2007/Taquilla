@@ -24,7 +24,63 @@ export default function EstadoCargaVista({ variante, texto }) {
       aria-label={texto || undefined}
       aria-busy="true"
     >
-      {variante === "explorar" ? (
+      {variante === "home" ? (
+        <div className="esqueleto-home" aria-hidden="true">
+          <div className="esqueleto-home-categorias">
+            {Array.from({ length: 6 }, (_, indice) => (
+              <span className="esqueleto-bloque esqueleto-home-categoria" key={indice} />
+            ))}
+          </div>
+          <section className="esqueleto-home-seccion esqueleto-home-destacados">
+            <header className="esqueleto-home-cabecera">
+              <div>
+                <span className="esqueleto-bloque esqueleto-home-titulo" />
+                <span className="esqueleto-bloque esqueleto-home-subtitulo" />
+              </div>
+              <span className="esqueleto-bloque esqueleto-home-enlace" />
+            </header>
+            <div className="esqueleto-home-tarjetas">
+              {Array.from({ length: 4 }, (_, indice) => <EsqueletoTarjeta key={indice} />)}
+            </div>
+          </section>
+          <section className="esqueleto-home-seccion esqueleto-home-proximos">
+            <header className="esqueleto-home-cabecera">
+              <span className="esqueleto-bloque esqueleto-home-titulo" />
+              <span className="esqueleto-bloque esqueleto-home-enlace" />
+            </header>
+            <div className="esqueleto-home-lista">
+              {Array.from({ length: 3 }, (_, indice) => (
+                <div className="esqueleto-home-fila" key={indice}>
+                  <span className="esqueleto-bloque esqueleto-home-mini-afiche" />
+                  <div>
+                    <span className="esqueleto-bloque esqueleto-home-mini-titulo" />
+                    <span className="esqueleto-bloque esqueleto-home-mini-linea" />
+                    <span className="esqueleto-bloque esqueleto-home-mini-precio" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+          <section className="esqueleto-home-seccion esqueleto-home-fin-semana">
+            <header className="esqueleto-home-cabecera">
+              <span className="esqueleto-bloque esqueleto-home-titulo" />
+              <span className="esqueleto-bloque esqueleto-home-enlace" />
+            </header>
+            <div className="esqueleto-home-lista">
+              {Array.from({ length: 3 }, (_, indice) => (
+                <div className="esqueleto-home-fila" key={indice}>
+                  <span className="esqueleto-bloque esqueleto-home-mini-afiche" />
+                  <div>
+                    <span className="esqueleto-bloque esqueleto-home-mini-titulo" />
+                    <span className="esqueleto-bloque esqueleto-home-mini-linea" />
+                    <span className="esqueleto-bloque esqueleto-home-mini-precio" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      ) : variante === "explorar" ? (
         <div className="esqueleto-explorar" aria-hidden="true">
           <div className="esqueleto-filtros">
             <span className="esqueleto-bloque esqueleto-filtro-titulo" />

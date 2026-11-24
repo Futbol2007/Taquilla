@@ -9,6 +9,7 @@ import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useDetalle } from "../hooks/useDetalle.js";
 import { useEventos } from "../hooks/useEventos.js";
 import { useTextos } from "../hooks/useTextos.js";
+import EstadoCargaVista from "../components/EstadoCargaVista/EstadoCargaVista.jsx";
 
 const EVENTOS_INICIALES = 4;
 
@@ -125,7 +126,12 @@ export default function Home() {
       </HeroTaquilla>
 
       <div className="ancho-home">
-        {cargando && <p role="status">{textos?.estados?.cargando?.titulo}</p>}
+        {cargando && (
+          <EstadoCargaVista
+            variante="home"
+            texto={textos?.estados?.cargando?.titulo}
+          />
+        )}
         {error && !cargando && (
           <p role="alert">
             {en

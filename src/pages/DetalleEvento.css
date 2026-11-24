@@ -112,6 +112,7 @@
 }
 
 .detalle-evento-leer-mas {
+  display: none;
   padding: 0;
   border: 0;
   color: var(--texto-principal);
@@ -424,6 +425,7 @@
   }
 
   .detalle-evento-leer-mas {
+    display: inline-flex;
     margin-top: var(--espacio-1);
   }
 
