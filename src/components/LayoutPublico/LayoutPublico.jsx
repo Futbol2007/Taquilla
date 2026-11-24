@@ -5,6 +5,7 @@ import Navbar from "../Navbar/Navbar.jsx";
 import Footer from "../Footer/Footer.jsx";
 import SaltarContenido from "../SaltarContenido/SaltarContenido.jsx";
 import GestorCookies from "../GestorCookies/GestorCookies.jsx";
+import { useSesion } from "../../context/SesionContext.jsx";
 import "./LayoutPublico.css";
 
 export default function LayoutPublico({
@@ -15,6 +16,7 @@ export default function LayoutPublico({
   children,
 }) {
   const { idioma, cambiarIdioma } = usePreferencias();
+  const { usuario, cerrarSesion } = useSesion();
   const [cookiesAbiertas, setCookiesAbiertas] = useState(false);
   const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const disparador = useRef(null);
@@ -42,6 +44,8 @@ export default function LayoutPublico({
         idioma={idioma}
         onCambiarIdioma={cambiarIdioma}
         onCuenta={onCuenta}
+        usuario={usuario}
+        onCerrarSesion={cerrarSesion}
         onBuscarEventos={onBuscarEventos}
         accesibilidadAbierta={accesibilidadAbierta}
         onAlternarAccesibilidad={setAccesibilidadAbierta}

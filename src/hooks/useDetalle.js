@@ -3,6 +3,10 @@ export function useDetalle(textos, idioma = "es") {
   const texto = textos?.footer?.columnas?.cuenta?.enlaces;
   const [detalle, setDetalle] = useState(null);
   function abrirCuenta(tipo) {
+    if (tipo === "ingresar") {
+      window.location.assign("/ingresar");
+      return;
+    }
     const en = idioma === "en";
     setDetalle({
       titulo:

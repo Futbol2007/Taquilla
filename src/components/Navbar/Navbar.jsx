@@ -14,6 +14,8 @@ export default function Navbar({
   idioma,
   onCambiarIdioma,
   onCuenta,
+  usuario,
+  onCerrarSesion,
   onBuscarEventos,
   accesibilidadAbierta,
   onAlternarAccesibilidad,
@@ -62,9 +64,11 @@ export default function Navbar({
             <img src={iconoSearch} alt="" />
           </button>
         )}
-        <button className="ingreso-movil" onClick={() => onCuenta("ingresar")}>
-          {textosNavbar?.botones?.ingresar}
-        </button>
+        {!usuario && (
+          <button className="ingreso-movil" onClick={() => onCuenta("ingresar")}>
+            {textosNavbar?.botones?.ingresar}
+          </button>
+        )}
         <MenuMovil
           abierto={abierto}
           onAlternar={() => {
@@ -165,18 +169,39 @@ export default function Navbar({
                 etiqueta={textosNavbar?.aria?.idioma}
               />
             </div>
-            <button
-              className="ingresar-home"
-              onClick={() => onCuenta("ingresar")}
-            >
-              {textosNavbar?.botones?.ingresar}
-            </button>
-            <button
-              className="boton-home primario"
-              onClick={() => onCuenta("registro")}
-            >
-              {textosNavbar?.botones?.crearCuenta}
-            </button>
+            {usuario ? (
+              <div className="navbar-sesion">
+                <span>{usuario.nombre}</span>
+                <button
+                  className="cerrar-sesion-home"
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await onCerrarSesion?.();
+                    } catch (error) {
+                      console.error("No se pudo cerrar la sesión:", error);
+                    }
+                  }}
+                >
+                  {textosNavbar?.usuario?.cerrarSesion}
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  className="ingresar-home"
+                  onClick={() => onCuenta("ingresar")}
+                >
+                  {textosNavbar?.botones?.ingresar}
+                </button>
+                <button
+                  className="boton-home primario"
+                  onClick={() => onCuenta("registro")}
+                >
+                  {textosNavbar?.botones?.crearCuenta}
+                </button>
+              </>
+            )}
           </div>
         </nav>
       </div>
