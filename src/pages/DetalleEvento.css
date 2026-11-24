@@ -123,6 +123,11 @@
   cursor: pointer;
 }
 
+.detalle-evento-descripcion-parcial,
+.detalle-evento-descripcion-restante {
+  display: none;
+}
+
 .detalle-evento-tabs {
   position: sticky;
   top: 0;
@@ -417,11 +422,13 @@
     padding: var(--espacio-3);
   }
 
-  .detalle-evento-descripcion:not(.expandida) {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
+  .detalle-evento-descripcion-completa {
+    display: none;
+  }
+
+  .detalle-evento-descripcion-parcial,
+  .detalle-evento-descripcion-restante {
+    display: inline;
   }
 
   .detalle-evento-leer-mas {

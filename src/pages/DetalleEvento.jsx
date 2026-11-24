@@ -75,6 +75,15 @@ function extraerEvento(respuesta) {
   return datos?.evento ?? datos ?? null;
 }
 
+function textoCampo(valor) {
+  if (typeof valor === "string") return valor.trim();
+  if (Array.isArray(valor)) return valor.map(textoCampo).filter(Boolean).join(", ");
+  if (valor && typeof valor === "object") {
+    return primerTexto(valor.texto, valor.descripcion, valor.nombre, valor.detalle);
+  }
+  return "";
+}
+
 export default function DetalleEvento({ slug }) {
   const [descripcionExpandida, setDescripcionExpandida] = useState(false);
   const [seccionActiva, setSeccionActiva] = useState("descripcion");
@@ -177,6 +186,9 @@ export default function DetalleEvento({ slug }) {
   );
   const ciudad = primerTexto(lugar?.ciudad, evento?.ciudad);
   const lugarNombre = primerTexto(lugar?.nombre, evento?.lugar);
+  const parqueadero = textoCampo(
+    evento?.parqueadero ?? lugar?.parqueadero ?? evento?.ubicacion?.parqueadero,
+  );
   const plantillaEdad = primerTexto(detalle?.etiquetas?.edadMinima);
   const edadMinima = evento?.edadMinima;
   const tieneEdadMinima = edadMinima !== null && edadMinima !== undefined && String(edadMinima).trim() !== "";
@@ -193,6 +205,9 @@ export default function DetalleEvento({ slug }) {
     evento?.descripcionLarga,
     evento?.sinopsis,
   );
+  const palabrasDescripcion = descripcion.trim().split(/\s+/).filter(Boolean);
+  const descripcionParcial = palabrasDescripcion.slice(0, 22).join(" ");
+  const descripcionRestante = palabrasDescripcion.slice(22).join(" ");
   const duracionMin = Number(evento?.duracionMin);
   const duracion = Number.isFinite(duracionMin) && duracionMin > 0
     ? new Intl.NumberFormat(idioma === "en" ? "en-US" : "es-CO", {
@@ -241,9 +256,9 @@ export default function DetalleEvento({ slug }) {
           <img src={iconoLugar} alt="" aria-hidden="true" />
           <span>{textoMapa}</span>
         </a>
-        {(lugarNombre || direccion || ciudad) && (
+        {(lugarNombre || direccion || ciudad || parqueadero) && (
           <p className="detalle-evento-direccion">
-            {[lugarNombre, direccion, ciudad].filter(Boolean).join(" · ")}
+            {[lugarNombre, direccion, ciudad, parqueadero].filter(Boolean).join(" · ")}
           </p>
         )}
       </section>
@@ -401,9 +416,19 @@ export default function DetalleEvento({ slug }) {
 
             {seccionActiva === "descripcion" && <section className="detalle-evento-seccion" id="descripcion-evento" role="tabpanel" aria-labelledby="pestana-descripcion-evento">
               <h2>{detalle?.descripcion?.titulo}</h2>
-              {descripcion && <p className={descripcionExpandida ? "detalle-evento-descripcion expandida" : "detalle-evento-descripcion"}>{descripcion}</p>}
+              {descripcion && (
+                <p className="detalle-evento-descripcion">
+                  <span className="detalle-evento-descripcion-completa">{descripcion}</span>
+                  <span className="detalle-evento-descripcion-parcial">
+                    {descripcionParcial}{descripcionRestante && !descripcionExpandida ? "…" : ""}
+                  </span>
+                  {descripcionExpandida && descripcionRestante && (
+                    <span className="detalle-evento-descripcion-restante"> {descripcionRestante}</span>
+                  )}
+                </p>
+              )}
               {evento.descripcionAdicional && <p>{evento.descripcionAdicional}</p>}
-              {descripcion && detalle?.descripcion?.botones?.leerMas && !descripcionExpandida && (
+              {descripcionRestante && detalle?.descripcion?.botones?.leerMas && !descripcionExpandida && (
                 <button className="detalle-evento-leer-mas" type="button" onClick={() => setDescripcionExpandida(true)}>
                   {detalle.descripcion.botones.leerMas}
                 </button>
