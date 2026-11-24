@@ -10,7 +10,7 @@
   align-items: center;
 }
 .hero-taquilla h1 {
-  font-size: clamp(36px, 3.5vw, 52px);
+  font-size: var(--texto-titulo-hero);
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.035em;
@@ -19,7 +19,7 @@
 }
 .hero-taquilla .interior-taquilla > div > p {
   color: var(--texto-inverso-suave);
-  font-size: 18px;
+  font-size: var(--texto-resumen-hero);
   line-height: 1.6;
   margin-bottom: 26px;
 }
@@ -29,7 +29,7 @@
   align-items: center;
   flex-wrap: wrap;
   margin-top: 20px;
-  font-size: 13px;
+  font-size: var(--texto-fluid-13);
 }
 .populares > span {
   color: var(--texto-inverso-suave);
@@ -39,7 +39,7 @@
   color: var(--fondo-superficie);
   background: none;
   padding: 4px 0;
-  font-size: 13px;
+  font-size: var(--texto-fluid-13);
 }
 .populares button:hover {
   text-decoration: underline;
@@ -66,13 +66,12 @@
 }
 @media (max-width: 640px) {
   .hero-taquilla h1 {
-    font-size: 34px;
     margin-block: 20px;
   }
 }
 @media (max-width: 640px) {
   .hero-taquilla .interior-taquilla > div > p {
-    font-size: 14px;
+    font-size: var(--texto-resumen-hero);
   }
 }
 @media (max-width: 640px) {
@@ -100,7 +99,6 @@
   .hero-taquilla h1 {
     max-width: 370px;
     margin: 0 0 18px;
-    font-size: clamp(36px, 9.5vw, 42px);
     line-height: 1.08;
     letter-spacing: -0.04em;
   }

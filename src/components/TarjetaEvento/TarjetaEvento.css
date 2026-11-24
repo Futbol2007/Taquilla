@@ -16,7 +16,7 @@
   padding: 16px;
 }
 .contenido-evento h3 {
-  font-size: 20px;
+  font-size: var(--texto-fluid-20);
   font-weight: 600;
   letter-spacing: -0.025em;
   margin: 12px 0;
@@ -26,7 +26,7 @@
   min-width: 0;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   color: var(--texto-secundario);
   margin-top: 10px;
   overflow-wrap: anywhere;
@@ -51,10 +51,10 @@
 .precio-evento small {
   display: block;
   color: var(--texto-secundario);
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
 }
 .precio-evento strong {
-  font-size: 17px;
+  font-size: var(--texto-fluid-17);
   font-weight: 500;
 }
 .precio-evento .boton-home {

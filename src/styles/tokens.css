@@ -60,102 +60,130 @@
   --fuente-titulos: "Instrument Sans", sans-serif;
   --sombra-tarjeta: 0px 1px 2px 0px #1414140d;
   --sombra-flotante: 0px 8px 24px 0px #1414141a;
+
+  --texto-fluid-9: clamp(9px, calc(9px + 0.089vw), 10px);
+  --texto-fluid-10: clamp(10px, calc(10px + 0.089vw), 11px);
+  --texto-fluid-11: clamp(11px, calc(11px + 0.089vw), 12px);
+  --texto-fluid-12: clamp(12px, calc(12px + 0.089vw), 13px);
+  --texto-fluid-13: clamp(11.7px, calc(11.7px + 0.116vw), 13px);
+  --texto-fluid-14: clamp(12.6px, calc(12.6px + 0.125vw), 14px);
+  --texto-fluid-15: clamp(13.5px, calc(13.5px + 0.134vw), 15px);
+  --texto-fluid-16: clamp(14.4px, calc(14.4px + 0.143vw), 16px);
+  --texto-fluid-17: clamp(15.3px, calc(15.3px + 0.152vw), 17px);
+  --texto-fluid-18: clamp(16.2px, calc(16.2px + 0.161vw), 18px);
+  --texto-fluid-20: clamp(18px, calc(18px + 0.179vw), 20px);
+  --texto-fluid-21: clamp(18.9px, calc(18.9px + 0.188vw), 21px);
+  --texto-fluid-22: clamp(19.8px, calc(19.8px + 0.196vw), 22px);
+  --texto-fluid-24: clamp(21.6px, calc(21.6px + 0.214vw), 24px);
+  --texto-fluid-26: clamp(23.4px, calc(23.4px + 0.232vw), 26px);
+  --texto-fluid-28: clamp(25.2px, calc(25.2px + 0.25vw), 28px);
+  --texto-fluid-30: clamp(27px, calc(27px + 0.268vw), 30px);
+  --texto-fluid-34: clamp(30.6px, calc(30.6px + 0.304vw), 34px);
+  --texto-fluid-52: clamp(46.8px, calc(46.8px + 0.464vw), 52px);
+  --texto-fluid-112: clamp(100.8px, calc(100.8px + 1vw), 112px);
+  --texto-titulo-hero: clamp(34px, calc(29px + 1.6vw), 52px);
+  --texto-titulo-pagina: clamp(22px, calc(18.57px + 1.071vw), 34px);
+  --texto-titulo-seccion: clamp(21px, calc(19px + 0.625vw), 28px);
+  --texto-titulo-eventos: clamp(22px, calc(21.43px + 0.179vw), 24px);
+  --texto-resumen-seccion: clamp(14px, calc(13.43px + 0.179vw), 16px);
+  --texto-resumen-hero: clamp(14px, calc(12.57px + 0.446vw), 18px);
+  --texto-titulo-evento: clamp(26px, calc(22px + 1.25vw), 40px);
 }
 
 .titular-display {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 52px;
+  font-size: var(--texto-fluid-52);
   line-height: 56px;
   letter-spacing: -0.025em;
 }
 .titular-h1 {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 34px;
+  font-size: var(--texto-fluid-34);
   line-height: 40px;
   letter-spacing: -0.02em;
 }
 .titular-h2 {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 24px;
+  font-size: var(--texto-fluid-24);
   line-height: 30px;
   letter-spacing: -0.015em;
 }
 .titular-h3 {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 20px;
+  font-size: var(--texto-fluid-20);
   line-height: 26px;
   letter-spacing: -0.01em;
 }
 .titular-h4 {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 16px;
+  font-size: var(--texto-fluid-16);
   line-height: 22px;
   letter-spacing: -0.005em;
 }
 .cuerpo-g {
   font-family: var(--fuente-instrument-sans);
   font-weight: 400;
-  font-size: 18px;
+  font-size: var(--texto-fluid-18);
   line-height: 28px;
 }
 .cuerpo-m {
   font-family: var(--fuente-instrument-sans);
   font-weight: 400;
-  font-size: 16px;
+  font-size: var(--texto-fluid-16);
   line-height: 24px;
 }
 .cuerpo-m-fuerte {
   font-family: var(--fuente-instrument-sans);
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--texto-fluid-16);
   line-height: 24px;
 }
 .cuerpo-p {
   font-family: var(--fuente-instrument-sans);
   font-weight: 400;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   line-height: 20px;
 }
 .cuerpo-p-fuerte {
   font-family: var(--fuente-instrument-sans);
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   line-height: 20px;
 }
 .detalle-nota {
   font-family: var(--fuente-instrument-sans);
   font-weight: 400;
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
   line-height: 16px;
 }
 .detalle-nota-fuerte {
   font-family: var(--fuente-instrument-sans);
   font-weight: 500;
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
   line-height: 16px;
 }
 .detalle-etiqueta {
   font-family: var(--fuente-instrument-sans);
   font-weight: 500;
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
   line-height: 16px;
 }
 .dato-cifra {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 30px;
+  font-size: var(--texto-fluid-30);
   line-height: 34px;
   letter-spacing: -0.02em;
 }
 .titular-gigante {
   font-family: var(--fuente-instrument-sans);
   font-weight: 600;
-  font-size: 112px;
+  font-size: var(--texto-fluid-112);
   line-height: 108px;
   letter-spacing: -0.03em;
 }

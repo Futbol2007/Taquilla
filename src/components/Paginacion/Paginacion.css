@@ -20,7 +20,7 @@
   border-radius: var(--radio-md);
   cursor: pointer;
   font: inherit;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
 }
 
 .paginacion-eventos-boton[aria-current="page"] {

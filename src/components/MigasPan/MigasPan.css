@@ -4,7 +4,7 @@
   gap: var(--espacio-1);
   color: var(--texto-secundario);
   font-family: var(--fuente-texto);
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   line-height: 1.4;
 }
 

@@ -11,7 +11,7 @@
   padding: 7px 12px;
   color: var(--tinta);
   background: transparent;
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
   font-weight: 700;
 }
 .idiomas-home button[aria-pressed="true"] {
