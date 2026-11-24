@@ -5,6 +5,7 @@ import Navbar from "../Navbar/Navbar.jsx";
 import Footer from "../Footer/Footer.jsx";
 import SaltarContenido from "../SaltarContenido/SaltarContenido.jsx";
 import GestorCookies from "../GestorCookies/GestorCookies.jsx";
+import LayoutPrivado from "../LayoutPrivado/LayoutPrivado.jsx";
 import { useSesion } from "../../context/SesionContext.jsx";
 import "./LayoutPublico.css";
 
@@ -34,6 +35,19 @@ export default function LayoutPublico({
       .querySelector(".cabecera-home")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  if (usuario) {
+    return (
+      <LayoutPrivado
+        textos={textos}
+        onCuenta={onCuenta}
+        onBuscarEventos={onBuscarEventos}
+        className={className}
+      >
+        {children}
+      </LayoutPrivado>
+    );
+  }
+
   return (
     <div className={`landing ${proyecto.id} ${className}`.trim()}>
       <SaltarContenido texto={textos?.general?.aria?.saltarAlContenido} />
@@ -44,7 +58,7 @@ export default function LayoutPublico({
         idioma={idioma}
         onCambiarIdioma={cambiarIdioma}
         onCuenta={onCuenta}
-        usuario={usuario}
+        usuario={null}
         onCerrarSesion={cerrarSesion}
         onBuscarEventos={onBuscarEventos}
         accesibilidadAbierta={accesibilidadAbierta}

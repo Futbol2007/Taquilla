@@ -167,12 +167,7 @@ export default function DetalleEvento({ slug }) {
   const fecha = fechaEvento(evento?.fecha, idioma);
   const hora = horaEvento(evento ?? {}, idioma);
   const puertas = primerTexto(
-    evento?.horaPuertas,
-    evento?.aperturaPuertas,
     evento?.puertas,
-    evento?.horario?.puertas,
-    evento?.horario?.horaPuertas,
-    evento?.funciones?.[0]?.horaPuertas,
   );
   const puertasFormateadas = formatearHora(puertas, idioma);
   const horaValor = hora && puertas

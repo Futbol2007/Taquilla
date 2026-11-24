@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Accesibilidad from "../Accesibilidad/Accesibilidad.jsx";
 import { useAccesibilidad } from "../../hooks/useAccesibilidad.js";
 import Marca from "../Marca/Marca.jsx";
@@ -19,14 +19,44 @@ export default function Navbar({
   onBuscarEventos,
   accesibilidadAbierta,
   onAlternarAccesibilidad,
+  privado = false,
 }) {
   const [abierto, setAbierto] = useState(false);
+  const [perfilAbierto, setPerfilAbierto] = useState(false);
   const [consulta, setConsulta] = useState("");
   const boton = useRef(null);
+  const perfilRef = useRef(null);
   const id = useId();
   const textosNavbar = textos?.navbar;
   const textosAccesibilidad = textos?.accesibilidad;
   const { accesibilidad, cambiarValores, restablecer } = useAccesibilidad();
+  const modoPrivado = privado || Boolean(usuario);
+
+  useEffect(() => {
+    if (!perfilAbierto) return undefined;
+    function cerrarAlHacerClickFuera(evento) {
+      if (!perfilRef.current?.contains(evento.target)) setPerfilAbierto(false);
+    }
+    function cerrarConEscape(evento) {
+      if (evento.key === "Escape") setPerfilAbierto(false);
+    }
+    document.addEventListener("pointerdown", cerrarAlHacerClickFuera);
+    document.addEventListener("keydown", cerrarConEscape);
+    return () => {
+      document.removeEventListener("pointerdown", cerrarAlHacerClickFuera);
+      document.removeEventListener("keydown", cerrarConEscape);
+    };
+  }, [perfilAbierto]);
+
+  const inicialesUsuario = usuario?.nombre
+    ?.trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((parte) => parte[0])
+    .join("")
+    .toLocaleUpperCase(idioma === "en" ? "en" : "es");
+
   function enviarBusqueda(evento) {
     evento.preventDefault();
     onBuscarEventos?.({ consulta });
@@ -92,7 +122,7 @@ export default function Navbar({
         )}
         <nav
           id={id}
-          className={`menu-home ${abierto || accesibilidadAbierta ? "abierto" : ""}${
+          className={`menu-home${modoPrivado ? " menu-home-privado" : ""} ${abierto || accesibilidadAbierta ? "abierto" : ""}${
             accesibilidadAbierta ? " accesibilidad-activa" : ""
           }`}
           aria-label={textosNavbar?.logo?.aria}
@@ -170,21 +200,54 @@ export default function Navbar({
               />
             </div>
             {usuario ? (
-              <div className="navbar-sesion">
-                <span>{usuario.nombre}</span>
+              <div className="navbar-perfil" ref={perfilRef}>
                 <button
-                  className="cerrar-sesion-home"
+                  className="navbar-perfil-boton"
                   type="button"
-                  onClick={async () => {
-                    try {
-                      await onCerrarSesion?.();
-                    } catch (error) {
-                      console.error("No se pudo cerrar la sesión:", error);
-                    }
-                  }}
+                  aria-label={textosNavbar?.usuario?.menu}
+                  aria-haspopup="dialog"
+                  aria-expanded={perfilAbierto}
+                  aria-controls={`${id}-perfil`}
+                  onClick={() => setPerfilAbierto((visible) => !visible)}
                 >
-                  {textosNavbar?.usuario?.cerrarSesion}
+                  {inicialesUsuario}
                 </button>
+                {perfilAbierto && (
+                  <div
+                    className="navbar-perfil-panel"
+                    id={`${id}-perfil`}
+                    role="dialog"
+                    aria-label={textosNavbar?.usuario?.panel}
+                  >
+                    <div className="navbar-perfil-identidad">
+                      <span className="navbar-perfil-iniciales" aria-hidden="true">
+                        {inicialesUsuario}
+                      </span>
+                      <div className="navbar-perfil-datos">
+                        <strong>{usuario.nombre}</strong>
+                        <span>{usuario.correo}</span>
+                      </div>
+                    </div>
+                    <button
+                      className="navbar-perfil-cerrar"
+                      type="button"
+                      onClick={async () => {
+                        setPerfilAbierto(false);
+                        try {
+                          await onCerrarSesion?.();
+                        } catch (error) {
+                          console.error("No se pudo cerrar la sesión:", error);
+                        }
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M10 17l5-5-5-5M15 12H3" />
+                        <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" />
+                      </svg>
+                      {textosNavbar?.usuario?.cerrarSesion}
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <>
