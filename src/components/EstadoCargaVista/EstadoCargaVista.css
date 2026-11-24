@@ -2,6 +2,101 @@
   min-width: 0;
 }
 
+.esqueleto-home-seccion {
+  min-width: 0;
+  margin-bottom: 48px;
+}
+
+.esqueleto-home-categorias {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--espacio-2);
+  margin-bottom: 32px;
+}
+
+.esqueleto-home-categoria {
+  height: 48px;
+  border-radius: var(--radio-lg);
+}
+
+.esqueleto-home-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-3);
+}
+
+.esqueleto-home-cabecera > div {
+  display: grid;
+  gap: var(--espacio-1);
+}
+
+.esqueleto-home-titulo {
+  width: 210px;
+  height: 26px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-home-subtitulo {
+  width: 280px;
+  height: 16px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-home-enlace {
+  width: 74px;
+  height: 16px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-home-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--espacio-3);
+}
+
+.esqueleto-home-lista {
+  display: grid;
+  gap: var(--espacio-2);
+}
+
+.esqueleto-home-fila {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--espacio-2);
+  min-height: 104px;
+  padding: var(--espacio-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-lg);
+  background: var(--fondo);
+}
+
+.esqueleto-home-mini-afiche {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radio-md);
+}
+
+.esqueleto-home-fila > div {
+  display: grid;
+  justify-items: start;
+  gap: var(--espacio-1);
+}
+
+.esqueleto-home-mini-titulo,
+.esqueleto-home-mini-linea,
+.esqueleto-home-mini-precio {
+  height: 15px;
+  border-radius: var(--radio-sm);
+}
+
+.esqueleto-home-mini-titulo { width: min(62%, 250px); }
+.esqueleto-home-mini-linea { width: min(44%, 180px); height: 12px; }
+.esqueleto-home-mini-precio { width: 82px; height: 14px; }
+.esqueleto-home-fin-semana { display: none; }
+
 .esqueleto-bloque {
   display: block;
   background: linear-gradient(
@@ -225,6 +320,65 @@
   .esqueleto-resultados {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .esqueleto-home-categorias {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .esqueleto-home-tarjetas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .esqueleto-home-categorias {
+    display: flex;
+    gap: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .esqueleto-home-categoria {
+    flex: 0 0 88px;
+    height: 30px;
+    border-radius: var(--radio-completo);
+  }
+
+  .esqueleto-home-seccion { margin-bottom: 24px; }
+  .esqueleto-home-titulo { width: 120px; height: 20px; }
+  .esqueleto-home-subtitulo { width: 170px; height: 13px; }
+  .esqueleto-home-enlace { width: 52px; height: 13px; }
+  .esqueleto-home-cabecera { margin-bottom: 9px; }
+
+  .esqueleto-home-tarjetas {
+    display: flex;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .esqueleto-home-tarjetas .esqueleto-evento {
+    flex: 0 0 76%;
+  }
+
+  .esqueleto-home-tarjetas .esqueleto-afiche {
+    aspect-ratio: 1.8 / 1;
+  }
+
+  .esqueleto-home-proximos { display: none; }
+  .esqueleto-home-fin-semana { display: block; }
+
+  .esqueleto-home-fila {
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 66px;
+    padding: 8px;
+    border-radius: var(--radio-md);
+  }
+
+  .esqueleto-home-mini-afiche { width: 50px; height: 50px; }
+  .esqueleto-home-mini-titulo { width: 78%; height: 13px; }
+  .esqueleto-home-mini-linea { width: 58%; height: 10px; }
+  .esqueleto-home-mini-precio { width: 64px; height: 11px; }
 }
 
 @media (max-width: 640px) {

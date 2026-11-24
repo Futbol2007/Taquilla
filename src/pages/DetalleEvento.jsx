@@ -13,6 +13,7 @@ import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useDetalle } from "../hooks/useDetalle.js";
 import { useEventos } from "../hooks/useEventos.js";
 import { useTextos } from "../hooks/useTextos.js";
+import { consultar } from "../services/api.js";
 import "./DetalleEvento.css";
 
 function primerTexto(...valores) {
@@ -41,38 +42,80 @@ function fechaEvento(valor, idioma) {
   }).format(fecha);
 }
 
-function horaEvento(evento, idioma) {
-  const horaExplicita = primerTexto(evento.hora, evento.horaInicio, evento.horaEvento);
-  if (horaExplicita) return horaExplicita;
-  if (!evento.fecha) return "";
-  const fecha = new Date(evento.fecha);
-  if (Number.isNaN(fecha.getTime()) || !String(evento.fecha).includes("T")) return "";
+function formatearHora(valor, idioma) {
+  if (valor === null || valor === undefined || valor === "") return "";
+  const texto = String(valor).trim();
+  const horaSimple = texto.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  const fecha = horaSimple
+    ? new Date(2000, 0, 1, Number(horaSimple[1]), Number(horaSimple[2]))
+    : new Date(texto);
+  if (Number.isNaN(fecha.getTime())) return texto;
   return new Intl.DateTimeFormat(idioma === "en" ? "en-US" : "es-CO", {
     hour: "numeric",
     minute: "2-digit",
   }).format(fecha);
 }
 
-function textoLista(valor) {
-  if (typeof valor === "string") return valor;
-  if (Array.isArray(valor)) {
-    return valor
-      .map((item) => (typeof item === "string" ? item : item?.texto ?? item?.descripcion ?? ""))
-      .filter(Boolean);
-  }
-  return "";
+function horaEvento(evento, idioma) {
+  const horaExplicita = primerTexto(
+    evento.hora,
+    evento.horaInicio,
+    evento.horaEvento,
+    evento.horario?.hora,
+    evento.funciones?.[0]?.hora,
+  );
+  if (horaExplicita) return formatearHora(horaExplicita, idioma);
+  if (!evento.fecha || !String(evento.fecha).includes("T")) return "";
+  return formatearHora(evento.fecha, idioma);
+}
+
+function extraerEvento(respuesta) {
+  let datos = respuesta?.datos ?? respuesta?.evento ?? respuesta;
+  if (Array.isArray(datos)) datos = datos[0];
+  return datos?.evento ?? datos ?? null;
 }
 
 export default function DetalleEvento({ slug }) {
   const [descripcionExpandida, setDescripcionExpandida] = useState(false);
   const [seccionActiva, setSeccionActiva] = useState("descripcion");
+  const [eventoApi, setEventoApi] = useState(null);
+  const [cargandoDetalleApi, setCargandoDetalleApi] = useState(true);
+  const [errorDetalleApi, setErrorDetalleApi] = useState(null);
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const { abrirCuenta } = useDetalle(textos, idioma);
   const { eventos, cargando, error } = useEventos(idioma, 0);
-  const evento = eventos.find(
+  const eventoLista = eventos.find(
     (item) => item.slug === slug || String(item.id) === slug,
   );
+  useEffect(() => {
+    const controlador = new AbortController();
+    setEventoApi(null);
+    setErrorDetalleApi(null);
+    setCargandoDetalleApi(true);
+
+    consultar(`/eventos/${encodeURIComponent(slug)}`, { signal: controlador.signal })
+      .then((respuesta) => setEventoApi(extraerEvento(respuesta)))
+      .catch((fallo) => {
+        if (!controlador.signal.aborted) setErrorDetalleApi(fallo);
+      })
+      .finally(() => {
+        if (!controlador.signal.aborted) setCargandoDetalleApi(false);
+      });
+
+    return () => controlador.abort();
+  }, [slug]);
+
+  const eventoDatos = eventoApi
+    ? { ...eventoLista, ...eventoApi }
+    : eventoLista;
+  const evento = eventoDatos
+    ? {
+        ...eventoDatos,
+        nombre: primerTexto(eventoDatos.titulo, eventoDatos.nombre, eventoDatos.slug),
+      }
+    : null;
+  const cargandoVista = cargando || cargandoDetalleApi;
   const paginas = textos?.paginas;
   const detalle = paginas?.detalleEvento;
   const info = detalle?.info;
@@ -114,9 +157,17 @@ export default function DetalleEvento({ slug }) {
   );
   const fecha = fechaEvento(evento?.fecha, idioma);
   const hora = horaEvento(evento ?? {}, idioma);
-  const puertas = primerTexto(evento?.horaPuertas, evento?.aperturaPuertas);
+  const puertas = primerTexto(
+    evento?.horaPuertas,
+    evento?.aperturaPuertas,
+    evento?.puertas,
+    evento?.horario?.puertas,
+    evento?.horario?.horaPuertas,
+    evento?.funciones?.[0]?.horaPuertas,
+  );
+  const puertasFormateadas = formatearHora(puertas, idioma);
   const horaValor = hora && puertas
-    ? info.horaValor?.replaceAll("{hora}", hora).replaceAll("{puertas}", puertas)
+    ? info?.horaValor?.replaceAll("{hora}", hora).replaceAll("{puertas}", puertasFormateadas)
     : hora;
   const lugar = evento?.recinto ?? {};
   const direccion = primerTexto(
@@ -127,23 +178,49 @@ export default function DetalleEvento({ slug }) {
   const ciudad = primerTexto(lugar?.ciudad, evento?.ciudad);
   const lugarNombre = primerTexto(lugar?.nombre, evento?.lugar);
   const plantillaEdad = primerTexto(detalle?.etiquetas?.edadMinima);
+  const edadMinima = evento?.edadMinima;
+  const tieneEdadMinima = edadMinima !== null && edadMinima !== undefined && String(edadMinima).trim() !== "";
+  const edadNumerica = Number(edadMinima);
   const clasificacion = primerTexto(
     evento?.clasificacionEdad,
-    evento?.edadMinima && plantillaEdad
-      ? plantillaEdad.replaceAll("{edad}", evento.edadMinima)
+    tieneEdadMinima && edadNumerica > 0 && plantillaEdad
+      ? plantillaEdad.replaceAll("{edad}", edadMinima)
       : "",
-    !evento?.edadMinima ? detalle?.etiquetas?.todoPublico : "",
+    (!tieneEdadMinima || edadNumerica === 0) ? detalle?.etiquetas?.todoPublico : "",
   );
   const descripcion = primerTexto(
-    evento?.descripcionLarga,
     evento?.descripcion,
+    evento?.descripcionLarga,
     evento?.sinopsis,
   );
-  const politicas = textoLista(
-    evento?.politicas ?? evento?.politicasIngreso ?? evento?.condicionesIngreso,
+  const duracionMin = Number(evento?.duracionMin);
+  const duracion = Number.isFinite(duracionMin) && duracionMin > 0
+    ? new Intl.NumberFormat(idioma === "en" ? "en-US" : "es-CO", {
+        style: "unit",
+        unit: "minute",
+        unitDisplay: "long",
+      }).format(duracionMin)
+    : "";
+  const politicas = [clasificacion, duracion].filter(Boolean);
+  const mapa = evento?.mapa ?? lugar?.mapa ?? evento?.ubicacion?.mapa;
+  const mapaUrl = primerTexto(
+    typeof mapa === "string" && /^https?:\/\//i.test(mapa) ? mapa : "",
+    evento?.mapaUrl,
+    lugar?.mapaUrl,
+    mapa?.url,
+    mapa?.enlace,
+    mapa?.href,
   );
-  const hayUbicacion = Boolean(lugarNombre || direccion || ciudad);
+  const latitud = mapa?.latitud ?? mapa?.latitude ?? mapa?.lat ?? lugar?.latitud ?? lugar?.lat;
+  const longitud = mapa?.longitud ?? mapa?.longitude ?? mapa?.lng ?? lugar?.longitud ?? lugar?.lng;
+  const hayCoordenadas = latitud !== undefined && latitud !== null && longitud !== undefined && longitud !== null;
+  const hayUbicacion = Boolean(lugarNombre || direccion || ciudad || mapaUrl || hayCoordenadas);
   const direccionMaps = [lugarNombre, direccion, ciudad].filter(Boolean).join(", ");
+  const enlaceMapa = mapaUrl || (hayCoordenadas
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitud},${longitud}`)}`
+    : direccionMaps
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccionMaps)}`
+      : undefined);
   const textoMapa = detalle?.mapa?.titulo;
   const tituloRelacionados = detalle?.relacionados?.titulo;
 
@@ -156,7 +233,7 @@ export default function DetalleEvento({ slug }) {
         <h2>{pestanas.comoLlegar}</h2>
         <a
           className="detalle-evento-mapa"
-          href={direccionMaps ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccionMaps)}` : undefined}
+          href={enlaceMapa}
           target="_blank"
           rel="noreferrer"
           aria-label={`${textoMapa}: ${direccionMaps}`}
@@ -164,9 +241,11 @@ export default function DetalleEvento({ slug }) {
           <img src={iconoLugar} alt="" aria-hidden="true" />
           <span>{textoMapa}</span>
         </a>
-        <p className="detalle-evento-direccion">
-          {[lugarNombre, direccion, ciudad].filter(Boolean).join(" · ")}
-        </p>
+        {(lugarNombre || direccion || ciudad) && (
+          <p className="detalle-evento-direccion">
+            {[lugarNombre, direccion, ciudad].filter(Boolean).join(" · ")}
+          </p>
+        )}
       </section>
     );
   }
@@ -209,16 +288,16 @@ export default function DetalleEvento({ slug }) {
   return (
     <LayoutPublico textos={textos} onCuenta={abrirCuenta} className="landing-detalle-evento">
       <div className="detalle-evento ancho-home">
-        {cargando && (
+        {cargandoVista && (
           <EstadoCargaVista
             variante="detalle"
             texto={textos?.estados?.cargando?.titulo}
           />
         )}
-          {error && !cargando && textos?.estados?.error?.texto && (
+        {(error || errorDetalleApi) && !cargandoVista && !evento && textos?.estados?.error?.texto && (
           <p role="alert">{textos.estados.error.texto}</p>
         )}
-        {!cargando && !error && !evento && (
+        {!cargandoVista && !evento && (
           <section className="detalle-evento-vacio" role="status">
             <h1>{detalle?.noEncontrado?.titulo}</h1>
             <p>{detalle?.noEncontrado?.texto}</p>
