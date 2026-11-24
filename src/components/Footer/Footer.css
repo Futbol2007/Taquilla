@@ -13,14 +13,14 @@
   max-width: 340px;
   margin: 12px 0 0;
   color: var(--suave);
-  font-size: 13px;
+  font-size: var(--texto-fluid-13);
   line-height: 1.5;
 }
 
 .columnas-pie h3 {
   margin: 2px 0 12px;
   color: var(--suave);
-  font: 400 12px var(--fuente-instrument-sans);
+  font: 400 var(--texto-fluid-12) var(--fuente-instrument-sans);
 }
 
 .columnas-pie > div > a:not(.marca-home),
@@ -29,7 +29,7 @@
   width: fit-content;
   margin-block: 8px;
   color: var(--tinta);
-  font-size: 13px;
+  font-size: var(--texto-fluid-13);
   line-height: 1.35;
   text-decoration: none;
 }
@@ -57,13 +57,13 @@
   padding-top: 16px;
   border-top: 1px solid var(--borde);
   color: var(--suave);
-  font-size: 11px;
+  font-size: var(--texto-fluid-11);
 }
 
 .pie-creditos .enlace-home {
   padding: 0;
   color: var(--suave) !important;
-  font-size: 11px;
+  font-size: var(--texto-fluid-11);
   text-align: right;
 }
 

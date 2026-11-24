@@ -107,11 +107,7 @@ export default function Navbar({
               <img src={iconoX} alt="" />
             </button>
           </div>
-          <a
-            href="/"
-            aria-current="page"
-            onClick={() => setAbierto(false)}
-          >
+          <a href="/" aria-current="page" onClick={() => setAbierto(false)}>
             {textosNavbar?.enlaces?.inicio}
           </a>
           <a href="/explorar" onClick={() => setAbierto(false)}>
@@ -127,9 +123,7 @@ export default function Navbar({
                 <button
                   type="submit"
                   className="buscar-cabecera-boton"
-                  aria-label={
-                    textosNavbar?.buscador?.aria
-                  }
+                  aria-label={textosNavbar?.buscador?.aria}
                 >
                   <img src={iconoSearch} alt="" />
                 </button>
@@ -138,9 +132,7 @@ export default function Navbar({
                   value={consulta}
                   onChange={(evento) => setConsulta(evento.target.value)}
                   placeholder={textosNavbar?.buscador?.placeholder}
-                  aria-label={
-                    textosNavbar?.buscador?.aria
-                  }
+                  aria-label={textosNavbar?.buscador?.aria}
                 />
               </form>
             )}

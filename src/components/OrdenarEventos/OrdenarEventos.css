@@ -9,7 +9,7 @@
   border: 1px solid var(--borde-sutil);
   border-radius: var(--radio-md);
   font-family: var(--fuente-texto);
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
 }
 
 .ordenar-eventos select {

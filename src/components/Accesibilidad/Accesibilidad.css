@@ -44,7 +44,7 @@
   background: var(--fondo-superficie);
   color: var(--texto-principal);
   box-shadow: var(--sombra-flotante);
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
 }
 
 :where(.accesibilidad-panel p, .accesibilidad-panel h3) {
@@ -60,7 +60,7 @@
 }
 
 .accesibilidad-cabecera h3 {
-  font-size: 16px;
+  font-size: var(--texto-fluid-16);
   font-weight: 600;
   line-height: 22px;
   letter-spacing: -0.005em;
@@ -90,7 +90,7 @@
 
 .accesibilidad-etiqueta {
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   line-height: 20px;
 }
 
@@ -151,7 +151,7 @@
 }
 
 .accesibilidad-nombre {
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   font-weight: 500;
   line-height: 19px;
 }
@@ -203,7 +203,7 @@
 }
 
 .accesibilidad-tema label {
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   font-weight: 500;
   line-height: 19px;
 }
@@ -218,14 +218,14 @@
   background: var(--fondo-superficie);
   color: var(--texto-principal);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
 }
 
 .accesibilidad-nota {
   order: 1;
   margin-top: 0;
   color: var(--texto-terciario);
-  font-size: 11px;
+  font-size: var(--texto-fluid-11);
   line-height: 15px;
 }
 
@@ -240,7 +240,7 @@
 
 .accesibilidad-pie a {
   color: var(--texto-principal);
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
   font-weight: 500;
   line-height: 17px;
   text-decoration: underline;
@@ -256,7 +256,7 @@
   background: var(--fondo-superficie);
   color: var(--texto-principal);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--texto-fluid-13);
   font-weight: 500;
   cursor: pointer;
 }
@@ -326,6 +326,6 @@ html[data-espaciado="si"] .accesibilidad-panel a {
 
   .accesibilidad-pie a,
   .accesibilidad-restablecer {
-    font-size: 11px;
+    font-size: var(--texto-fluid-11);
   }
 }

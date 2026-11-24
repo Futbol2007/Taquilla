@@ -11,14 +11,14 @@
   align-items: flex-end;
 }
 .seccion-eventos h2 {
-  font-size: 24px;
+  font-size: var(--texto-titulo-eventos);
   font-weight: 600;
   letter-spacing: -0.025em;
   margin-bottom: 6px;
 }
 .seccion-eventos .titulo-seccion p {
   color: var(--texto-secundario);
-  font-size: 16px;
+  font-size: var(--texto-resumen-seccion);
 }
 .eventos-grid {
   display: grid;
@@ -77,12 +77,12 @@
 }
 @media (max-width: 640px) {
   .seccion-eventos h2 {
-    font-size: 22px;
+    font-size: var(--texto-titulo-eventos);
   }
 }
 @media (max-width: 640px) {
   .seccion-eventos .titulo-seccion p {
-    font-size: 14px;
+    font-size: var(--texto-resumen-seccion);
   }
 }
 @media (max-width: 640px) {
@@ -122,14 +122,14 @@
 
   .seccion-eventos--carrusel .contenido-evento h3 {
     margin: 7px 0;
-    font-size: 15px;
+    font-size: var(--texto-fluid-15);
     line-height: 1.2;
   }
 
   .seccion-eventos--carrusel .contenido-evento > p {
     gap: 5px;
     margin-top: 6px;
-    font-size: 11px;
+    font-size: var(--texto-fluid-11);
     line-height: 1.25;
   }
 
@@ -144,12 +144,12 @@
   }
 
   .seccion-eventos--carrusel .precio-evento strong {
-    font-size: 13px;
+    font-size: var(--texto-fluid-13);
   }
 
   .seccion-eventos--carrusel .precio-evento .boton-home {
     padding: 6px 9px;
-    font-size: 11px;
+    font-size: var(--texto-fluid-11);
   }
 
   .seccion-eventos--lista .eventos-grid {
@@ -180,14 +180,14 @@
 
   .seccion-eventos--lista .contenido-evento h3 {
     margin: 4px 0 5px;
-    font-size: 13px;
+    font-size: var(--texto-fluid-13);
     line-height: 1.2;
   }
 
   .seccion-eventos--lista .contenido-evento > p {
     gap: 5px;
     margin-top: 3px;
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
     line-height: 1.2;
   }
 
@@ -204,16 +204,16 @@
   }
 
   .seccion-eventos--lista .precio-evento small {
-    font-size: 9px;
+    font-size: var(--texto-fluid-9);
   }
 
   .seccion-eventos--lista .precio-evento strong {
-    font-size: 11px;
+    font-size: var(--texto-fluid-11);
   }
 
   .seccion-eventos--lista .precio-evento .boton-home {
     padding: 5px 7px;
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
   }
 }
 
@@ -229,13 +229,13 @@
 
   .seccion-eventos--movil h2 {
     margin: 0;
-    font-size: 16px;
+    font-size: var(--texto-fluid-16);
     line-height: 1.2;
   }
 
   .seccion-eventos--movil .enlace-home {
     padding: 2px 0;
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
   }
 
   .seccion-eventos--movil .eventos-grid {
@@ -279,7 +279,7 @@
     overflow: hidden;
     width: 100%;
     margin: 0;
-    font-size: 12px;
+    font-size: var(--texto-fluid-12);
     font-weight: 500;
     line-height: 1.25;
     text-overflow: ellipsis;
@@ -289,7 +289,7 @@
   .seccion-eventos--movil .contenido-evento > p:first-of-type {
     gap: 0;
     margin: 0;
-    font-size: 9px;
+    font-size: var(--texto-fluid-9);
     line-height: 1.2;
   }
 
@@ -310,12 +310,12 @@
   }
 
   .seccion-eventos--movil .precio-evento small {
-    font-size: 9px;
+    font-size: var(--texto-fluid-9);
     line-height: 1.2;
   }
 
   .seccion-eventos--movil .precio-evento strong {
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
     line-height: 1.2;
   }
 }

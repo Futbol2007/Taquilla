@@ -12,7 +12,7 @@
 }
 .detalle-home h2 {
   padding-right: 28px;
-  font-size: 28px;
+  font-size: var(--texto-fluid-28);
 }
 .detalle-home p {
   margin: 16px 0 24px;
@@ -34,7 +34,7 @@
   border: 0;
   background: none;
   color: var(--tinta);
-  font-size: 28px !important;
+  font-size: var(--texto-fluid-28) !important;
 }
 body:has(.detalle-home[open]) {
   overflow: hidden;

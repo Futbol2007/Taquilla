@@ -16,11 +16,11 @@
   line-height: 1.45;
 }
 .preferencias-dialogo h2 {
-  font-size: 26px;
+  font-size: var(--texto-fluid-26);
 }
 .preferencias-dialogo h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--texto-fluid-16);
 }
 .categoria-cookie {
   display: grid;
@@ -40,7 +40,7 @@
   gap: 9px;
   min-width: 0;
   cursor: pointer;
-  font-size: 13px;
+  font-size: var(--texto-fluid-13);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -54,7 +54,7 @@
   margin-left: auto;
   flex: 0 0 auto;
   color: var(--texto-secundario);
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
 }
 .grupo-botones {
   display: flex;

@@ -26,14 +26,14 @@
   border-radius: var(--radio-lg);
 }
 .ficha-destacado h2 {
-  font-size: 24px;
+  font-size: var(--texto-fluid-24);
   margin: 12px 0;
   font-weight: 600;
   letter-spacing: -0.03em;
 }
 .ficha-destacado > p {
   color: var(--texto-secundario);
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
 }
 .ficha-destacado > div {
   display: flex;

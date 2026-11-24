@@ -34,7 +34,7 @@
 
 .panel-filtros-eventos-cabecera h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: var(--texto-fluid-20);
   line-height: 26px;
 }
 
@@ -45,7 +45,7 @@
   background: transparent;
   border: 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -66,7 +66,7 @@
 .panel-filtros-grupo > label:first-child {
   margin-bottom: var(--espacio-1);
   color: var(--texto-principal);
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   font-weight: 500;
 }
 
@@ -78,7 +78,7 @@
   min-height: 28px;
   color: var(--texto-principal);
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
 }
 
 .panel-filtros-categorias {
@@ -97,7 +97,7 @@
 
 .panel-filtros-categoria small {
   color: var(--texto-terciario);
-  font-size: 12px;
+  font-size: var(--texto-fluid-12);
 }
 
 .panel-filtros-fechas-rapidas {
@@ -288,13 +288,13 @@
   }
 
   .panel-filtros-eventos-cabecera h2 {
-    font-size: 16px;
+    font-size: var(--texto-fluid-16);
   }
 
   .panel-filtros-limpiar {
     justify-self: end;
     margin-right: var(--espacio-1);
-    font-size: 13px;
+    font-size: var(--texto-fluid-13);
     text-decoration: none;
   }
 
@@ -326,7 +326,7 @@
 
   .panel-filtros-grupo legend {
     margin-bottom: var(--espacio-1);
-    font-size: 14px;
+    font-size: var(--texto-fluid-14);
   }
 
   .panel-filtros-categoria {
@@ -340,7 +340,7 @@
     background: var(--fondo-superficie);
     border: 1px solid var(--borde-sutil);
     border-radius: var(--radio-completo);
-    font-size: 11px;
+    font-size: var(--texto-fluid-11);
     white-space: nowrap;
   }
 
@@ -365,7 +365,7 @@
     min-width: 0;
     min-height: 36px;
     padding-inline: 4px;
-    font-size: 11px;
+    font-size: var(--texto-fluid-11);
     white-space: nowrap;
   }
 
@@ -404,7 +404,7 @@
   }
 
   .panel-filtros-eventos .panel-filtros-ver-resultados {
-    font-size: 14px;
+    font-size: var(--texto-fluid-14);
   }
 }
 
@@ -416,7 +416,7 @@
 
   .panel-filtros-categoria {
     padding-inline: 2px;
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
   }
 
   .panel-filtros-fechas-rapidas {
@@ -425,7 +425,7 @@
 
   .panel-filtros-fechas-rapidas button {
     padding-inline: 8px;
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
   }
 
   .panel-filtros-fechas-rapidas button:nth-child(2) {
@@ -441,6 +441,6 @@
 @media (min-width: 361px) and (max-width: 400px) {
   .panel-filtros-fechas-rapidas button {
     padding-inline: 2px;
-    font-size: 10px;
+    font-size: var(--texto-fluid-10);
   }
 }

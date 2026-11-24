@@ -28,7 +28,7 @@
   background: var(--fondo-sutil);
   border: 1px solid var(--borde-sutil);
   border-radius: var(--radio-completo);
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   line-height: 20px;
 }
 
@@ -50,7 +50,7 @@
   border: 0;
   border-radius: var(--radio-completo);
   cursor: pointer;
-  font-size: 20px;
+  font-size: var(--texto-fluid-20);
   line-height: 1;
 }
 
@@ -67,7 +67,7 @@
   border: 0;
   cursor: pointer;
   font: inherit;
-  font-size: 14px;
+  font-size: var(--texto-fluid-14);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
