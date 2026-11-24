@@ -189,7 +189,7 @@
     border-radius: var(--radio-md);
   }
 
-  .pagina-explorar-buscador-movil label svg {
+  .pagina-explorar-buscador-movil label img {
     flex: 0 0 auto;
     width: 18px;
     height: 18px;

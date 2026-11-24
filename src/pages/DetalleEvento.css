@@ -1,0 +1,427 @@
+.detalle-evento {
+  padding-block: var(--espacio-4) var(--espacio-8);
+}
+
+.detalle-evento > .migas-pan {
+  margin-bottom: var(--espacio-2);
+  font-size: 13px;
+}
+
+.detalle-evento-afiche {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3.55 / 1;
+  border-radius: var(--radio-md);
+}
+
+.detalle-evento-hero {
+  position: relative;
+}
+
+.detalle-evento-acciones-hero {
+  display: none;
+}
+
+.detalle-evento-cabecera {
+  padding-block: var(--espacio-3);
+}
+
+.detalle-evento-etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-1);
+  margin-bottom: var(--espacio-1);
+}
+
+.detalle-evento-edad {
+  color: var(--texto-principal);
+  background: var(--fondo-sutil);
+}
+
+.detalle-evento-cabecera h1 {
+  margin: 0;
+  color: var(--texto-principal);
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.detalle-evento-artista {
+  margin-top: var(--espacio-1) !important;
+  color: var(--texto-secundario);
+  font-size: 15px;
+}
+
+.detalle-evento-metadatos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-3);
+}
+
+.detalle-evento-dato {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--espacio-1);
+}
+
+.detalle-evento-icono {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  color: var(--texto-principal);
+  background: var(--fondo-sutil);
+  border-radius: var(--radio-md);
+}
+
+.detalle-evento-icono img {
+  width: 18px;
+  height: 18px;
+}
+
+.detalle-evento-dato > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.detalle-evento-dato small,
+.detalle-evento-precio small {
+  color: var(--texto-terciario);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.detalle-evento-dato strong {
+  color: var(--texto-principal);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.detalle-evento-hora-movil,
+.detalle-evento-direccion-movil {
+  display: none;
+}
+
+.detalle-evento-leer-mas {
+  padding: 0;
+  border: 0;
+  color: var(--texto-principal);
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.detalle-evento-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  gap: var(--espacio-3);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--borde-sutil);
+  background: var(--fondo);
+  scrollbar-width: none;
+}
+
+.detalle-evento-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.detalle-evento-tabs a {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  color: var(--texto-secundario);
+  font-size: 14px;
+}
+
+.detalle-evento-tabs a:first-child {
+  color: var(--texto-principal);
+}
+
+.detalle-evento-tabs a:first-child::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--fondo-inverso);
+  content: "";
+}
+
+.detalle-evento-seccion {
+  padding-top: var(--espacio-3);
+  scroll-margin-top: 56px;
+}
+
+.detalle-evento-seccion h2,
+.detalle-evento-recomendaciones h2 {
+  margin: 0 0 var(--espacio-1);
+  color: var(--texto-principal);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.detalle-evento-seccion p,
+.detalle-evento-seccion li {
+  color: var(--texto-secundario);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.detalle-evento-seccion p + p {
+  margin-top: var(--espacio-1);
+}
+
+.detalle-evento-seccion ul {
+  display: grid;
+  gap: var(--espacio-1);
+  margin: 0;
+  padding-left: var(--espacio-3);
+}
+
+.detalle-evento-mapa {
+  display: flex;
+  min-height: 180px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-1);
+  color: var(--texto-secundario);
+  background: var(--fondo-sutil);
+  border-radius: var(--radio-md);
+  font-size: 12px;
+}
+
+.detalle-evento-mapa img {
+  width: 24px;
+  height: 24px;
+}
+
+.detalle-evento-direccion {
+  margin-top: var(--espacio-1) !important;
+  font-size: 12px !important;
+}
+
+.detalle-evento-recomendaciones {
+  padding-top: var(--espacio-4);
+}
+
+.detalle-evento-recomendaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--espacio-2);
+}
+
+.detalle-evento-recomendaciones-grid > .tarjeta-evento {
+  min-width: 0;
+}
+
+.detalle-evento-recomendaciones-grid .arte-evento {
+  height: auto;
+  aspect-ratio: 1.35 / 1;
+}
+
+.detalle-evento-recomendaciones-grid .contenido-evento {
+  padding: var(--espacio-2);
+}
+
+.detalle-evento-recomendaciones-grid .contenido-evento h3 {
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.detalle-evento-recomendaciones-grid .contenido-evento > p {
+  font-size: 12px;
+}
+
+.detalle-evento-recomendaciones-grid .precio-evento .boton-home {
+  padding-inline: var(--espacio-1);
+  font-size: 12px;
+}
+
+.detalle-evento-vacio {
+  display: grid;
+  gap: var(--espacio-2);
+  padding-block: var(--espacio-8);
+}
+
+.detalle-evento-vacio h1 {
+  font-size: 28px;
+}
+
+.detalle-evento-vacio a {
+  width: fit-content;
+  color: var(--texto-principal);
+  text-decoration: underline;
+}
+
+@media (max-width: 1000px) {
+  .detalle-evento-recomendaciones-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-detalle-evento > .cabecera-home {
+    display: none;
+  }
+
+  .landing-detalle-evento main {
+    min-height: 100vh;
+    padding-block: var(--espacio-3);
+    background: var(--fondo-sutil);
+  }
+
+  .detalle-evento {
+    width: min(calc(100% - 24px), 430px);
+    overflow: hidden;
+    padding: 0 0 var(--espacio-6);
+    border-radius: var(--radio-lg);
+    background: var(--fondo);
+  }
+
+  .detalle-evento > .migas-pan {
+    display: none;
+  }
+
+  .detalle-evento-afiche {
+    aspect-ratio: 1.4 / 1;
+    border-radius: var(--radio-lg) var(--radio-lg) 0 0;
+  }
+
+  .detalle-evento-acciones-hero {
+    position: absolute;
+    inset: clamp(28px, 11vw, 46px) 18px auto;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .detalle-evento-acciones-hero button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: var(--texto-principal);
+    background: var(--fondo);
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .detalle-evento-acciones-hero img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .detalle-evento-cabecera {
+    padding: var(--espacio-2) var(--espacio-3) var(--espacio-3);
+    border-bottom: 1px solid var(--borde-sutil);
+  }
+
+  .detalle-evento-etiquetas {
+    margin-bottom: var(--espacio-2);
+  }
+
+  .detalle-evento-cabecera h1 {
+    font-size: clamp(26px, 8vw, 34px);
+  }
+
+  .detalle-evento-metadatos {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--espacio-2);
+    margin-top: var(--espacio-3);
+  }
+
+  .detalle-evento-dato {
+    align-items: flex-start;
+  }
+
+  .detalle-evento-icono {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .detalle-evento-dato--fecha > span:last-child > small,
+  .detalle-evento-dato--lugar > span:last-child > small,
+  .detalle-evento-dato--hora {
+    display: none;
+  }
+
+  .detalle-evento-hora-movil,
+  .detalle-evento-direccion-movil {
+    display: block;
+    color: var(--texto-secundario);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .detalle-evento-dato strong {
+    font-size: 12px;
+  }
+
+  .detalle-evento-tabs {
+    display: none;
+  }
+
+  .detalle-evento-tabs a {
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  .detalle-evento-seccion h2,
+  .detalle-evento-recomendaciones h2 {
+    font-size: 18px;
+  }
+
+  .detalle-evento-seccion {
+    padding: var(--espacio-3);
+  }
+
+  .detalle-evento-descripcion:not(.expandida) {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  .detalle-evento-leer-mas {
+    margin-top: var(--espacio-1);
+  }
+
+  .detalle-evento-mapa {
+    min-height: 160px;
+  }
+
+  .detalle-evento-recomendaciones-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detalle-evento-recomendaciones-grid .arte-evento {
+    aspect-ratio: 1.8 / 1;
+  }
+}
+
+@media (max-width: 360px) {
+  .detalle-evento-metadatos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

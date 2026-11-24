@@ -4,13 +4,11 @@ import HeroTaquilla from "../components/HeroTaquilla/HeroTaquilla.jsx";
 import BuscadorEventos from "../components/BuscadorEventos/BuscadorEventos.jsx";
 import CategoriasEventos from "../components/CategoriasEventos/CategoriasEventos.jsx";
 import SeccionEventos from "../components/SeccionEventos/SeccionEventos.jsx";
-import AficheEvento from "../components/AficheEvento/AficheEvento.jsx";
 import DialogoDetalle from "../components/DialogoDetalle/DialogoDetalle.jsx";
 import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useDetalle } from "../hooks/useDetalle.js";
 import { useEventos } from "../hooks/useEventos.js";
 import { useTextos } from "../hooks/useTextos.js";
-import { dinero } from "../utils/dinero.js";
 
 const EVENTOS_INICIALES = 4;
 
@@ -97,18 +95,8 @@ export default function Home() {
   );
 
   function abrirEvento(evento) {
-    setDetalle({
-      titulo: evento.nombre,
-      descripcion: `${evento.horario} · ${evento.lugar}, ${evento.ciudad}`,
-      contenido: (
-        <div className="resumen-evento">
-          <AficheEvento variante={evento.arte} />
-          <p>{dinero(evento.precio)} COP</p>
-          {evento.descripcion && <small>{evento.descripcion}</small>}
-        </div>
-      ),
-      cerrar: textos?.general?.acciones?.cerrar ?? (en ? "Close" : "Cerrar"),
-    });
+    const identificador = evento.slug ?? evento.id;
+    if (identificador) window.location.href = `/eventos/${encodeURIComponent(identificador)}`;
   }
 
   return (
