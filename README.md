@@ -8,8 +8,11 @@ Requiere Node.js 20.19 o posterior en la rama 20, o Node.js 22.12 o posterior.
 
 ```sh
 npm ci
+cp .env.example .env
 npm run dev
 ```
+
+En `.env`, configura `VITE_API_URL` con la URL base de la API (incluye `/api/v1`). Para apuntar a otra API, cambia esa variable y reinicia Vite.
 
 Abre la dirección que muestre Vite. El home está en `/`, Explorar eventos en `/explorar` y cada evento en `/eventos/:slug`.
 
@@ -68,7 +71,7 @@ Los estilos están separados por responsabilidad, pero usan las clases y los tok
 
 El home y Explorar eventos obtienen eventos y categorías de la API mediante `useEventos`. Los textos de la interfaz se cargan por idioma con `useTextos`. Si la API no responde, la interfaz muestra sus estados de carga o error.
 
-API configurada: `https://yanethm-taquilla-api.fly.dev/api/v1`.
+La URL base de la API se lee desde `VITE_API_URL` en `.env`. El archivo `.env.example` incluye la configuración de desarrollo actual.
 
 `useEventos` consulta `GET /eventos` en páginas y `GET /categorias?idioma=...`. `useTextos` consulta `GET /textos?idioma=es` o `GET /textos?idioma=en`.
 
