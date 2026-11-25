@@ -65,9 +65,10 @@ function adaptarEvento(evento, idioma) {
   };
 }
 
-async function cargarTodasLasPaginas(idioma) {
+async function cargarTodasLasPaginas(idioma, signal) {
   const primeraPagina = await consultar(
     `/eventos?idioma=${idioma}&pagina=1&porPagina=${EVENTOS_POR_PAGINA}`,
+    { signal },
   );
   const paginas = Math.max(1, Number(primeraPagina.paginacion?.paginas) || 1);
 
@@ -76,6 +77,7 @@ async function cargarTodasLasPaginas(idioma) {
       const pagina = indice + 2;
       return consultar(
         `/eventos?idioma=${idioma}&pagina=${pagina}&porPagina=${EVENTOS_POR_PAGINA}`,
+        { signal },
       );
     }),
   );
@@ -85,9 +87,9 @@ async function cargarTodasLasPaginas(idioma) {
   );
 }
 
-async function cargarCategorias(idioma) {
+async function cargarCategorias(idioma, signal) {
   const parametros = new URLSearchParams({ idioma });
-  const respuesta = await consultar(`/categorias?${parametros}`);
+  const respuesta = await consultar(`/categorias?${parametros}`, { signal });
   return Array.isArray(respuesta.datos) ? respuesta.datos : [];
 }
 
@@ -98,6 +100,7 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [filtros, setFiltros] = useState(null);
+  const [intento, setIntento] = useState(0);
 
   useEffect(() => {
     const controlador = new AbortController();
@@ -106,7 +109,10 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     setCargando(true);
     setError(null);
 
-    Promise.all([cargarTodasLasPaginas(idioma), cargarCategorias(idioma)])
+    Promise.all([
+      cargarTodasLasPaginas(idioma, controlador.signal),
+      cargarCategorias(idioma, controlador.signal),
+    ])
       .then(([datosEventos, datosCategorias]) => {
         setCategorias(datosCategorias);
         setEventos(datosEventos.map((evento) => adaptarEvento(evento, idioma)));
@@ -119,7 +125,7 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
       });
 
     return () => controlador.abort();
-  }, [idioma]);
+  }, [idioma, intento]);
 
   const rangoFinDeSemana = obtenerRangoFinDeSemana();
 
@@ -183,6 +189,7 @@ export function useEventos(idioma = "es", numeroEventos = 4) {
     resultados,
     cargando,
     error,
+    reintentar: () => setIntento((actual) => actual + 1),
     buscar,
     setFiltros,
     filtrarCategoria: (categoria) =>

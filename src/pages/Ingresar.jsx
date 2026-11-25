@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Marca from "../components/Marca/Marca.jsx";
+import DialogoDetalle from "../components/DialogoDetalle/DialogoDetalle.jsx";
 import { usePreferencias } from "../context/PreferenciasContext.jsx";
 import { useSesion } from "../context/SesionContext.jsx";
 import { proyecto } from "../config/proyecto.js";
@@ -56,10 +57,12 @@ export default function Ingresar() {
   const [mantenerSesion, setMantenerSesion] = useState(true);
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
+  const [avisoDisponible, setAvisoDisponible] = useState(null);
   const [errorCorreo, setErrorCorreo] = useState("");
   const [errorClave, setErrorClave] = useState("");
   const [camposObligatoriosInvalidos, setCamposObligatoriosInvalidos] = useState(false);
   const [reintentarEn, setReintentarEn] = useState(0);
+  const envioEnCurso = useRef(false);
 
   useEffect(() => {
     if (pagina?.seo?.titulo) document.title = pagina.seo.titulo;
@@ -93,8 +96,21 @@ export default function Ingresar() {
     setErrorClave("");
   }
 
+  function abrirAvisoDisponible(tipo) {
+    const en = idioma === "en";
+    setAvisoDisponible({
+      titulo:
+        tipo === "crearCuenta"
+          ? formulario?.enlaces?.crearCuenta
+          : formulario?.enlaces?.olvidasteClave,
+      descripcion: en ? "Available soon." : "Disponibles muy pronto.",
+      cerrar: en ? "Continue exploring" : "Seguir explorando",
+    });
+  }
+
   async function enviarFormulario(evento) {
     evento?.preventDefault();
+    if (envioEnCurso.current || enviando || reintentarEn > 0) return;
     limpiarErrores();
 
     const correoLimpio = correo.trim();
@@ -106,6 +122,7 @@ export default function Ingresar() {
     }
 
     setCamposObligatoriosInvalidos(false);
+    envioEnCurso.current = true;
     setEnviando(true);
     try {
       await iniciarSesion(correoLimpio, clave);
@@ -121,7 +138,7 @@ export default function Ingresar() {
         setErrorCorreo(fallo.campos?.correo ?? "");
         setErrorClave(fallo.campos?.clave ?? "");
       } else if (fallo.codigo === "demasiadas_peticiones") {
-        const segundos = fallo.retryAfter || fallo.detalles?.reintentarEnSegundos || 300;
+        const segundos = 150;
         setReintentarEn(segundos);
         setError({
           codigo: "demasiadas_peticiones",
@@ -136,11 +153,13 @@ export default function Ingresar() {
         });
       }
     } finally {
+      envioEnCurso.current = false;
       setEnviando(false);
     }
   }
 
   const esperando = cargandoSesion || enviando || reintentarEn > 0;
+  const controlesBloqueados = esperando;
   const beneficios = [
     presentacion?.beneficios?.descubre,
     presentacion?.beneficios?.filtra,
@@ -179,7 +198,7 @@ export default function Ingresar() {
               <p>{formulario?.subtitulo}</p>
             </header>
 
-            <form className="formulario-acceso" onSubmit={enviarFormulario} noValidate>
+            <form className="formulario-acceso" onSubmit={enviarFormulario} noValidate aria-busy={enviando || reintentarEn > 0}>
               {error && (
                 <div className="error-acceso" role="alert">
                   <img src={iconoAlerta} alt="" aria-hidden="true" />
@@ -214,6 +233,7 @@ export default function Ingresar() {
                   type="email"
                   name="correo"
                   autoComplete="email"
+                  disabled={controlesBloqueados}
                   placeholder={formulario?.placeholders?.correo}
                   value={correo}
                   aria-invalid={correoInvalido}
@@ -240,6 +260,7 @@ export default function Ingresar() {
                     type={mostrarClave ? "text" : "password"}
                     name="clave"
                     autoComplete="current-password"
+                    disabled={controlesBloqueados}
                     value={clave}
                     aria-invalid={claveInvalida}
                     aria-describedby={errorClave ? "error-clave-acceso" : undefined}
@@ -254,6 +275,7 @@ export default function Ingresar() {
                   <button
                     type="button"
                     className="boton-mostrar-clave"
+                    disabled={controlesBloqueados}
                     aria-label={mostrarClave ? formulario?.botones?.ocultarClave : formulario?.botones?.mostrarClave}
                     onClick={() => setMostrarClave((visible) => !visible)}
                   >
@@ -268,11 +290,23 @@ export default function Ingresar() {
                   <input
                     type="checkbox"
                     checked={mantenerSesion}
+                    disabled={controlesBloqueados}
                     onChange={(evento) => setMantenerSesion(evento.target.checked)}
                   />
                   <span>{formulario?.etiquetas?.mantenerSesion}</span>
                 </label>
-                <a className="enlace-recuperar-clave" href="/recuperar-clave">{formulario?.enlaces?.olvidasteClave}</a>
+                <a
+                  className="enlace-recuperar-clave"
+                  href="/recuperar-clave"
+                  aria-disabled={controlesBloqueados}
+                  tabIndex={controlesBloqueados ? -1 : undefined}
+                  onClick={(evento) => {
+                    evento.preventDefault();
+                    if (!controlesBloqueados) abrirAvisoDisponible("recuperarClave");
+                  }}
+                >
+                  {formulario?.enlaces?.olvidasteClave}
+                </a>
               </div>
 
               <button className="boton-enviar-acceso" type="submit" disabled={esperando}>
@@ -294,11 +328,23 @@ export default function Ingresar() {
 
             <p className="enlace-crear-cuenta-acceso">
               <span>{formulario?.mensajes?.sinCuenta}</span>{" "}
-              <a href="/crear-cuenta">{formulario?.enlaces?.crearCuenta}</a>
+              <a
+                href="/crear-cuenta"
+                onClick={(evento) => {
+                  evento.preventDefault();
+                  abrirAvisoDisponible("crearCuenta");
+                }}
+              >
+                {formulario?.enlaces?.crearCuenta}
+              </a>
             </p>
           </div>
         )}
       </section>
+      <DialogoDetalle
+        detalle={avisoDisponible}
+        onCerrar={() => setAvisoDisponible(null)}
+      />
     </main>
   );
 }

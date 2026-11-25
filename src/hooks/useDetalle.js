@@ -10,9 +10,7 @@ export function useDetalle(textos, idioma = "es") {
     const en = idioma === "en";
     setDetalle({
       titulo: tipo === "registro" ? texto?.crearCuenta : texto?.ingresar,
-      descripcion: en
-        ? "It is not possible to create an account at this time. You can explore the public catalog without logging in."
-        : "Por ahora no es posible crear una cuenta. Puedes explorar el catálogo público sin iniciar sesión.",
+      descripcion: en ? "Available soon." : "Disponibles muy pronto.",
       cerrar: en ? "Continue exploring" : "Seguir explorando",
     });
   }

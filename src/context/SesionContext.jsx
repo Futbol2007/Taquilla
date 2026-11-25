@@ -41,6 +41,7 @@ export function SesionProvider({ children }) {
   async function cerrarSesion() {
     await cerrarSesionApi();
     setUsuario(null);
+    window.location.replace("/");
   }
 
   const sesion = useMemo(

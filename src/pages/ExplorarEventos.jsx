@@ -187,7 +187,7 @@ export default function ExplorarEventos() {
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const { detalle, setDetalle, abrirCuenta } = useDetalle(textos, idioma);
-  const { eventos, categorias, cargando, error } = useEventos(idioma, 0);
+  const { eventos, categorias, cargando, error, reintentar } = useEventos(idioma, 0);
   const [estadoInicialUrl] = useState(leerFiltrosUrl);
   const [filtros, setFiltros] = useState(estadoInicialUrl.filtros);
   const [orden, setOrden] = useState(estadoInicialUrl.orden);
@@ -428,13 +428,24 @@ export default function ExplorarEventos() {
         {cargando && (
           <EstadoCargaVista
             variante="explorar"
-            texto={textos?.estados?.cargando?.titulo}
+            texto={textos?.estados?.cargando?.indicador}
           />
         )}
         {error && !cargando && (
           <div className="pagina-explorar-error" role="alert">
             <h2>{textos?.estados?.error?.titulo}</h2>
-            <p>{textos?.estados?.error?.texto}</p>
+            <p>
+              {textos?.errores?.[error.codigo] ??
+                textos?.errores?.generico ??
+                textos?.estados?.error?.texto}
+            </p>
+            <button
+              type="button"
+              className="boton-home primario"
+              onClick={reintentar}
+            >
+              {textos?.estados?.error?.botones?.reintentar}
+            </button>
           </div>
         )}
 
@@ -500,8 +511,8 @@ export default function ExplorarEventos() {
                 </div>
               ) : (
                 <div className="pagina-explorar-vacio">
-                  <h2>{explorar?.vacio?.titulo}</h2>
-                  <p>{explorar?.vacio?.texto}</p>
+                  <h2>{textos?.estados?.vacio?.titulo}</h2>
+                  <p>{textos?.estados?.vacio?.texto}</p>
                   <button
                     type="button"
                     className="boton-home primario"

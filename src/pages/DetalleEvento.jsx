@@ -63,12 +63,13 @@ export default function DetalleEvento({ slug }) {
   const [seccionActiva, setSeccionActiva] = useState("descripcion");
   const [eventoApi, setEventoApi] = useState(null);
   const [cargandoDetalleApi, setCargandoDetalleApi] = useState(true);
+  const [intentoDetalle, setIntentoDetalle] = useState(0);
   const [errorDetalleApi, setErrorDetalleApi] = useState(null);
   const [avisoCompartir, setAvisoCompartir] = useState(null);
   const { idioma } = usePreferencias();
   const { textos } = useTextos(idioma);
   const { abrirCuenta } = useDetalle(textos, idioma);
-  const { eventos, error } = useEventos("es", 0);
+  const { eventos, error, reintentar: reintentarEventos } = useEventos("es", 0);
   const eventoLista = eventos.find(
     (item) => item.slug === slug || String(item.id) === slug,
   );
@@ -90,13 +91,13 @@ export default function DetalleEvento({ slug }) {
       });
 
     return () => controlador.abort();
-  }, [slug]);
+  }, [slug, intentoDetalle]);
 
   const evento = useMemo(() => {
     const datos = eventoApi ? { ...eventoLista, ...eventoApi } : eventoLista;
     return datos ? { ...datos, nombre: datos.titulo ?? datos.nombre } : null;
   }, [eventoApi, eventoLista]);
-  const cargandoVista = cargandoDetalleApi && !eventoLista;
+  const cargandoVista = cargandoDetalleApi;
   const paginas = textos?.paginas;
   const detalle = paginas?.detalleEvento;
   const info = detalle?.info;
@@ -221,6 +222,14 @@ export default function DetalleEvento({ slug }) {
     else window.location.href = "/explorar";
   }
 
+  function reintentarCarga() {
+    setEventoApi(null);
+    setErrorDetalleApi(null);
+    setCargandoDetalleApi(true);
+    setIntentoDetalle((actual) => actual + 1);
+    reintentarEventos();
+  }
+
   function compartirEvento() {
     const en = idioma === "en";
     setAvisoCompartir({
@@ -243,16 +252,30 @@ export default function DetalleEvento({ slug }) {
         {cargandoVista && (
           <EstadoCargaVista
             variante="detalle"
-            texto={textos?.estados?.cargando?.titulo}
+            texto={textos?.estados?.cargando?.indicador}
           />
         )}
-        {(error || errorDetalleApi) &&
+        {(errorDetalleApi || (error && !eventoApi)) &&
           !cargandoVista &&
-          !evento &&
-          textos?.estados?.error?.texto && (
-            <p role="alert">{textos.estados.error.texto}</p>
+          (errorDetalleApi ?? error)?.codigo !== "no_encontrado" && (
+            <section className="detalle-evento-error" role="alert">
+              <h1>{textos?.estados?.error?.titulo}</h1>
+              <p>
+                {textos?.errores?.[(errorDetalleApi ?? error)?.codigo] ??
+                  textos?.errores?.generico ??
+                  textos?.estados?.error?.texto}
+              </p>
+              <button
+                type="button"
+                className="boton-home primario"
+                onClick={reintentarCarga}
+              >
+                {textos?.estados?.error?.botones?.reintentar}
+              </button>
+            </section>
           )}
-        {!cargandoVista && !evento && (
+        {!cargandoVista && !evento &&
+          (!errorDetalleApi || errorDetalleApi.codigo === "no_encontrado") && (
           <section className="detalle-evento-vacio" role="status">
             <h1>{detalle?.noEncontrado?.titulo}</h1>
             <p>{detalle?.noEncontrado?.texto}</p>
