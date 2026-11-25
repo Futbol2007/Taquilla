@@ -271,6 +271,27 @@
   padding-block: var(--espacio-8);
 }
 
+.detalle-evento-error {
+  display: grid;
+  justify-items: start;
+  gap: var(--espacio-2);
+  padding: var(--espacio-4);
+  border: 1px solid var(--estado-error);
+  border-radius: var(--radio-lg);
+  background: var(--fondo-superficie);
+  color: var(--texto-principal);
+}
+
+.detalle-evento-error h1 {
+  margin: 0;
+  font-size: var(--texto-fluid-20);
+}
+
+.detalle-evento-error p {
+  margin: 0;
+  color: var(--texto-secundario);
+}
+
 .detalle-evento-vacio h1 {
   font-size: var(--texto-fluid-28);
 }
