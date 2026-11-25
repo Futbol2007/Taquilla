@@ -17,6 +17,7 @@ export default function Navbar({
   usuario,
   onCerrarSesion,
   onBuscarEventos,
+  buscadorDeshabilitado = false,
   accesibilidadAbierta,
   onAlternarAccesibilidad,
   privado = false,
@@ -59,6 +60,7 @@ export default function Navbar({
 
   function enviarBusqueda(evento) {
     evento.preventDefault();
+    if (buscadorDeshabilitado) return;
     onBuscarEventos?.({ consulta });
     setAbierto(false);
   }
@@ -89,6 +91,7 @@ export default function Navbar({
             type="button"
             className="buscar-movil"
             aria-label={textosNavbar?.buscador?.aria}
+            disabled={buscadorDeshabilitado}
             onClick={enfocarBuscadorMovil}
           >
             <img src={iconoSearch} alt="" />
@@ -158,11 +161,13 @@ export default function Navbar({
                   type="submit"
                   className="buscar-cabecera-boton"
                   aria-label={textosNavbar?.buscador?.aria}
+                  disabled={buscadorDeshabilitado}
                 >
                   <img src={iconoSearch} alt="" />
                 </button>
                 <input
                   type="search"
+                  disabled={buscadorDeshabilitado}
                   value={consulta}
                   onChange={(evento) => setConsulta(evento.target.value)}
                   placeholder={textosNavbar?.buscador?.placeholder}

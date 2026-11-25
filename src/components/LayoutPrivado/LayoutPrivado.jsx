@@ -7,16 +7,20 @@ import Footer from "../Footer/Footer.jsx";
 import SaltarContenido from "../SaltarContenido/SaltarContenido.jsx";
 import GestorCookies from "../GestorCookies/GestorCookies.jsx";
 import "./LayoutPrivado.css";
+import DialogoDetalle from "../DialogoDetalle/DialogoDetalle.jsx";
+import { useDetalle } from "../../hooks/useDetalle.js";
 
 export default function LayoutPrivado({
   textos,
   onCuenta,
   onBuscarEventos,
+  buscadorDeshabilitado = false,
   className = "",
   children,
 }) {
   const { idioma, cambiarIdioma } = usePreferencias();
   const { usuario, cerrarSesion } = useSesion();
+  const { detalle: detalleTerminos, setDetalle: setDetalleTerminos, abrirTerminos } = useDetalle(textos, idioma);
   const [cookiesAbiertas, setCookiesAbiertas] = useState(false);
   const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const disparador = useRef(null);
@@ -44,6 +48,7 @@ export default function LayoutPrivado({
         usuario={usuario}
         onCerrarSesion={cerrarSesion}
         onBuscarEventos={onBuscarEventos}
+        buscadorDeshabilitado={buscadorDeshabilitado}
         accesibilidadAbierta={accesibilidadAbierta}
         onAlternarAccesibilidad={setAccesibilidadAbierta}
         privado
@@ -57,6 +62,7 @@ export default function LayoutPrivado({
         onCuenta={onCuenta}
         onAbrirCookies={abrirCookies}
         onAbrirAccesibilidad={() => setAccesibilidadAbierta(true)}
+        onAbrirTerminos={abrirTerminos}
         textos={textos}
       />
       <GestorCookies
@@ -65,6 +71,7 @@ export default function LayoutPrivado({
         onCerrar={cerrarCookies}
         textos={textos}
       />
+      <DialogoDetalle detalle={detalleTerminos} onCerrar={() => setDetalleTerminos(null)} />
     </div>
   );
 }
