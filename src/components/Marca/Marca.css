@@ -7,6 +7,20 @@
   font-size: var(--texto-fluid-22);
   font-weight: 700;
 }
+.marca-home-logo-navbar {
+  width: 109px;
+  height: 32px;
+  gap: 0;
+}
+.marca-home-logo-imagen,
+.marca-home-logo-imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.marca-home-logo-imagen img {
+  object-fit: contain;
+}
 .emblema {
   display: grid;
   place-items: center;
@@ -23,6 +37,11 @@
 @media (max-width: 640px) {
   .marca-home {
     font-size: var(--texto-fluid-20);
+  }
+
+  .marca-home-logo-navbar {
+    width: 84px;
+    height: 25px;
   }
 }
 .taquilla .marca-home {

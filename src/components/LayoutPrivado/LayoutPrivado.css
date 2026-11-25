@@ -121,6 +121,19 @@
 }
 
 @media (max-width: 640px) {
+  .layout-privado.taquilla .cabecera-home {
+    background: var(--fondo-inverso);
+  }
+
+  .layout-privado.taquilla .cabecera-home > .fila-cabecera > .marca-home {
+    color: var(--texto-inverso);
+  }
+
+  .layout-privado.taquilla .cabecera-home > .fila-cabecera > .marca-home .emblema {
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+  }
+
   .layout-privado .fila-cabecera {
     flex-wrap: nowrap;
     gap: 8px;
@@ -131,7 +144,12 @@
   }
 
   .layout-privado.taquilla .buscar-movil img {
-    filter: none;
+    filter: brightness(0) invert(1);
+  }
+
+  .layout-privado.taquilla .boton-menu {
+    border-color: transparent;
+    color: var(--texto-inverso);
   }
 
   .layout-privado .navbar-perfil-boton {
@@ -144,4 +162,74 @@
     height: 36px;
     flex-basis: 36px;
   }
+
+  .layout-privado .menu-home.abierto {
+    right: 24px;
+    width: min(320px, calc(100vw - 64px));
+  }
+
+  .layout-privado .menu-home.abierto .menu-movil-cabecera .marca-home {
+    width: 109px;
+    height: 32px;
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil {
+    display: flex;
+    order: 3;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--borde-sutil);
+  }
+
+  .layout-privado .menu-home.abierto .acciones-home {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-boton,
+  .layout-privado .menu-home.abierto .navbar-perfil-panel {
+    display: none;
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-movil {
+    display: block;
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-identidad {
+    gap: 10px;
+    padding: 0 0 12px;
+    border: 0;
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-iniciales {
+    background: var(--fondo-sutil);
+    color: var(--texto-principal);
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-datos strong {
+    font-size: var(--texto-fluid-13);
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-datos > span {
+    font-size: var(--texto-fluid-11);
+  }
+
+  .layout-privado .menu-home.abierto .navbar-perfil-cerrar-movil {
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid var(--borde-fuerte);
+    border-radius: var(--radio-md);
+    background: var(--fondo-superficie);
+    color: var(--texto-principal);
+    font: inherit;
+    font-size: var(--texto-fluid-13);
+    cursor: pointer;
+  }
+}
+
+.layout-privado .navbar-perfil-movil {
+  display: none;
 }

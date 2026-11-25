@@ -29,6 +29,7 @@ export default function Navbar({
   const perfilRef = useRef(null);
   const id = useId();
   const textosNavbar = textos?.navbar;
+  const textosMenuMovil = textos?.menuMovil;
   const textosAccesibilidad = textos?.accesibilidad;
   const { accesibilidad, cambiarValores, restablecer } = useAccesibilidad();
   const modoPrivado = privado || Boolean(usuario);
@@ -58,6 +59,15 @@ export default function Navbar({
     .join("")
     .toLocaleUpperCase(idioma === "en" ? "en" : "es");
 
+  async function cerrarSesionUsuario() {
+    setPerfilAbierto(false);
+    try {
+      await onCerrarSesion?.();
+    } catch (error) {
+      console.error("No se pudo cerrar la sesión:", error);
+    }
+  }
+
   function enviarBusqueda(evento) {
     evento.preventDefault();
     if (buscadorDeshabilitado) return;
@@ -85,7 +95,12 @@ export default function Navbar({
       }}
     >
       <div className="ancho-home fila-cabecera">
-        <Marca nombre={nombre} tipo={tipo} />
+        <Marca
+          nombre={nombre}
+          tipo={tipo}
+          logoNavbar={tipo === "taquilla"}
+          logoInversoMovil={tipo === "taquilla"}
+        />
         {tipo === "taquilla" && (
           <button
             type="button"
@@ -131,7 +146,7 @@ export default function Navbar({
           aria-label={textosNavbar?.logo?.aria}
         >
           <div className="menu-movil-cabecera">
-            <Marca nombre={nombre} tipo={tipo} />
+            <Marca nombre={nombre} tipo={tipo} logoNavbar={tipo === "taquilla"} />
             <button
               type="button"
               className="menu-movil-cerrar"
@@ -177,7 +192,7 @@ export default function Navbar({
             )}
             <div className="accion-movil accion-movil-accesibilidad">
               <span className="accion-movil-etiqueta">
-                {idioma === "en" ? "Accessibility" : "Accesibilidad"}
+                {textosMenuMovil?.secciones?.accesibilidad}
               </span>
               <Accesibilidad
                 abierto={accesibilidadAbierta}
@@ -196,7 +211,7 @@ export default function Navbar({
             </div>
             <div className="accion-movil accion-movil-idioma">
               <span className="accion-movil-etiqueta">
-                {idioma === "en" ? "Language" : "Idioma"}
+                {textosMenuMovil?.secciones?.idioma}
               </span>
               <SelectorIdioma
                 idioma={idioma}
@@ -233,18 +248,7 @@ export default function Navbar({
                         <span>{usuario.correo}</span>
                       </div>
                     </div>
-                    <button
-                      className="navbar-perfil-cerrar"
-                      type="button"
-                      onClick={async () => {
-                        setPerfilAbierto(false);
-                        try {
-                          await onCerrarSesion?.();
-                        } catch (error) {
-                          console.error("No se pudo cerrar la sesión:", error);
-                        }
-                      }}
-                    >
+                    <button className="navbar-perfil-cerrar" type="button" onClick={cerrarSesionUsuario}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M10 17l5-5-5-5M15 12H3" />
                         <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" />
@@ -253,6 +257,20 @@ export default function Navbar({
                     </button>
                   </div>
                 )}
+                <div className="navbar-perfil-movil">
+                  <div className="navbar-perfil-identidad">
+                    <span className="navbar-perfil-iniciales" aria-hidden="true">
+                      {inicialesUsuario}
+                    </span>
+                    <div className="navbar-perfil-datos">
+                      <strong>{usuario.nombre}</strong>
+                      <span>{usuario.correo}</span>
+                    </div>
+                  </div>
+                  <button className="navbar-perfil-cerrar-movil" type="button" onClick={cerrarSesionUsuario}>
+                    {textosNavbar?.usuario?.cerrarSesion}
+                  </button>
+                </div>
               </div>
             ) : (
               <>
