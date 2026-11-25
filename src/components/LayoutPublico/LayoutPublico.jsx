@@ -6,6 +6,8 @@ import Footer from "../Footer/Footer.jsx";
 import SaltarContenido from "../SaltarContenido/SaltarContenido.jsx";
 import GestorCookies from "../GestorCookies/GestorCookies.jsx";
 import LayoutPrivado from "../LayoutPrivado/LayoutPrivado.jsx";
+import DialogoDetalle from "../DialogoDetalle/DialogoDetalle.jsx";
+import { useDetalle } from "../../hooks/useDetalle.js";
 import { useSesion } from "../../context/SesionContext.jsx";
 import "./LayoutPublico.css";
 
@@ -13,11 +15,13 @@ export default function LayoutPublico({
   textos,
   onCuenta,
   onBuscarEventos,
+  buscadorDeshabilitado = false,
   className = "",
   children,
 }) {
   const { idioma, cambiarIdioma } = usePreferencias();
   const { usuario, cerrarSesion } = useSesion();
+  const { detalle: detalleTerminos, setDetalle: setDetalleTerminos, abrirTerminos } = useDetalle(textos, idioma);
   const [cookiesAbiertas, setCookiesAbiertas] = useState(false);
   const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
   const disparador = useRef(null);
@@ -41,6 +45,7 @@ export default function LayoutPublico({
         textos={textos}
         onCuenta={onCuenta}
         onBuscarEventos={onBuscarEventos}
+        buscadorDeshabilitado={buscadorDeshabilitado}
         className={className}
       >
         {children}
@@ -61,6 +66,7 @@ export default function LayoutPublico({
         usuario={null}
         onCerrarSesion={cerrarSesion}
         onBuscarEventos={onBuscarEventos}
+        buscadorDeshabilitado={buscadorDeshabilitado}
         accesibilidadAbierta={accesibilidadAbierta}
         onAlternarAccesibilidad={setAccesibilidadAbierta}
       />
@@ -73,6 +79,7 @@ export default function LayoutPublico({
         onCuenta={onCuenta}
         onAbrirCookies={abrirCookies}
         onAbrirAccesibilidad={abrirAccesibilidad}
+        onAbrirTerminos={abrirTerminos}
         textos={textos}
       />
       <GestorCookies
@@ -81,6 +88,7 @@ export default function LayoutPublico({
         onCerrar={cerrarCookies}
         textos={textos}
       />
+      <DialogoDetalle detalle={detalleTerminos} onCerrar={() => setDetalleTerminos(null)} />
     </div>
   );
 }

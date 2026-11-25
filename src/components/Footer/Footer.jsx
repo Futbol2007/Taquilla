@@ -6,6 +6,7 @@ export default function Footer({
   onCuenta,
   onAbrirCookies,
   onAbrirAccesibilidad,
+  onAbrirTerminos,
   textos,
 }) {
   const textosFooter = textos?.footer;
@@ -37,9 +38,9 @@ export default function Footer({
           </div>
           <div>
             <h3>{textosFooter?.columnas?.legal?.titulo}</h3>
-            <a href="/">
+            <button type="button" onClick={onAbrirTerminos}>
               {textosFooter?.columnas?.legal?.enlaces?.terminos}
-            </a>
+            </button>
             <button type="button" onClick={onAbrirAccesibilidad}>
               {textosFooter?.columnas?.legal?.enlaces?.accesibilidad}
             </button>

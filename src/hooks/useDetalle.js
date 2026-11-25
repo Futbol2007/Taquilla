@@ -9,15 +9,22 @@ export function useDetalle(textos, idioma = "es") {
     }
     const en = idioma === "en";
     setDetalle({
-      titulo:
-        tipo === "registro"
-          ? texto?.crearCuenta
-          : texto?.ingresar,
+      titulo: tipo === "registro" ? texto?.crearCuenta : texto?.ingresar,
       descripcion: en
-        ? "Account access is not available yet. You can explore the public catalogue without signing in."
-        : "El acceso a cuentas aún no está disponible. Puedes explorar el catálogo público sin iniciar sesión.",
+        ? "It is not possible to create an account at this time. You can explore the public catalog without logging in."
+        : "Por ahora no es posible crear una cuenta. Puedes explorar el catálogo público sin iniciar sesión.",
       cerrar: en ? "Continue exploring" : "Seguir explorando",
     });
   }
-  return { detalle, setDetalle, abrirCuenta };
+  function abrirTerminos() {
+    const en = idioma === "en";
+    setDetalle({
+      titulo: textos?.footer?.columnas?.legal?.enlaces?.terminos,
+      descripcion: en
+        ? "The terms of use are not available yet. You can keep exploring."
+        : "Los términos de uso aún no están disponibles. Puedes seguir explorando.",
+      cerrar: en ? "Continue exploring" : "Seguir explorando",
+    });
+  }
+  return { detalle, setDetalle, abrirCuenta, abrirTerminos };
 }
